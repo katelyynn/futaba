@@ -1,6 +1,6 @@
 "use client";
 
-import { SakuraAlbum } from '@/app/_components/album/album';
+import { SakuraAlbum, SakuraAlbumList } from '@/app/_components/album/album';
 import { SakuraHeader } from '@/app/_components/header/header';
 import { useArtist } from '@/app/hook/artist';
 import { useSession } from '@/app/session';
@@ -22,11 +22,11 @@ export default function Artist() {
   return (
     <>
       <SakuraHeader data={data} type="artist" />
-      <div>
+      <SakuraAlbumList>
         {data.albums.map(album => (
           <SakuraAlbum album={album} key={album.id} />
         ))}
-      </div>
+      </SakuraAlbumList>
     </>
   )
 }

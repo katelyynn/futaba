@@ -29,6 +29,7 @@ export async function getArtist(session: session, id: string) {
   const albums = [];
   artist.album.forEach(album => {
     const art = getCoverArt(session, album.id);
+    const type = album.releaseTypes[0] || 'album';
 
     albums.push({
       id: album.id,
@@ -38,7 +39,7 @@ export async function getArtist(session: session, id: string) {
       songs: album.songCount,
       played: album.played,
       plays: album.plays,
-      types: album.releaseTypes,
+      type,
       created: album.created,
       art: art
     });

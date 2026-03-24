@@ -52,6 +52,8 @@ export async function getAlbum(session: session, id: string) {
     });
   });
 
+  const type = album.releaseTypes[0] || 'album';
+
   return {
     id: album.id,
     name: album.name,
@@ -61,7 +63,7 @@ export async function getAlbum(session: session, id: string) {
     songCount: album.songCount,
     played: album.played,
     plays: album.plays,
-    types: album.releaseTypes,
+    type,
     compilation: album.isCompilation,
     genres: album.genres,
     duration: album.duration,

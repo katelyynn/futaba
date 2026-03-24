@@ -4,6 +4,7 @@ import { SakuraImage } from '../image/image';
 import { artist } from '@/app/types/artist';
 import { album } from '@/app/types/album';
 import Link from 'next/link';
+import { releaseType } from '@/app/tools/type';
 
 interface SakuraHeaderProps {
   data: artist | album,
@@ -16,7 +17,7 @@ export function SakuraHeader({
 }: SakuraHeaderProps) {
   let text = 'Artist';
   if (type == 'album') {
-    text = 'Album';
+    text = releaseType((data as album).type);
   }
 
   return (

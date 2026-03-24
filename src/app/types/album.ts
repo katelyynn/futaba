@@ -8,7 +8,7 @@ export interface album {
   songs: number,
   played: string,
   plays: number,
-  types: string[],
+  type: string,
   created: string,
   art: string,
   explicit: boolean
@@ -22,7 +22,7 @@ export interface album_full {
   songs: song[],
   played: string,
   plays: number,
-  types: string[],
+  type: string,
   created: string,
   art: string,
   explicit: boolean
