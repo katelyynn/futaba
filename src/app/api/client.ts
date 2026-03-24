@@ -1,5 +1,11 @@
 import md5 from "md5";
 
+export interface session {
+  server: string,
+  username: string,
+  password: string
+}
+
 export interface auth {
   baseURL: string,
   params: {
@@ -22,14 +28,14 @@ function normaliseURL(url: string) {
   return url;
 }
 
-export function createAuth(username: string, password: string, server: string) {
+export function createAuth(session: session) {
   const salt = Math.random().toString(36).slice(2, 10);
-  const token = md5(password + salt);
+  const token = md5(session.password + salt);
 
   return {
-    baseURL: normaliseURL(server),
+    baseURL: normaliseURL(session.server),
     params: {
-      u: username,
+      u: session.username,
       t: token,
       s: salt,
       v: "1.16.1",
@@ -39,7 +45,9 @@ export function createAuth(username: string, password: string, server: string) {
   } as auth;
 }
 
-export async function request(auth: auth, endpoint: string, params = {}) {
+export async function request(session: session, endpoint: string, params = {}) {
+  const auth = createAuth(session);
+
   const url = new URL(`/rest/${endpoint}.view`, auth.baseURL);
 
   url.search = new URLSearchParams({
@@ -52,5 +60,11 @@ export async function request(auth: auth, endpoint: string, params = {}) {
   if (!res.ok) throw new Error("unexpected api error");
 
   const json = await res.json();
-  return json["subsonic-response"];
+  const data = json["subsonic-response"];
+
+  if (data.status == "failed") {
+    throw new Error(data.error?.message || "unexpected api error (2)");
+  }
+
+  return data;
 }

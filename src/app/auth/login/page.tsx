@@ -12,12 +12,16 @@ export default function Login({ onLogon }) {
     setError(null);
 
     try {
-      const auth = createAuth(username, password, server);
+      const session = {
+        server,
+        username,
+        password
+      };
 
-      await request(auth, "ping");
+      await request(session, "ping");
 
-      localStorage.setItem("auth", JSON.stringify(auth));
-      onLogon(auth);
+      localStorage.setItem("session", JSON.stringify(session));
+      onLogon(session);
     } catch (e) {
       setError(e);
     }
