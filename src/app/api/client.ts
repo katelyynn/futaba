@@ -59,6 +59,7 @@ export async function request(session: session, endpoint: string, params = {}) {
 
   if (!res.ok) throw new Error("unexpected api error");
 
+  console.log('res', res);
   const json = await res.json();
   console.log('json', json);
   const data = json["subsonic-response"];

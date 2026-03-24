@@ -1,0 +1,18 @@
+"use client";
+
+import { createAuth, request, session } from './client';
+
+export function getCoverArt(session: session, id: string) {
+  const auth = createAuth(session);
+
+  const url = new URL(`/rest/getCoverArt.view`, auth.baseURL);
+
+  url.search = new URLSearchParams({
+    ...auth.params,
+    id
+  });
+
+  console.log('cover', url.toString());
+
+  return url.toString();
+}

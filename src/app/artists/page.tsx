@@ -1,6 +1,7 @@
 "use client";
 
-import { useArtists } from '../hook/artists';
+import { SakuraArtist } from '../_components/artist/artist';
+import { useArtists } from '../hook/artist';
 import { useSession } from '../session';
 
 export default function Artists() {
@@ -16,7 +17,7 @@ export default function Artists() {
   return (
     <div>
       {data.map(artist => (
-        <div key={artist.id}>{artist.name}</div>
+        <SakuraArtist artist={artist} key={artist.id} />
       ))}
     </div>
   )
