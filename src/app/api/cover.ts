@@ -1,6 +1,6 @@
 "use client";
 
-import { createAuth, request, session } from './client';
+import { createAuth, session } from './client';
 
 export function getCoverArt(session: session, id: string) {
   const auth = createAuth(session);

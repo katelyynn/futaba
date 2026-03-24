@@ -8,7 +8,8 @@ export interface album {
   plays: number,
   types: string[],
   created: string,
-  art: string
+  art: string,
+  explicit: boolean
 }
 
 interface album_artist {
