@@ -52,7 +52,7 @@ export async function getAlbum(session: session, id: string) {
     });
   });
 
-  const type = album.releaseTypes[0]?.toLowerCase().trim() || 'album';
+  const type = album.isCompilation ? 'compilation' : album.releaseTypes[0]?.toLowerCase().trim() || 'album';
 
   return {
     id: album.id,
@@ -64,7 +64,6 @@ export async function getAlbum(session: session, id: string) {
     played: album.played,
     plays: album.plays,
     type,
-    compilation: album.isCompilation,
     genres: album.genres,
     duration: album.duration,
     discTitles: album.discTitles,

@@ -29,7 +29,7 @@ export async function getArtist(session: session, id: string) {
   const albums = {};
   artist.album.forEach(album => {
     const art = getCoverArt(session, album.id);
-    const type = album.releaseTypes[0]?.toLowerCase().trim() || 'album';
+    const type = album.isCompilation ? 'compilation' : album.releaseTypes[0]?.toLowerCase().trim() || 'album';
 
     if (!albums[type]) albums[type] = [];
     albums[type].push({

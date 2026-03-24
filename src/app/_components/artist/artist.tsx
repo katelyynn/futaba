@@ -6,11 +6,19 @@ import Link from 'next/link';
 export function SakuraArtist({ artist }: { artist: artist }) {
   return (
     <Link href={`/artist/${artist.id}`} className={styles.artist}>
-      <SakuraImage url={artist.art} type="artist" />
+      <SakuraImage url={artist.art} type="artist" identify={styles.art} />
       <div className={styles.info}>
         <strong className={styles.name}>{artist.name}</strong>
         <p className={styles.meta}>{artist.albums} albums</p>
       </div>
     </Link>
+  )
+}
+
+export function SakuraArtistList({ children }: { children: React.ReactNode }) {
+  return (
+    <div className={styles.list}>
+      {children}
+    </div>
   )
 }

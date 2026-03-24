@@ -1,6 +1,6 @@
 "use client";
 
-import { SakuraArtist } from '../_components/artist/artist';
+import { SakuraArtist, SakuraArtistList } from '../_components/artist/artist';
 import { useArtists } from '../hook/artist';
 import { useSession } from '../session';
 
@@ -15,10 +15,10 @@ export default function Artists() {
   console.log('artist data', data);
 
   return (
-    <div>
+    <SakuraArtistList>
       {data.map(artist => (
         <SakuraArtist artist={artist} key={artist.id} />
       ))}
-    </div>
+    </SakuraArtistList>
   )
 }

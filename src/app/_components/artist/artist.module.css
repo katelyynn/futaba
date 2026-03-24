@@ -1,0 +1,30 @@
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px 12px;
+}
+
+.artist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  color: oklch(var(--c2)) !important;
+  text-decoration: none !important;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta {
+  font-size: 13px;
+  color: oklch(var(--c2) / 80%);
+}
+
+.art {
+  --w: auto !important;
+  border-radius: var(--item-small-radius) !important;
+}
