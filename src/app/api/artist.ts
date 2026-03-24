@@ -26,12 +26,13 @@ export async function getArtist(session: session, id: string) {
   const artist = res.artist;
   console.info('artist req', artist);
 
-  const albums = [];
+  const albums = {};
   artist.album.forEach(album => {
     const art = getCoverArt(session, album.id);
-    const type = album.releaseTypes[0] || 'album';
+    const type = album.releaseTypes[0]?.toLowerCase().trim() || 'album';
 
-    albums.push({
+    if (!albums[type]) albums[type] = [];
+    albums[type].push({
       id: album.id,
       name: album.name,
       artists: album.artists,

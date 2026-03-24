@@ -43,6 +43,7 @@
   --bg-atv: color-mix(in oklch, oklch(var(--h4)), oklch(var(--h3)) 60%);
   --col: oklch(var(--b7));
   --shadow: var(--primary-shadow), 0 3px 12px oklch(var(--h4) / 32%), var(--interactable-outer);
+  font-weight: var(--font-weight-medium);
 }
 
 .tab {

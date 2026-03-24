@@ -52,7 +52,7 @@ export async function getAlbum(session: session, id: string) {
     });
   });
 
-  const type = album.releaseTypes[0] || 'album';
+  const type = album.releaseTypes[0]?.toLowerCase().trim() || 'album';
 
   return {
     id: album.id,

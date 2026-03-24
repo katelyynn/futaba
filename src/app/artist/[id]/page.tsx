@@ -1,6 +1,7 @@
 "use client";
 
 import { SakuraAlbum, SakuraAlbumList } from '@/app/_components/album/album';
+import { SakuraGroup, SakuraGroupList } from '@/app/_components/group/group';
 import { SakuraHeader } from '@/app/_components/header/header';
 import { useArtist } from '@/app/hook/artist';
 import { useSession } from '@/app/session';
@@ -22,11 +23,17 @@ export default function Artist() {
   return (
     <>
       <SakuraHeader data={data} type="artist" />
-      <SakuraAlbumList>
-        {data.albums.map(album => (
-          <SakuraAlbum album={album} key={album.id} />
+      <SakuraGroupList>
+        {Object.entries(data.albums).map(([group, items]) => (
+          <SakuraGroup name={group} key={group}>
+            <SakuraAlbumList key={group}>
+              {items.map(album => (
+                <SakuraAlbum album={album} key={album.id} />
+              ))}
+            </SakuraAlbumList>
+          </SakuraGroup>
         ))}
-      </SakuraAlbumList>
+      </SakuraGroupList>
     </>
   )
 }
