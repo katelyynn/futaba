@@ -5,9 +5,10 @@ import { session } from '../api/client';
 import { getArtists } from '../api/artists';
 
 export function useArtists(session: session | null) {
+  console.log('useArtists', session);
+
   return useQuery({
-    queryKey: ["artists"],
-    queryFn: () => getArtists(session!),
-    enabled: !!session
+    queryKey: ["artists", session],
+    queryFn: () => getArtists(session!)
   });
 }
