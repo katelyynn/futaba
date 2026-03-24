@@ -1,12 +1,13 @@
 "use client";
 
 import { useQuery } from '@tanstack/react-query';
-import { auth } from '../api/client';
+import { session } from '../api/client';
 import { getArtists } from '../api/artists';
 
-export function useArtists(auth: auth) {
+export function useArtists(session: session | null) {
   return useQuery({
     queryKey: ["artists"],
-    queryFn: () => getArtists(auth)
+    queryFn: () => getArtists(session!),
+    enabled: !!session
   });
 }

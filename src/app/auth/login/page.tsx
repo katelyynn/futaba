@@ -1,9 +1,12 @@
 "use client";
 
 import { createAuth, request } from '@/app/api/client';
+import { useSession } from '@/app/session';
 import { useState } from 'react';
 
-export default function Login({ onLogon }) {
+export default function Login() {
+  const { setSession } = useSession();
+
   const [ server, setServer ] = useState("");
   const [ username, setUsername ] = useState("");
   const [ password, setPassword ] = useState("");
@@ -14,16 +17,11 @@ export default function Login({ onLogon }) {
     setError(null);
 
     try {
-      const session = {
-        server,
-        username,
-        password
-      };
+      const session = { server, username, password };
 
       await request(session, "ping");
 
-      localStorage.setItem("session", JSON.stringify(session));
-      onLogon(session);
+      setSession(session);
     } catch (e) {
       setError(e instanceof Error ? e.message : "login failed");
     }

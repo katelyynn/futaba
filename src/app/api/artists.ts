@@ -1,7 +1,11 @@
-import { auth, request } from './client';
+"use client";
 
-export async function getArtists(auth: auth) {
-  const res = await request(auth, "getArtists");
+import { request, session } from './client';
+
+export async function getArtists(session: session) {
+  const res = await request(session, "getArtists");
+
+  console.info('res', res);
 
   return res.artists.index.flatMap(group =>
     group.artist.map(artist => ({
