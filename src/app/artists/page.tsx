@@ -1,3 +1,5 @@
+"use client";
+
 import { auth } from '../api/client';
 import { useArtists } from '../hook/artists';
 
