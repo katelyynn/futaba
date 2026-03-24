@@ -1,0 +1,9 @@
+.nav {
+  padding: var(--pad) 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

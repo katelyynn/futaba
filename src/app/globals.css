@@ -147,8 +147,8 @@ body {
   --font-size-sm: 12px;
   --line-height-sm: calc(var(--font-size-sm) + 4px);
 
-  --default-hue: 333;
-  --default-sat: 1.28;
+  --default-hue: 38;
+  --default-sat: 1.87;
   --default-lit: 0.9;
 
   --hue: var(--hue-over, var(--hue-album, var(--hue-user, var(--hue-seasonal, var(--default-hue)))));
@@ -356,7 +356,7 @@ body,
     --b4: 0.19 calc(var(--sat) * 0.01 * var(--sat-bg, 1)) var(--hue);
 
     /* card */
-    --b5: 0.13 calc(var(--sat) * 0.01 * var(--sat-bg, 1)) var(--hue);
+    --b5: 0.14 calc(var(--sat) * 0.01 * var(--sat-bg, 1)) var(--hue);
 
     /* root */
     --b6: 0 0 0;
@@ -880,4 +880,29 @@ a {
     color: oklch(var(--l2-c));
     text-decoration: underline oklch(var(--l3-c) / 50%);
   }
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 28px;
+  color: oklch(var(--c1));
+  font-weight: var(--font-weight);
+}
+
+h2 {
+  font-size: 20px;
+  line-height: 24px;
+  color: oklch(var(--c1));
+  font-weight: var(--font-weight);
+}
+
+h3 {
+  font-size: 16px;
+  line-height: 20px;
+  color: oklch(var(--c1));
+  font-weight: var(--font-weight-medium);
+}
+
+.subtle {
+  color: oklch(var(--c3));
 }

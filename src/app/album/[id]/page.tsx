@@ -22,13 +22,13 @@ export default function Album() {
   console.log('album data', data);
 
   return (
-    <div>
+    <>
       <SakuraHeader data={data as album_full} type="album" />
       <SakuraSongList>
         {data.songs.map(song => (
           <SakuraSong song={song} key={song.id} />
         ))}
       </SakuraSongList>
-    </div>
+    </>
   )
 }
