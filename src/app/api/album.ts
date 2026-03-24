@@ -55,6 +55,7 @@ export async function getAlbum(session: session, id: string) {
   return {
     id: album.id,
     name: album.name,
+    artists: album.artists,
     art: art,
     songs,
     songCount: album.songCount,

@@ -1,0 +1,50 @@
+.song {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+
+  --bg: transparent;
+  --bg-hov: oklch(var(--b4) / 30%);
+  color: oklch(var(--c2)) !important;
+  background-color: var(--bg);
+  border-radius: var(--item-med-radius);
+
+  &:hover {
+    background-color: var(--bg-hov);
+    transition: none;
+  }
+
+  text-decoration: none !important;
+
+  transition-property: background-color;
+  transition-duration: var(--trans);
+  transition-timing-function: var(--trans-function);
+}
+
+.duration,
+.index {
+  color: oklch(var(--c3));
+}
+
+.index {
+  width: 18px;
+}
+
+.artists {
+  color: oklch(var(--c2) / 80%);
+
+  & > a:not(:hover) {
+    color: inherit;
+  }
+}
+
+.info {
+  flex: 1;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

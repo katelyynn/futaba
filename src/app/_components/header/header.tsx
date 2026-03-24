@@ -1,0 +1,26 @@
+import React from 'react';
+import styles from "./header.module.css";
+import { SakuraImage } from '../image/image';
+import { artist } from '@/app/types/artist';
+import { album } from '@/app/types/album';
+import Link from 'next/link';
+
+interface SakuraHeaderProps {
+  data: artist | album,
+  type: 'artist' | 'album'
+}
+
+export function SakuraHeader({
+  data,
+  type
+}: SakuraHeaderProps) {
+  return (
+    <header className={styles.header}>
+      <SakuraImage url={data.art} type={type} identify={styles.art} />
+      <div className={styles.info}>
+        <h1 className={styles.name}>{data.name}</h1>
+        {type == 'album' && <h2 className={styles.artists}>{(data as album).artists.map(artist => <Link href={`/artist/${artist.id}`} key={artist.id}>{artist.name}</Link>)}</h2>}
+      </div>
+    </header>
+  )
+}

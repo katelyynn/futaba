@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import "./globals.css";
 import Provider from './provide';
+import { SideNav } from './_components/nav/side_nav';
+import { TopNav } from './_components/nav/top_nav';
+import { Player } from './_components/player/player';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const publicSans = Public_Sans({
+  variable: "--font-public_sans",
   subsets: ["latin"],
 });
 
@@ -24,10 +22,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${publicSans.variable}`}>
       <Provider>
-        <body>
-          {children}
+        <body data-futaba--theme="oled">
+          <TopNav />
+          <div className="middle">
+            <SideNav />
+            <main>
+              {children}
+            </main>
+          </div>
+          <Player />
         </body>
       </Provider>
     </html>

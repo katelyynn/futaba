@@ -1,8 +1,11 @@
 "use client";
 
-import { SakuraSong } from '@/app/_components/song/song';
+import { SakuraHeader } from '@/app/_components/header/header';
+import { SakuraImage } from '@/app/_components/image/image';
+import { SakuraSong, SakuraSongList } from '@/app/_components/song/song';
 import { useAlbum } from '@/app/hook/album';
 import { useSession } from '@/app/session';
+import { album_full } from '@/app/types/album';
 import { useParams } from 'next/navigation';
 
 export default function Album() {
@@ -20,12 +23,12 @@ export default function Album() {
 
   return (
     <div>
-      <strong>{data.name}</strong>
-      <div>
+      <SakuraHeader data={data as album_full} type="album" />
+      <SakuraSongList>
         {data.songs.map(song => (
           <SakuraSong song={song} key={song.id} />
         ))}
-      </div>
+      </SakuraSongList>
     </div>
   )
 }
