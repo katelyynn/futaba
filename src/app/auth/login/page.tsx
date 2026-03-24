@@ -1,3 +1,5 @@
+"use client";
+
 import { createAuth, request } from '@/app/api/client';
 import { useState } from 'react';
 
@@ -5,7 +7,7 @@ export default function Login({ onLogon }) {
   const [ server, setServer ] = useState("");
   const [ username, setUsername ] = useState("");
   const [ password, setPassword ] = useState("");
-  const [ error, setError ] = useState(null);
+  const [ error, setError ] = useState<string | null>(null);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -23,7 +25,7 @@ export default function Login({ onLogon }) {
       localStorage.setItem("session", JSON.stringify(session));
       onLogon(session);
     } catch (e) {
-      setError(e);
+      setError(e instanceof Error ? e.message : "login failed");
     }
   }
 
