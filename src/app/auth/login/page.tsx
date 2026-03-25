@@ -1,8 +1,12 @@
 "use client";
 
+import { SakuraButton } from '@/app/_components/button/button';
+import { SakuraInput } from '@/app/_components/input/input';
+import { Column, Span } from '@/app/_components/layout/layout';
 import { createAuth, request } from '@/app/api/client';
 import { useSession } from '@/app/session';
 import { useState } from 'react';
+import { ChevronRight } from 'tabler-icons-react';
 
 export default function Login() {
   const { setSession } = useSession();
@@ -28,12 +32,20 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <input placeholder="server" value={server} onChange={e => setServer(e.target.value)} />
-      <input placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
-      <input placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button>login</button>
-      {error && <p>{error}</p>}
-    </form>
+    <Span>
+      <Column>
+        <h1>Login</h1>
+        <form onSubmit={handleLogin}>
+          <SakuraInput placeholder="Server" value={server} onChange={e => setServer(e.target.value)} />
+          <SakuraInput placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+          <SakuraInput placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          <SakuraButton elem="button" primary>
+            Login
+            <ChevronRight size={16} />
+          </SakuraButton>
+          {error && <p>{error}</p>}
+        </form>
+      </Column>
+    </Span>
   );
 }

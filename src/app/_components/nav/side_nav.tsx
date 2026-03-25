@@ -11,27 +11,27 @@ export function SideNav() {
   return (
     <nav className={styles.nav}>
       <ul className={styles.list}>
-        <SakuraButton elem="link" href="/" identify="tab" primary={path == '/'}>
+        <SakuraButton elem="link" href="/" identifyOwn="tab" primary={path == '/'}>
           <SmartHome size={16} />
           Home
         </SakuraButton>
-        <SakuraButton elem="link" href="/artists" identify="tab" primary={path.startsWith('/artist')}>
+        <SakuraButton elem="link" href="/artists" identifyOwn="tab" primary={path.startsWith('/artist')}>
           <Star size={16} />
           Artists
         </SakuraButton>
-        <SakuraButton elem="link" href="/albums" identify="tab" primary={path.startsWith('/album')}>
+        <SakuraButton elem="link" href="/albums" identifyOwn="tab" primary={path.startsWith('/album')}>
           <Disc size={16} />
           Albums
         </SakuraButton>
-        <SakuraButton elem="link" href="/songs" identify="tab" primary={path.startsWith('/song')}>
+        <SakuraButton elem="link" href="/songs" identifyOwn="tab" primary={path.startsWith('/song')}>
           <Music size={16} />
           Songs
         </SakuraButton>
-        <SakuraButton elem="link" href="/loved" identify="tab" primary={path.startsWith('/loved')}>
+        <SakuraButton elem="link" href="/loved" identifyOwn="tab" primary={path.startsWith('/loved')}>
           <Heart size={16} />
           Loved
         </SakuraButton>
-        <SakuraButton elem="link" href="/settings" identify="tab" primary={path.startsWith('/settings')}>
+        <SakuraButton elem="link" href="/settings" identifyOwn="tab" primary={path.startsWith('/settings')}>
           <Settings size={16} />
           Settings
         </SakuraButton>

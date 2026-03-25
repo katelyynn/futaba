@@ -9,6 +9,7 @@ type SakuraButtonProps = {
   href?: string,
   primary?: boolean,
   identify?: string,
+  identifyOwn?: string,
   children: React.ReactNode
 } & ComponentPropsWithoutRef<"button"> & ComponentPropsWithoutRef<"a">
 
@@ -20,10 +21,11 @@ export const SakuraButton = forwardRef<
   href,
   primary,
   identify,
+  identifyOwn,
   children,
   ...props
 }, ref) {
-  const classes = `${styles.button} ${primary && styles.primary} ${identify && styles[identify]}`;
+  const classes = `${styles.button} ${primary && styles.primary} ${identify && identify} ${identifyOwn && styles[identifyOwn]}`;
 
   if (elem == 'button') {
     return (

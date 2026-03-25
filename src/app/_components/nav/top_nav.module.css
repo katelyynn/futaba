@@ -1,0 +1,26 @@
+.nav {
+  -webkit-app-region: drag;
+  padding: var(--pad);
+  margin: calc(-1 * var(--pad));
+
+  display: flex;
+  align-items: center;
+}
+
+.main {
+  flex: 1;
+}
+
+.controls {
+  display: flex;
+  gap: 2px;
+}
+
+.windowControl {
+  --bg: transparent;
+  --bg-hov: oklch(var(--b4) / 60%);
+  --bg-atv: oklch(var(--b4) / 80%);
+  --shadow: none;
+  --button-sides: var(--button-verts);
+  --button-verts: 11px;
+}

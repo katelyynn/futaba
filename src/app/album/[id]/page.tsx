@@ -3,6 +3,7 @@
 import { SakuraHeader } from '@/app/_components/header/header';
 import { SakuraImage } from '@/app/_components/image/image';
 import { SakuraSong, SakuraSongList } from '@/app/_components/song/song';
+import { ErrorHandler } from '@/app/errorHandler';
 import { useAlbum } from '@/app/hook/album';
 import { useSession } from '@/app/session';
 import { album_full } from '@/app/types/album';
@@ -17,7 +18,7 @@ export default function Album() {
   const { data, isLoading, error } = useAlbum(session, id);
 
   if (isLoading) return <div>loading</div>;
-  if (error) return <div>error</div>;
+  if (error) return <ErrorHandler error={error} />
 
   console.log('album data', data);
 

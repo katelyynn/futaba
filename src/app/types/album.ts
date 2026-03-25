@@ -11,7 +11,12 @@ export interface album {
   type: string,
   created: string,
   art: string,
-  explicit: boolean
+  explicit: boolean,
+  date: {
+    year?: number,
+    month?: number,
+    day?: number
+  }
 }
 
 export interface album_full {

@@ -3,6 +3,7 @@
 import { SakuraAlbum, SakuraAlbumList } from '@/app/_components/album/album';
 import { SakuraGroup, SakuraGroupList } from '@/app/_components/group/group';
 import { SakuraHeader } from '@/app/_components/header/header';
+import { ErrorHandler } from '@/app/errorHandler';
 import { useArtist } from '@/app/hook/artist';
 import { useSession } from '@/app/session';
 import { useParams } from 'next/navigation';
@@ -16,7 +17,7 @@ export default function Artist() {
   const { data, isLoading, error } = useArtist(session, id);
 
   if (isLoading) return <div>loading</div>;
-  if (error) return <div>error</div>;
+  if (error) return <ErrorHandler error={error} />
 
   console.log('artist data', data);
 

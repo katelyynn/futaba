@@ -5,6 +5,8 @@
   --col: oklch(var(--c2));
   --shadow: var(--normal-shadow), var(--interact-shadow);
 
+  appearance: none;
+  border: none;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -14,6 +16,10 @@
   padding: var(--button-verts) var(--button-sides);
   border-radius: var(--button-radius);
   box-shadow: var(--shadow);
+
+  font-family: var(--font);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
 
   transition-property: background-color, scale;
   transition-duration: var(--trans);
@@ -35,6 +41,8 @@
   & > :global(.icon-tabler) {
     opacity: 0.8;
   }
+
+  -webkit-app-region: no-drag;
 }
 
 .primary {

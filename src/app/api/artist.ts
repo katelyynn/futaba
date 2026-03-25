@@ -42,7 +42,8 @@ export async function getArtist(session: session, id: string) {
       plays: album.plays,
       type,
       created: album.created,
-      art: art
+      art: art,
+      date: album.releaseDate
     });
   });
 
