@@ -9,7 +9,7 @@ import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
 import React, { useEffect } from 'react';
 import { parseDuration } from '@/app/tools/duration';
-import { IconPlayerPauseFilled, IconPlayerPlayFilled, IconVolume, IconVolume3 } from '@tabler/icons-react';
+import { IconArticleFilled, IconPlayerPauseFilled, IconPlayerPlayFilled, IconVolume, IconVolume3 } from '@tabler/icons-react';
 import { useSettings } from '@/app/api/settings';
 
 export function Player() {
@@ -82,8 +82,11 @@ export function Player() {
         </div>
       </div>
       <div className={styles.right}>
+        <SakuraButton elem="button" identify={`${styles.action}`}>
+          <IconArticleFilled size={16} />
+        </SakuraButton>
         <div className={styles.volume}>
-          <SakuraButton primary={volume == 0} elem="button" identify={`${styles.action} ${styles.volumeButton}`} onClick={() => {
+          <SakuraButton elem="button" identify={`${styles.action} ${styles.volumeButton} ${volume > 0 && styles.actionActive}`} onClick={() => {
             if (volume == 0) {
               setVolume(volumeBeforeMuting);
             } else {

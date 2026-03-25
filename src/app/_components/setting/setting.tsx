@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from "./setting.module.css";
+import { Slider } from 'radix-ui';
 
 type settingValue = string | number | boolean;
 
@@ -9,14 +10,20 @@ interface SakuraSettingProps {
   name: string,
   body?: string,
   value: settingValue,
-  onChange: (v: settingValue) => void
+  onChange: (v: settingValue) => void,
+  min?: number,
+  max?: number,
+  step?: number
 }
 
 export function SakuraSetting({
   name,
   body,
   value,
-  onChange
+  onChange,
+  min = 0,
+  max = 1,
+  step
 }: SakuraSettingProps) {
   const settingInfo = (
     <div className={styles.settingInfo}>
@@ -32,6 +39,20 @@ export function SakuraSetting({
         <div className={`${styles.toggle} ${value && styles.primary}`}>
           <div className={styles.toggleDot} />
         </div>
+      </div>
+    )
+  }
+
+  if (typeof value == "number") {
+    return (
+      <div className={`${styles.setting} ${styles.settingSlider}`}>
+        {settingInfo}
+        <Slider.Root className={styles.sliderRoot} value={[value]} min={min} max={max} step={step || 0.01} onValueChange={value => onChange(value[0])}>
+          <Slider.Track className={styles.sliderTrack}>
+            <Slider.Range className={styles.sliderRange} />
+          </Slider.Track>
+          <Slider.Thumb className={styles.sliderThumb} />
+        </Slider.Root>
       </div>
     )
   }
