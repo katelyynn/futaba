@@ -24,28 +24,35 @@ const defaultVolume = 0.5;
 let init = false;
 
 export const usePlayer = create<playerState>((set, get) => {
-  if (audio && !init) {
+  let initialVolume = defaultVolume;
+  let initialSong = null;
+  let initialTime = 0;
+
+  if (typeof window != 'undefined' && audio && !init) {
     init = true;
 
     audio.pause();
     audio.currentTime = 0;
 
-    const saved = localStorage.getItem("volume");
-    const initVolume = saved ? Math.min(1, Math.max(0, Number(saved))) : defaultVolume;
+    const savedVolume = localStorage.getItem("volume");
+    initialVolume = savedVolume ? Math.min(1, Math.max(0, Number(savedVolume))) : defaultVolume;
 
-    audio.volume = initVolume;
-
-    set({ volume: initVolume });
+    audio.volume = initialVolume;
 
     const savedPlayer = localStorage.getItem("player");
 
     if (savedPlayer) {
-      const { song, time } = JSON.parse(savedPlayer);
+      try {
+        const { song, time } = JSON.parse(savedPlayer);
 
-      audio.src = song.url;
-      audio.currentTime = time;
+        audio.src = song.url;
+        audio.currentTime = time;
 
-      set({ currentSong: song, currentTime: time });
+        initialSong = song;
+        initialTime = time;
+      } catch {
+        localStorage.removeItem("player");
+      }
     }
 
     audio.ontimeupdate = () => {
@@ -72,10 +79,11 @@ export const usePlayer = create<playerState>((set, get) => {
   }
 
   return {
-    currentSong: null,
+    currentSong: initialSong,
     nowPlaying: false,
-    currentTime: 0,
+    currentTime: initialTime,
     duration: 0,
+    volume: initialVolume,
 
     play: (song) => {
       if (!audio) return;
@@ -106,8 +114,6 @@ export const usePlayer = create<playerState>((set, get) => {
       audio.currentTime = time;
       set({ currentTime: time });
     },
-
-    volume: defaultVolume,
 
     setVolume: (volume) => {
       if (!audio) return;

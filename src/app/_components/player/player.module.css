@@ -93,4 +93,6 @@
   transition-property: opacity, transform;
   transition-duration: var(--trans);
   transition-timing-function: var(--trans-function);
+
+  outline: none !important;
 }
