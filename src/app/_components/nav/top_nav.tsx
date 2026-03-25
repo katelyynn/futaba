@@ -4,6 +4,7 @@ import Link from 'next/link';
 import styles from "./top_nav.module.css";
 import { SakuraButton } from '../button/button';
 import { IconChevronDown, IconChevronLeft, IconChevronRight, IconMaximize, IconX } from '@tabler/icons-react';
+import { SakuraTooltip } from '../tooltip/tooltip';
 
 export function TopNav() {
   const iconSize = 16;
@@ -12,12 +13,16 @@ export function TopNav() {
     <nav className={styles.nav}>
       <div className={styles.main}>
         <div className={styles.controls}>
-          <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.left}`} onClick={() => window.history.back()}>
-            <IconChevronLeft size={iconSize} />
-          </SakuraButton>
-          <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.right}`} onClick={() => window.history.forward()}>
-            <IconChevronRight size={iconSize} />
-          </SakuraButton>
+          <SakuraTooltip content="Back">
+            <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.left}`} onClick={() => window.history.back()}>
+              <IconChevronLeft size={iconSize} />
+            </SakuraButton>
+          </SakuraTooltip>
+          <SakuraTooltip content="Forward">
+            <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.right}`} onClick={() => window.history.forward()}>
+              <IconChevronRight size={iconSize} />
+            </SakuraButton>
+          </SakuraTooltip>
         </div>
         <Link href="/">futaba</Link>
       </div>

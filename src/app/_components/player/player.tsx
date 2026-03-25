@@ -12,6 +12,8 @@ import { parseDuration } from '@/app/tools/duration';
 import { IconArticleFilled, IconPlayerPauseFilled, IconPlayerPlayFilled, IconVolume, IconVolume3 } from '@tabler/icons-react';
 import { useSettings } from '@/app/api/settings';
 import { useSession } from '@/app/session';
+import { SakuraTooltip } from '../tooltip/tooltip';
+import { SakuraSlider } from '../slider/slider';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -82,36 +84,30 @@ export function Player() {
         </div>
         <div className={styles.bottom}>
           <p className={styles.time}>{parseDuration(currentTime)}</p>
-          <Slider.Root className={styles.playerRoot} value={[currentTime]} min={0} max={duration || 0} onValueChange={value => seek(value[0])}>
-            <Slider.Track className={styles.playerTrack}>
-              <Slider.Range className={styles.playerRange} />
-            </Slider.Track>
-            <Slider.Thumb className={styles.playerThumb} />
-          </Slider.Root>
+          <SakuraSlider className={styles.playerRoot} value={currentTime} min={0} max={duration || 0} onChange={value => seek(value)} showTooltip={false} />
           <p className={styles.time}>{parseDuration(duration)}</p>
         </div>
       </div>
       <div className={styles.right}>
-        <SakuraButton elem="button" identify={`${styles.action}`}>
-          <IconArticleFilled size={16} />
-        </SakuraButton>
-        <div className={styles.volume}>
-          <SakuraButton elem="button" identify={`${styles.action} ${styles.volumeButton} ${volume > 0 && styles.actionActive}`} onClick={() => {
-            if (volume == 0) {
-              setVolume(volumeBeforeMuting);
-            } else {
-              setVolumeBeforeMuting(volume);
-              setVolume(0);
-            }
-          }}>
-            {volume == 0 ? <IconVolume3 size={16} /> : <IconVolume size={16} />}
+        <SakuraTooltip content="Queue">
+          <SakuraButton elem="button" identify={`${styles.action}`}>
+            <IconArticleFilled size={16} />
           </SakuraButton>
-          <Slider.Root className={styles.volumeRoot} value={[volume]} min={0} max={1} step={0.01} onValueChange={value => setVolume(value[0])}>
-            <Slider.Track className={styles.volumeTrack}>
-              <Slider.Range className={styles.volumeRange} />
-            </Slider.Track>
-            <Slider.Thumb className={styles.volumeThumb} />
-          </Slider.Root>
+        </SakuraTooltip>
+        <div className={styles.volume}>
+          <SakuraTooltip content="Volume">
+            <SakuraButton elem="button" identify={`${styles.action} ${styles.volumeButton} ${volume > 0 && styles.actionActive}`} onClick={() => {
+              if (volume == 0) {
+                setVolume(volumeBeforeMuting);
+              } else {
+                setVolumeBeforeMuting(volume);
+                setVolume(0);
+              }
+            }}>
+              {volume == 0 ? <IconVolume3 size={16} /> : <IconVolume size={16} />}
+            </SakuraButton>
+          </SakuraTooltip>
+          <SakuraSlider className={styles.volumeRoot} value={volume} min={0} max={1} step={0.01} onChange={value => setVolume(value)} />
         </div>
       </div>
     </div>

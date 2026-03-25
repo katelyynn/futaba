@@ -69,107 +69,15 @@
 }
 
 .volumeRoot {
-  position: relative;
-  display: flex;
-  align-items: center;
-  touch-action: none;
-
-  width: 140px;
-  height: 40px;
-
-  &:not(:hover, :active) {
-    .volumeThumb {
-      opacity: 0;
-      transform: scaleY(0);
-    }
-  }
-
-  cursor: pointer;
-}
-
-.volumeTrack {
-  background-color: oklch(var(--b4));
-  position: relative;
-  flex-grow: 1;
-  border-radius: 50px;
-  height: 4px;
-}
-
-.volumeRange {
-  position: absolute;
-  background-color: oklch(var(--l3-c));
-  box-shadow: var(--primary-shadow);
-  border-radius: 50px;
-  height: 100%;
-}
-
-.volumeThumb {
-  display: block;
-  width: 8px;
-  height: 16px;
-
-  background-color: oklch(var(--l3-c));
-  box-shadow: var(--primary-shadow);
-  border-radius: var(--button-radius);
-
-  transition-property: opacity, transform;
-  transition-duration: var(--trans);
-  transition-timing-function: var(--trans-function);
-
-  outline: none !important;
+  width: 140px !important;
+  height: 40px !important;
 }
 
 
 .playerRoot {
-  position: relative;
-  display: flex;
-  align-items: center;
-  touch-action: none;
-
-  width: 400px;
-  height: 40px;
-  margin: -20px 0;
-
-  &:not(:hover, :active) {
-    .playerThumb {
-      opacity: 0;
-      transform: scaleY(0);
-    }
-  }
-
-  cursor: pointer;
-}
-
-.playerTrack {
-  background-color: oklch(var(--b4));
-  position: relative;
-  flex-grow: 1;
-  border-radius: 50px;
-  height: 4px;
-}
-
-.playerRange {
-  position: absolute;
-  background-color: oklch(var(--l3-c));
-  box-shadow: var(--primary-shadow);
-  border-radius: 50px;
-  height: 100%;
-}
-
-.playerThumb {
-  display: block;
-  width: 8px;
-  height: 16px;
-
-  background-color: oklch(var(--l3-c));
-  box-shadow: var(--primary-shadow);
-  border-radius: var(--button-radius);
-
-  transition-property: opacity, transform;
-  transition-duration: var(--trans);
-  transition-timing-function: var(--trans-function);
-
-  outline: none !important;
+  width: 400px !important;
+  height: 40px !important;
+  margin: -20px 0 !important;
 }
 
 .bottom {

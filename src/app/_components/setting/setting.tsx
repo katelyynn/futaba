@@ -3,6 +3,7 @@
 import React from 'react';
 import styles from "./setting.module.css";
 import { Slider } from 'radix-ui';
+import { SakuraSlider } from '../slider/slider';
 
 type settingValue = string | number | boolean;
 
@@ -47,12 +48,7 @@ export function SakuraSetting({
     return (
       <div className={`${styles.setting} ${styles.settingSlider}`}>
         {settingInfo}
-        <Slider.Root className={styles.sliderRoot} value={[value]} min={min} max={max} step={step || 0.01} onValueChange={value => onChange(value[0])}>
-          <Slider.Track className={styles.sliderTrack}>
-            <Slider.Range className={styles.sliderRange} />
-          </Slider.Track>
-          <Slider.Thumb className={styles.sliderThumb} />
-        </Slider.Root>
+        <SakuraSlider value={value} min={min} max={max} step={step} onChange={value => onChange(value)} />
       </div>
     )
   }
