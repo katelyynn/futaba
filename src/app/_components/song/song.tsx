@@ -6,6 +6,8 @@ import { parseDuration } from '@/app/tools/duration';
 import { usePlayer } from '@/app/api/player';
 import { SakuraButton } from '../button/button';
 import { IconPlayerPlayFilled } from '@tabler/icons-react';
+import { useSession } from '@/app/session';
+import { useSettings } from '@/app/api/settings';
 
 export function SakuraSongList({ children }: { children: React.ReactNode }) {
   return (
@@ -16,6 +18,8 @@ export function SakuraSongList({ children }: { children: React.ReactNode }) {
 }
 
 export function SakuraSong({ song }: { song: song }) {
+  const { session } = useSession();
+  const toScrobble = useSettings(s => s.scrobble);
   const play = usePlayer(s => s.play);
 
   return (
@@ -28,7 +32,7 @@ export function SakuraSong({ song }: { song: song }) {
         </div>
       </div>
       <div className={styles.actions}>
-        <SakuraButton elem="button" identify={styles.action} onClick={() => play(song)}>
+        <SakuraButton elem="button" identify={styles.action} onClick={() => play(song, session!, toScrobble)}>
           <IconPlayerPlayFilled size={16} />
         </SakuraButton>
       </div>

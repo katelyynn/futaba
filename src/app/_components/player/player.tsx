@@ -11,6 +11,7 @@ import React, { useEffect } from 'react';
 import { parseDuration } from '@/app/tools/duration';
 import { IconArticleFilled, IconPlayerPauseFilled, IconPlayerPlayFilled, IconVolume, IconVolume3 } from '@tabler/icons-react';
 import { useSettings } from '@/app/api/settings';
+import { useSession } from '@/app/session';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -36,11 +37,15 @@ export function Player() {
 
   const [ volumeBeforeMuting, setVolumeBeforeMuting ] = React.useState(0.5);
 
+  const { session } = useSession();
+  const scrobble = useSettings(s => s.scrobble);
+
   const hydrate = usePlayer(s => s.hydrate);
 
   useEffect(() => {
-    hydrate();
-  }, []);
+    if (!session) return;
+    hydrate(session, scrobble);
+  }, [ hydrate, session, scrobble ]);
 
   useEffect(() => {
     const audio = getAudio();
@@ -60,7 +65,7 @@ export function Player() {
       </div>
       <div className={styles.middle}>
         <div className={styles.top}>
-          <SakuraButton elem="button" primary={nowPlaying} identify={`${styles.action} ${styles.play}`} onClick={() => {
+          <SakuraButton elem="button" identify={`${styles.action} ${styles.play} ${nowPlaying && styles.actionActive}`} onClick={() => {
             if (nowPlaying) {
               pause();
             } else {

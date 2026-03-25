@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { song } from '../types/song';
 import { useSession } from '../session';
 import { createAuth, session } from './client';
+import { sendNowPlaying, scrobble } from './scrobble';
 
 interface playerState {
   currentSong: song | null,
@@ -9,12 +10,12 @@ interface playerState {
   currentTime: number,
   duration: number,
 
-  play: (song: song) => void,
+  play: (song: song, session: session, toScrobble: boolean) => void,
   pause: () => void,
   resume: () => void,
   seek: (time: number) => void,
 
-  hydrate: () => void
+  hydrate: (session: session, toScrobble: boolean) => void
 }
 
 let globalAudio: HTMLAudioElement | null = null;
@@ -29,19 +30,27 @@ export function getAudio() {
   return globalAudio;
 }
 
+let scrobbled = false;
+let trackStartTime = 0;
+
 export const usePlayer = create<playerState>((set, get) => ({
   currentSong: null,
   nowPlaying: false,
   currentTime: 0,
   duration: 0,
 
-  play: (song) => {
+  play: (song, session, toScrobble) => {
     const audio = getAudio();
     if (!audio) return;
 
     audio.src = song.url;
     audio.currentTime = 0;
     audio.play().catch(() => {});
+
+    if (toScrobble) sendNowPlaying(session, song.id);
+
+    scrobbled = false;
+    trackStartTime = Date.now();
 
     set({
       currentSong: song,
@@ -71,7 +80,7 @@ export const usePlayer = create<playerState>((set, get) => ({
     set({ currentTime: time });
   },
 
-  hydrate: () => {
+  hydrate: (session, toScrobble) => {
     const audio = getAudio();
     if (!audio) return;
 
@@ -98,9 +107,19 @@ export const usePlayer = create<playerState>((set, get) => ({
 
       set({ currentTime: audio.currentTime });
 
-      const currentSong = get().currentSong;
+      const { currentSong, nowPlaying } = get();
+
       if (currentSong) {
         localStorage.setItem("player", JSON.stringify({ song: currentSong, time }));
+
+        if (nowPlaying && toScrobble && !scrobbled) {
+          const validScrobble = audio.currentTime > 240 || (currentSong.duration && audio.currentTime > currentSong.duration * 0.5);
+
+          if (validScrobble) {
+            scrobbled = true;
+            scrobble(session, currentSong.id, trackStartTime);
+          }
+        }
       }
     };
 
