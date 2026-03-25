@@ -4,6 +4,7 @@ import styles from "./side_nav.module.css";
 import { SakuraButton } from '../button/button';
 import { Disc, Heart, Music, Settings, SmartHome, Star } from 'tabler-icons-react';
 import { usePathname } from 'next/navigation';
+import { AuthStatus } from './auth';
 
 export function SideNav() {
   const path = usePathname();
@@ -36,6 +37,7 @@ export function SideNav() {
           Settings
         </SakuraButton>
       </ul>
+      <AuthStatus />
     </nav>
   );
 }

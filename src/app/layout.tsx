@@ -23,8 +23,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${publicSans.variable}`}>
-      <Provider>
-        <body data-futaba--theme="oled">
+      <body data-futaba--theme="oled">
+        <Provider>
           <TopNav />
           <div className="middle">
             <SideNav />
@@ -33,8 +33,8 @@ export default function RootLayout({
             </main>
           </div>
           <Player />
-        </body>
-      </Provider>
+        </Provider>
+      </body>
     </html>
   );
 }
