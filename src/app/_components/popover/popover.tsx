@@ -3,11 +3,13 @@ import styles from "./popover.module.css";
 import React from 'react';
 
 interface SakuraPopoverProps {
+  className?: string,
   content: React.ReactNode,
   children: React.ReactNode
 }
 
 export function SakuraPopover({
+  className,
   content,
   children
 }: SakuraPopoverProps) {
@@ -17,7 +19,7 @@ export function SakuraPopover({
         {children}
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className={styles.popover}>
+        <Popover.Content className={`${styles.popover} ${className && className}`}>
           {content}
         </Popover.Content>
       </Popover.Portal>

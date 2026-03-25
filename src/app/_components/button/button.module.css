@@ -74,3 +74,13 @@
     --col: oklch(var(--l3-c));
   }
 }
+
+.menu {
+  --bg: transparent;
+  --bg-hov: oklch(var(--b2) / 20%);
+  --bg-atv: oklch(var(--b2) / 30%);
+  --shadow: none;
+
+  width: 100%;
+  min-width: 150px;
+}

@@ -26,4 +26,9 @@
   --shadow: none;
   --button-sides: var(--button-verts);
   --button-verts: 9px;
+
+  width: 34px;
+  height: 34px;
+
+  justify-content: center;
 }

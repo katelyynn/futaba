@@ -34,6 +34,11 @@
   color: oklch(var(--c3));
 }
 
+.art {
+  --w: 36px;
+  border-radius: var(--item-small-radius) !important;
+}
+
 .index {
   width: 18px;
 
@@ -42,6 +47,11 @@
     justify-content: center;
     align-items: center;
   }
+}
+
+.duration {
+  width: 40px;
+  text-align: right;
 }
 
 .activeIndicator {
@@ -81,4 +91,14 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.action {
+  --button-verts: var(--button-sides);
+  --button-sides: 6px;
+
+  --bg: transparent;
+  --bg-hov: oklch(var(--b4) / 60%);
+  --bg-atv: oklch(var(--b4) / 80%);
+  --shadow: none;
 }

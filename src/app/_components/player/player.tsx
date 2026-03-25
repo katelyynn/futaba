@@ -47,6 +47,8 @@ export function Player() {
 
   const hydrate = usePlayer(s => s.hydrate);
 
+  const waveform = useSettings(s => s.waveform);
+
   useEffect(() => {
     if (!session) return;
     hydrate(session);
@@ -86,7 +88,9 @@ export function Player() {
         </div>
         <div className={styles.bottom}>
           <p className={styles.time}>{parseDuration(currentTime)}</p>
-          <SakuraSlider className={styles.playerRoot} value={currentTime} min={0} max={duration || 0} onChange={value => seek(value)} showTooltip={false} />
+          <div className={styles.playerBar}>
+            <SakuraSlider className={styles.playerRoot} value={currentTime} min={0} max={duration || 0} onChange={value => seek(value)} showTooltip={false} />
+          </div>
           <p className={styles.time}>{parseDuration(duration)}</p>
         </div>
       </div>

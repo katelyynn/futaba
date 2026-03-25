@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styles from "./top_nav.module.css";
 import { SakuraButton } from '../button/button';
-import { IconChevronDown, IconChevronLeft, IconChevronRight, IconMaximize, IconX } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronLeft, IconChevronRight, IconMaximize, IconMinus, IconSquare, IconX } from '@tabler/icons-react';
 import { SakuraTooltip } from '../tooltip/tooltip';
 
 export function TopNav() {
@@ -28,13 +28,13 @@ export function TopNav() {
       </div>
       <div className={styles.controls}>
         <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.minimise}`} onClick={() => window.windowControls.minimise()}>
-          <IconChevronDown size={iconSize} />
+          <IconMinus size={14} />
         </SakuraButton>
         <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.maximise}`} onClick={() => window.windowControls.maximise()}>
-          <IconMaximize size={iconSize} />
+          <IconSquare size={12} />
         </SakuraButton>
         <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.close}`} onClick={() => window.windowControls.close()}>
-          <IconX size={iconSize} />
+          <IconX size={14} />
         </SakuraButton>
       </div>
     </nav>

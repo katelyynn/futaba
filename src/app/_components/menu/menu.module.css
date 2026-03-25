@@ -1,0 +1,4 @@
+.menu {
+  padding: 4px !important;
+  border-radius: calc(var(--button-radius) + 4px) !important;
+}
