@@ -2,7 +2,7 @@ import styles from "./song.module.css";
 import Link from 'next/link';
 import { song } from '@/app/types/song';
 import React from 'react';
-import { duration } from '@/app/tools/duration';
+import { parseDuration } from '@/app/tools/duration';
 import { usePlayer } from '@/app/api/player';
 import { SakuraButton } from '../button/button';
 import { PlayerPlay } from 'tabler-icons-react';
@@ -32,7 +32,7 @@ export function SakuraSong({ song }: { song: song }) {
           <PlayerPlay size={16} />
         </SakuraButton>
       </div>
-      <p className={styles.duration}>{duration(song.duration)}</p>
+      <p className={styles.duration}>{parseDuration(song.duration)}</p>
     </div>
   )
 }

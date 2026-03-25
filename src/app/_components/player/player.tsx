@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
 import React from 'react';
+import { parseDuration } from '@/app/tools/duration';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -56,12 +57,14 @@ export function Player() {
           </SakuraButton>
         </div>
         <div className={styles.bottom}>
+          <p className={styles.time}>{parseDuration(currentTime)}</p>
           <Slider.Root className={styles.playerRoot} value={[currentTime]} min={0} max={duration || 0} onValueChange={value => seek(value[0])}>
             <Slider.Track className={styles.playerTrack}>
               <Slider.Range className={styles.playerRange} />
             </Slider.Track>
             <Slider.Thumb className={styles.playerThumb} />
           </Slider.Root>
+          <p className={styles.time}>{parseDuration(duration)}</p>
         </div>
       </div>
       <div className={styles.right}>

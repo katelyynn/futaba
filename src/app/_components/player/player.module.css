@@ -153,6 +153,21 @@
   outline: none !important;
 }
 
+.bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.time {
+  font-size: 13px;
+  color: oklch(var(--c3));
+
+  width: 40px;
+  text-align: center;
+}
+
 .volume {
   display: flex;
   align-items: center;

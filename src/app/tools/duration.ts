@@ -1,4 +1,4 @@
-export function duration(seconds: number) {
+export function parseDuration(seconds: number) {
   const date = new Date(null);
   date.setSeconds(seconds);
 
