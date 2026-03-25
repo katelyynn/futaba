@@ -55,10 +55,21 @@ export const usePlayer = create<playerState>((set, get) => ({
     if (!audio) return;
 
     const { queue } = get();
-    const songToPlay: song | null = song ?? queue[get().currentIndex];
-    const newIndex: number = index ?? (song ? queue.findIndex(s => s.id == song.id) : get().currentIndex);
+    let newQueue = [...queue];
 
-    if (!songToPlay || newIndex < 0) return;
+    let songIndex: number;
+
+    if (index) {
+      songIndex = index;
+    } else {
+      songIndex = newQueue.findIndex(s => s.id == song.id);
+
+      if (songIndex == -1) {
+        newQueue.push(song);
+        songIndex = newQueue.length - 1;
+        set({ queue: newQueue });
+      }
+    }
 
     audio.src = song.url;
     audio.currentTime = 0;
@@ -70,8 +81,8 @@ export const usePlayer = create<playerState>((set, get) => ({
     trackStartTime = Date.now();
 
     set({
-      currentSong: songToPlay,
-      currentIndex: newIndex,
+      currentSong: song,
+      currentIndex: songIndex,
       currentTime: 0
     });
   },

@@ -239,8 +239,8 @@ body {
 
 body {
   --font-weight: var(--custom_font_weight, 400);
-  --font-weight-medium: var(--custom_font_weight_medium, 600);
-  --font-weight-bold: var(--custom_font_weight_bold, 800);
+  --font-weight-medium: var(--custom_font_weight_medium, 500);
+  --font-weight-bold: var(--custom_font_weight_bold, 600);
 }
 
 /* backgrounds */
@@ -903,6 +903,13 @@ h2 {
 h3 {
   font-size: 16px;
   line-height: 20px;
+  color: oklch(var(--c1));
+  font-weight: var(--font-weight-medium);
+}
+
+h4 {
+  font-size: var(--font-size);
+  line-height: var(--line-height);
   color: oklch(var(--c1));
   font-weight: var(--font-weight-medium);
 }

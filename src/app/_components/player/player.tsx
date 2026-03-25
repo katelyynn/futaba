@@ -14,6 +14,8 @@ import { useSettings } from '@/app/api/settings';
 import { useSession } from '@/app/session';
 import { SakuraTooltip } from '../tooltip/tooltip';
 import { SakuraSlider } from '../slider/slider';
+import { SakuraPopover } from '../popover/popover';
+import { SakuraQueue } from './queue';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -90,9 +92,11 @@ export function Player() {
       </div>
       <div className={styles.right}>
         <SakuraTooltip content="Queue">
-          <SakuraButton elem="button" identify={`${styles.action}`}>
-            <IconArticleFilled size={16} />
-          </SakuraButton>
+          <SakuraPopover content={<SakuraQueue />}>
+            <SakuraButton elem="button" identify={`${styles.action}`}>
+              <IconArticleFilled size={16} />
+            </SakuraButton>
+          </SakuraPopover>
         </SakuraTooltip>
         <div className={styles.volume}>
           <SakuraTooltip content="Volume">
