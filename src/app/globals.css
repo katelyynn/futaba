@@ -138,7 +138,7 @@ main {
 
 body {
   --font:
-    var(--custom_font, ""), Public Sans, Funnel Sans, Inter, Ubuntu Sans, Spline Sans,
+    var(--custom_font, ""), Funnel Sans, Inter, Ubuntu Sans, Spline Sans,
     Roboto, Apple Color Emoji, var(--font_emoji_name, ""), Segoe UI Symbol, Apple Symbols, Noto Sans, Noto Sans JP, Noto Sans KR, Noto Sans TC,
     Lucida Grande, Verdana, -apple-system, BlinkMacSystemFont,
     sans-serif;

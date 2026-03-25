@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Public_Sans } from "next/font/google";
+import { Funnel_Sans } from "next/font/google";
 import "./globals.css";
 import Provider from './provide';
 import { SideNav } from './_components/nav/side_nav';
 import { TopNav } from './_components/nav/top_nav';
 import { Player } from './_components/player/player';
 
-const publicSans = Public_Sans({
-  variable: "--font-public_sans",
+const funnelSans = Funnel_Sans({
+  variable: "--font-funnel_sans",
   subsets: ["latin"],
 });
 
@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${publicSans.variable}`}>
+    <html lang="en" className={`${funnelSans.variable}`}>
       <body data-futaba--theme="oled">
         <Provider>
           <TopNav />

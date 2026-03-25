@@ -2,7 +2,7 @@
 
 import { useSession } from '@/app/session';
 import { SakuraButton } from '../button/button';
-import { ChevronRight } from 'tabler-icons-react';
+import { IconChevronRight } from '@tabler/icons-react';
 
 export function AuthStatus() {
   const { session, setSession } = useSession();
@@ -16,7 +16,7 @@ export function AuthStatus() {
           window.location.href = "/auth/login";
         }}>
           Log in
-          <ChevronRight size={16} />
+          <IconChevronRight size={16} />
         </SakuraButton>
       </div>
     );

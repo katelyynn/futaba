@@ -5,7 +5,7 @@ import React from 'react';
 import { parseDuration } from '@/app/tools/duration';
 import { usePlayer } from '@/app/api/player';
 import { SakuraButton } from '../button/button';
-import { PlayerPlay } from 'tabler-icons-react';
+import { IconPlayerPlayFilled } from '@tabler/icons-react';
 
 export function SakuraSongList({ children }: { children: React.ReactNode }) {
   return (
@@ -29,7 +29,7 @@ export function SakuraSong({ song }: { song: song }) {
       </div>
       <div className={styles.actions}>
         <SakuraButton elem="button" identify={styles.action} onClick={() => play(song)}>
-          <PlayerPlay size={16} />
+          <IconPlayerPlayFilled size={16} />
         </SakuraButton>
       </div>
       <p className={styles.duration}>{parseDuration(song.duration)}</p>

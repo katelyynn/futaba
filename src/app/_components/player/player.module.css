@@ -110,6 +110,7 @@
 
   width: 400px;
   height: 40px;
+  margin: -20px 0;
 
   &:not(:hover, :active) {
     .playerThumb {
@@ -172,4 +173,22 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.top {
+  position: relative;
+  z-index: 10;
+}
+
+
+.play {
+  --button-sides: var(--button-verts);
+  --button-verts: 9px;
+
+  /*--bg: oklch(var(--c2));
+  --bg-hov: oklch(var(--c2) / 90%);
+  --bg-atv: oklch(var(--c2) / 80%);
+  --col: oklch(var(--b6));
+  --shadow: none;*/
+  border-radius: 50px;
 }

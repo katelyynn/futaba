@@ -4,12 +4,12 @@ import { usePlayer } from '@/app/api/player';
 import styles from "./player.module.css";
 import { song } from '@/app/types/song';
 import { SakuraButton } from '../button/button';
-import { PlayerPause, PlayerPlay, Volume, Volume2, Volume3, VolumeOff } from 'tabler-icons-react';
 import Link from 'next/link';
 import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
 import React from 'react';
 import { parseDuration } from '@/app/tools/duration';
+import { IconPlayerPauseFilled, IconPlayerPlayFilled, IconVolume, IconVolume3 } from '@tabler/icons-react';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -46,14 +46,14 @@ export function Player() {
       </div>
       <div className={styles.middle}>
         <div className={styles.top}>
-          <SakuraButton elem="button" identify={`${styles.action} ${styles.play}`} onClick={() => {
+          <SakuraButton elem="button" primary={nowPlaying} identify={`${styles.action} ${styles.play}`} onClick={() => {
             if (nowPlaying) {
               pause();
             } else {
               resume();
             }
           }}>
-            {nowPlaying ? <PlayerPause size={16} /> : <PlayerPlay size={16} />}
+            {nowPlaying ? <IconPlayerPauseFilled size={16} /> : <IconPlayerPlayFilled size={16} />}
           </SakuraButton>
         </div>
         <div className={styles.bottom}>
@@ -77,7 +77,7 @@ export function Player() {
               setVolume(0);
             }
           }}>
-            {volume == 0 ? <VolumeOff size={16} /> : <Volume size={16} />}
+            {volume == 0 ? <IconVolume3 size={16} /> : <IconVolume size={16} />}
           </SakuraButton>
           <Slider.Root className={styles.volumeRoot} value={[volume]} min={0} max={1} step={0.01} onValueChange={value => setVolume(value[0])}>
             <Slider.Track className={styles.volumeTrack}>
