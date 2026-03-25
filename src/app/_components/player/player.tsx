@@ -7,6 +7,7 @@ import { SakuraButton } from '../button/button';
 import { PlayerPause, PlayerPlay } from 'tabler-icons-react';
 import Link from 'next/link';
 import { SakuraImage } from '../image/image';
+import { Slider } from 'radix-ui';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -53,7 +54,12 @@ export function Player() {
         </div>
       </div>
       <div className={styles.right}>
-        <input type="range" min={0} max={1} step={0.01} value={volume} onChange={(e) => setVolume(Number(e.target.value))} />
+        <Slider.Root className={styles.volumeRoot} defaultValue={[volume]} min={0} max={1} step={0.01} onValueChange={value => setVolume(value[0])}>
+          <Slider.Track className={styles.volumeTrack}>
+            <Slider.Range className={styles.volumeRange} />
+          </Slider.Track>
+          <Slider.Thumb className={styles.volumeThumb} />
+        </Slider.Root>
       </div>
     </div>
   )
