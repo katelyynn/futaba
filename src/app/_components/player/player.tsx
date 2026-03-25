@@ -4,10 +4,11 @@ import { usePlayer } from '@/app/api/player';
 import styles from "./player.module.css";
 import { song } from '@/app/types/song';
 import { SakuraButton } from '../button/button';
-import { PlayerPause, PlayerPlay } from 'tabler-icons-react';
+import { PlayerPause, PlayerPlay, Volume, Volume2, Volume3, VolumeOff } from 'tabler-icons-react';
 import Link from 'next/link';
 import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
+import React from 'react';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -31,6 +32,8 @@ export function Player() {
   const volume = usePlayer(s => s.volume);
   const setVolume = usePlayer(s => s.setVolume);
 
+  const [ volumeBeforeMuting, setVolumeBeforeMuting ] = React.useState(0.5);
+
   return (
     <div className={styles.player}>
       <div className={styles.song}>
@@ -52,14 +55,34 @@ export function Player() {
             {nowPlaying ? <PlayerPause size={16} /> : <PlayerPlay size={16} />}
           </SakuraButton>
         </div>
+        <div className={styles.bottom}>
+          <Slider.Root className={styles.playerRoot} value={[currentTime]} min={0} max={duration || 0} onValueChange={value => seek(value[0])}>
+            <Slider.Track className={styles.playerTrack}>
+              <Slider.Range className={styles.playerRange} />
+            </Slider.Track>
+            <Slider.Thumb className={styles.playerThumb} />
+          </Slider.Root>
+        </div>
       </div>
       <div className={styles.right}>
-        <Slider.Root className={styles.volumeRoot} defaultValue={[volume]} min={0} max={1} step={0.01} onValueChange={value => setVolume(value[0])}>
-          <Slider.Track className={styles.volumeTrack}>
-            <Slider.Range className={styles.volumeRange} />
-          </Slider.Track>
-          <Slider.Thumb className={styles.volumeThumb} />
-        </Slider.Root>
+        <div className={styles.volume}>
+          <SakuraButton primary={volume == 0} elem="button" identify={`${styles.action} ${styles.volumeButton}`} onClick={() => {
+            if (volume == 0) {
+              setVolume(volumeBeforeMuting);
+            } else {
+              setVolumeBeforeMuting(volume);
+              setVolume(0);
+            }
+          }}>
+            {volume == 0 ? <VolumeOff size={16} /> : <Volume size={16} />}
+          </SakuraButton>
+          <Slider.Root className={styles.volumeRoot} value={[volume]} min={0} max={1} step={0.01} onValueChange={value => setVolume(value[0])}>
+            <Slider.Track className={styles.volumeTrack}>
+              <Slider.Range className={styles.volumeRange} />
+            </Slider.Track>
+            <Slider.Thumb className={styles.volumeThumb} />
+          </Slider.Root>
+        </div>
       </div>
     </div>
   )
