@@ -53,7 +53,6 @@ table {
 
 
 :root {
-  scrollbar-width: thin;
   scroll-behavior: smooth;
   /*scroll-padding-top: calc(52px + 15px);*/
 }
@@ -122,6 +121,7 @@ main {
   flex: 1;
 
   overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 .middle {
@@ -129,6 +129,10 @@ main {
   gap: var(--pad);
   flex: 1;
   overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none !important;
 }
 
 

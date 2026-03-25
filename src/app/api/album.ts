@@ -2,6 +2,7 @@
 
 import { request, session } from './client';
 import { getCoverArt } from './cover';
+import { createStreamURL } from './player';
 
 export async function getArtists(session: session) {
   console.log('getArtists');
@@ -48,7 +49,8 @@ export async function getAlbum(session: session, id: string) {
       genres: song.genres,
       index: song.track,
       suffix: song.suffix,
-      path: song.path
+      path: song.path,
+      url: createStreamURL(song.id, session)
     });
   });
 

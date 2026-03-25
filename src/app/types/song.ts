@@ -16,7 +16,8 @@ export interface song {
   genres: string[],
   index: number,
   suffix: string,
-  path: string
+  path: string,
+  url: string
 }
 
 interface song_artist {
