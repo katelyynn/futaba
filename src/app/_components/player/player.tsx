@@ -1,15 +1,16 @@
 "use client";
 
-import { usePlayer } from '@/app/api/player';
+import { getAudio, usePlayer } from '@/app/api/player';
 import styles from "./player.module.css";
 import { song } from '@/app/types/song';
 import { SakuraButton } from '../button/button';
 import Link from 'next/link';
 import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { parseDuration } from '@/app/tools/duration';
 import { IconPlayerPauseFilled, IconPlayerPlayFilled, IconVolume, IconVolume3 } from '@tabler/icons-react';
+import { useSettings } from '@/app/api/settings';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -30,10 +31,23 @@ export function Player() {
   const resume = usePlayer(s => s.resume);
   const seek = usePlayer(s => s.seek);
 
-  const volume = usePlayer(s => s.volume);
-  const setVolume = usePlayer(s => s.setVolume);
+  const volume = useSettings(s => s.volume);
+  const setVolume = useSettings(s => s.setVolume);
 
   const [ volumeBeforeMuting, setVolumeBeforeMuting ] = React.useState(0.5);
+
+  const hydrate = usePlayer(s => s.hydrate);
+
+  useEffect(() => {
+    hydrate();
+  }, []);
+
+  useEffect(() => {
+    const audio = getAudio();
+    if (!audio) return;
+
+    audio.volume = volume;
+  }, [ volume ]);
 
   return (
     <div className={styles.player}>

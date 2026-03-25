@@ -56,8 +56,8 @@
 }
 
 .tab {
-  --button-verts: 10px;
-  --button-sides: 14px;
+  --button-verts: 8px;
+  --button-sides: 12px;
   gap: 6px;
   width: 200px;
 

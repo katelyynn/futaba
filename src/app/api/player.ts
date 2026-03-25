@@ -8,36 +8,72 @@ interface playerState {
   nowPlaying: boolean,
   currentTime: number,
   duration: number,
-  volume: number,
 
   play: (song: song) => void,
   pause: () => void,
   resume: () => void,
   seek: (time: number) => void,
 
-  setVolume: (volume: number) => void
+  hydrate: () => void
 }
 
-const audio = typeof window != 'undefined' ? new Audio() : null;
-const defaultVolume = 0.5;
+let globalAudio: HTMLAudioElement | null = null;
 
-let init = false;
+export function getAudio() {
+  if (typeof window == "undefined") return null;
 
-export const usePlayer = create<playerState>((set, get) => {
-  let initialVolume = defaultVolume;
-  let initialSong = null;
-  let initialTime = 0;
+  if (!globalAudio) {
+    globalAudio = new Audio();
+  }
 
-  if (typeof window != 'undefined' && audio && !init) {
-    init = true;
+  return globalAudio;
+}
 
-    audio.pause();
+export const usePlayer = create<playerState>((set, get) => ({
+  currentSong: null,
+  nowPlaying: false,
+  currentTime: 0,
+  duration: 0,
+
+  play: (song) => {
+    const audio = getAudio();
+    if (!audio) return;
+
+    audio.src = song.url;
     audio.currentTime = 0;
+    audio.play().catch(() => {});
 
-    const savedVolume = localStorage.getItem("volume");
-    initialVolume = savedVolume ? Math.min(1, Math.max(0, Number(savedVolume))) : defaultVolume;
+    set({
+      currentSong: song,
+      currentTime: 0
+    });
+  },
 
-    audio.volume = initialVolume;
+  pause: () => {
+    const audio = getAudio();
+    if (!audio) return;
+
+    audio?.pause();
+  },
+
+  resume: () => {
+    const audio = getAudio();
+    if (!audio) return;
+
+    audio?.play().catch(() => {});
+  },
+
+  seek: (time) => {
+    const audio = getAudio();
+    if (!audio) return;
+
+    audio.currentTime = time;
+    set({ currentTime: time });
+  },
+
+  hydrate: () => {
+    const audio = getAudio();
+    if (!audio) return;
 
     const savedPlayer = localStorage.getItem("player");
 
@@ -48,8 +84,10 @@ export const usePlayer = create<playerState>((set, get) => {
         audio.src = song.url;
         audio.currentTime = time;
 
-        initialSong = song;
-        initialTime = time;
+        set({
+          currentSong: song,
+          currentTime: time
+        });
       } catch {
         localStorage.removeItem("player");
       }
@@ -77,54 +115,7 @@ export const usePlayer = create<playerState>((set, get) => {
       set({ nowPlaying: false });
     };
   }
-
-  return {
-    currentSong: initialSong,
-    nowPlaying: false,
-    currentTime: initialTime,
-    duration: 0,
-    volume: initialVolume,
-
-    play: (song) => {
-      if (!audio) return;
-
-      audio.src = song.url;
-      audio.currentTime = 0;
-      audio.play().catch(e => {
-        if (e.name != "AbortError") console.error(e);
-      });
-
-      set({
-        currentSong: song,
-        currentTime: 0
-      });
-    },
-
-    pause: () => {
-      audio?.pause();
-    },
-
-    resume: () => {
-      audio?.play();
-    },
-
-    seek: (time) => {
-      if (!audio) return;
-
-      audio.currentTime = time;
-      set({ currentTime: time });
-    },
-
-    setVolume: (volume) => {
-      if (!audio) return;
-
-      audio.volume = volume;
-      localStorage.setItem("volume", volume.toString());
-
-      set({ volume });
-    }
-  }
-});
+}));
 
 export function createStreamURL(id: string, session: session) {
   const auth = createAuth(session);
