@@ -1,0 +1,48 @@
+.player {
+  display: flex;
+  align-items: center;
+}
+
+.song {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  width: 300px;
+}
+
+.songInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  color: oklch(var(--c2));
+
+  & > a:not(:hover) {
+    color: inherit;
+  }
+}
+
+.artists {
+  color: oklch(var(--c2) / 80%);
+
+  & > a:not(:hover) {
+    color: inherit;
+  }
+}
+
+.art {
+  --w: 60px !important;
+}
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.right {
+  width: 300px;
+}

@@ -17,7 +17,8 @@ export interface song {
   index: number,
   suffix: string,
   path: string,
-  url: string
+  url: string,
+  albumId: string
 }
 
 interface song_artist {

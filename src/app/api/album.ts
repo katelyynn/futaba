@@ -31,6 +31,8 @@ export async function getAlbum(session: session, id: string) {
 
   const songs = [];
   album.song.forEach(song => {
+    const songArt = getCoverArt(session, song.coverArt);
+
     songs.push({
       id: song.id,
       name: song.title,
@@ -50,7 +52,9 @@ export async function getAlbum(session: session, id: string) {
       index: song.track,
       suffix: song.suffix,
       path: song.path,
-      url: createStreamURL(song.id, session)
+      url: createStreamURL(song.id, session),
+      albumId: song.albumId,
+      art: songArt
     });
   });
 
