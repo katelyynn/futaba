@@ -14,7 +14,7 @@ export function SakuraAlbum({ album, showArtist = false }: { album: album, showA
         {showArtist && <span className={styles.artists}>{album.artists.map(artist => <p className={styles.artist} key={artist.id}>{artist.name}</p>)}</span>}
         <p className={styles.meta}>{album.songs} songs</p>
         <p className={styles.meta}>{releaseType(album.type)}</p>
-        <p className={styles.meta}>{JSON.stringify(album.date)}</p>
+        <p className={styles.meta}>{album.year}</p>
       </div>
     </Link>
   )

@@ -8,6 +8,9 @@
 }
 
 .main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   flex: 1;
 }
 
@@ -22,5 +25,5 @@
   --bg-atv: oklch(var(--b4) / 80%);
   --shadow: none;
   --button-sides: var(--button-verts);
-  --button-verts: 11px;
+  --button-verts: 9px;
 }

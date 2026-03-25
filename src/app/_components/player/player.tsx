@@ -39,13 +39,18 @@ export function Player() {
 
   const { session } = useSession();
   const scrobble = useSettings(s => s.scrobble);
+  const setToScrobble = usePlayer(s => s.setToScrobble);
 
   const hydrate = usePlayer(s => s.hydrate);
 
   useEffect(() => {
     if (!session) return;
-    hydrate(session, scrobble);
-  }, [ hydrate, session, scrobble ]);
+    hydrate(session);
+  }, [ hydrate, session ]);
+
+  useEffect(() => {
+    setToScrobble(scrobble);
+  }, [ setToScrobble, scrobble ]);
 
   useEffect(() => {
     const audio = getAudio();

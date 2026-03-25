@@ -43,7 +43,8 @@ export async function getArtist(session: session, id: string) {
       type,
       created: album.created,
       art: art,
-      date: album.releaseDate
+      date: album.releaseDate,
+      year: album.year
     });
   });
 

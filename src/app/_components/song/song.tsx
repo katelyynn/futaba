@@ -1,11 +1,13 @@
+"use client";
+
 import styles from "./song.module.css";
 import Link from 'next/link';
 import { song } from '@/app/types/song';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { parseDuration } from '@/app/tools/duration';
 import { usePlayer } from '@/app/api/player';
 import { SakuraButton } from '../button/button';
-import { IconPlayerPlayFilled } from '@tabler/icons-react';
+import { IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerRecordFilled } from '@tabler/icons-react';
 import { useSession } from '@/app/session';
 import { useSettings } from '@/app/api/settings';
 
@@ -22,9 +24,14 @@ export function SakuraSong({ song }: { song: song }) {
   const toScrobble = useSettings(s => s.scrobble);
   const play = usePlayer(s => s.play);
 
+  const nowPlaying = usePlayer(s => s.nowPlaying);
+  const currentSong = usePlayer(s => s.currentSong);
+
+  const isPlaying = currentSong?.id == song.id;
+
   return (
-    <div className={styles.song}>
-      <p className={styles.index}>{song.index}</p>
+    <div className={`${styles.song} ${isPlaying && styles.active}`} onDoubleClick={() => play(song, session!, toScrobble)}>
+      <p className={`${styles.index} ${isPlaying && styles.activeIndex}`}>{!isPlaying ? song.index : nowPlaying ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} />}</p>
       <div className={styles.info}>
         <strong className={styles.name}>{song.name}</strong>
         <div className={styles.artists}>

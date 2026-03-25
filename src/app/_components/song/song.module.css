@@ -6,7 +6,8 @@
 
   --bg: transparent;
   --bg-hov: oklch(var(--b4) / 30%);
-  color: oklch(var(--c2)) !important;
+  --col: var(--c2);
+  color: oklch(var(--col)) !important;
   background-color: var(--bg);
   border-radius: var(--item-med-radius);
 
@@ -22,6 +23,12 @@
   transition-timing-function: var(--trans-function);
 }
 
+.active {
+  --bg: oklch(var(--h4) / 10%);
+  --bg-hov: oklch(var(--h4) / 15%);
+  --col: var(--l3-c);
+}
+
 .duration,
 .index {
   color: oklch(var(--c3));
@@ -29,10 +36,37 @@
 
 .index {
   width: 18px;
+
+  &.activeIndex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.activeIndicator {
+  color: oklch(var(--col));
+
+  /*&.activeIndicatorPlaying {
+    animation: activeIndicator 4s var(--trans-function-ani) infinite;
+  }*/
+}
+
+@keyframes activeIndicator {
+  from, to {
+    scale: 0.6;
+  }
+  40% {
+    scale: 1.1;
+  }
+}
+
+.name {
+  font-weight: var(--font-weight);
 }
 
 .artists {
-  color: oklch(var(--c2) / 80%);
+  color: oklch(var(--col) / 80%);
 
   & > a:not(:hover) {
     color: inherit;

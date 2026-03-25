@@ -16,7 +16,8 @@ export interface album {
     year?: number,
     month?: number,
     day?: number
-  }
+  },
+  year?: number
 }
 
 export interface album_full {

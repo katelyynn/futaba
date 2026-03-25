@@ -14,8 +14,9 @@ interface playerState {
   pause: () => void,
   resume: () => void,
   seek: (time: number) => void,
+  setToScrobble: (value: boolean) => void,
 
-  hydrate: (session: session, toScrobble: boolean) => void
+  hydrate: (session: session) => void
 }
 
 let globalAudio: HTMLAudioElement | null = null;
@@ -30,6 +31,7 @@ export function getAudio() {
   return globalAudio;
 }
 
+let toScrobble = false;
 let scrobbled = false;
 let trackStartTime = 0;
 
@@ -80,7 +82,11 @@ export const usePlayer = create<playerState>((set, get) => ({
     set({ currentTime: time });
   },
 
-  hydrate: (session, toScrobble) => {
+  setToScrobble: (value) => {
+    toScrobble = value;
+  },
+
+  hydrate: (session) => {
     const audio = getAudio();
     if (!audio) return;
 
