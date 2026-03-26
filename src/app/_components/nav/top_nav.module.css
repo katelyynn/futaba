@@ -11,12 +11,18 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1;
+
+  width: 200px;
 }
 
 .controls {
   display: flex;
-  gap: 2px;
+  gap: 4px;
+}
+
+.windowControls {
+  width: 200px;
+  justify-content: end;
 }
 
 .windowControl {
@@ -31,4 +37,14 @@
   height: 34px;
 
   justify-content: center;
+}
+
+.searchHolder {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.search {
+  width: 400px;
 }

@@ -7,9 +7,12 @@ import { IconChevronDown, IconChevronLeft, IconChevronRight, IconFolderSearch, I
 import { SakuraTooltip } from '../tooltip/tooltip';
 import { useSession } from '@/app/session';
 import { startScan } from '@/app/api/scan';
+import { SakuraInput } from '../input/input';
+import { useRouter } from 'next/navigation';
 
 export function TopNav() {
   const { session } = useSession();
+  const router = useRouter();
   const iconSize = 16;
 
   return (
@@ -29,7 +32,12 @@ export function TopNav() {
         </div>
         <Link href="/">futaba</Link>
       </div>
-      <div className={styles.controls}>
+      <div className={styles.searchHolder}>
+        <SakuraInput className={styles.search} placeholder="Search" onEnter={(val: string) => {
+          router.push(`/search?query=${encodeURIComponent(val)}`);
+        }} />
+      </div>
+      <div className={`${styles.controls} ${styles.windowControls}`}>
         <SakuraTooltip content="Start scan">
           <SakuraButton elem="button" identify={`${styles.windowControl}`} onClick={() => startScan(session!)}>
             <IconFolderSearch size={iconSize} />

@@ -6,7 +6,7 @@ import { search } from '../api/search';
 
 export function useSearch(session: session | null, query: string) {
   return useQuery({
-    queryKey: ["search", session],
+    queryKey: ["search", session, query],
     queryFn: () => search(session!, query)
   });
 }
