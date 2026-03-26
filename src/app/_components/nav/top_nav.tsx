@@ -3,10 +3,13 @@
 import Link from 'next/link';
 import styles from "./top_nav.module.css";
 import { SakuraButton } from '../button/button';
-import { IconChevronDown, IconChevronLeft, IconChevronRight, IconMaximize, IconMinus, IconSquare, IconX } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronLeft, IconChevronRight, IconFolderSearch, IconMaximize, IconMinus, IconSquare, IconX } from '@tabler/icons-react';
 import { SakuraTooltip } from '../tooltip/tooltip';
+import { useSession } from '@/app/session';
+import { startScan } from '@/app/api/scan';
 
 export function TopNav() {
+  const { session } = useSession();
   const iconSize = 16;
 
   return (
@@ -27,6 +30,11 @@ export function TopNav() {
         <Link href="/">futaba</Link>
       </div>
       <div className={styles.controls}>
+        <SakuraTooltip content="Start scan">
+          <SakuraButton elem="button" identify={`${styles.windowControl}`} onClick={() => startScan(session!)}>
+            <IconFolderSearch size={iconSize} />
+          </SakuraButton>
+        </SakuraTooltip>
         <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.minimise}`} onClick={() => window.windowControls.minimise()}>
           <IconMinus size={14} />
         </SakuraButton>
@@ -34,7 +42,7 @@ export function TopNav() {
           <IconSquare size={12} />
         </SakuraButton>
         <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.close}`} onClick={() => window.windowControls.close()}>
-          <IconX size={14} />
+          <IconX size={16} />
         </SakuraButton>
       </div>
     </nav>
