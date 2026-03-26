@@ -87,16 +87,7 @@ export function Player() {
 
   return (
     <div className={styles.player}>
-      <div className={styles.song}>
-        <SakuraImage url={currentSong.art} identify={styles.art} />
-        <div className={styles.songInfo}>
-          <strong className={styles.name}><Link href={`/album/${currentSong.albumId}`}>{currentSong.name}</Link></strong>
-          <span className={styles.artists}>
-            {currentSong.explicit == "explicit" && <span className={styles.explicit}>E</span>}
-            {currentSong.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != currentSong.artists.length - 1 && <p>,</p>}</span>)}
-          </span>
-        </div>
-      </div>
+      <PlaybackSongPreview currentSong={currentSong} key={currentSong.id} />
       <div className={styles.middle}>
         <div className={styles.top}>
           <SakuraTooltip content={shuffle ? "Playing shuffled" : "Playing in order"}>
@@ -183,6 +174,23 @@ export function Player() {
           </SakuraTooltip>
           <SakuraSlider className={styles.volumeRoot} value={volume} min={0} max={1} step={0.01} onChange={value => setVolume(value)} />
         </div>
+      </div>
+    </div>
+  )
+}
+
+export function PlaybackSongPreview({
+  currentSong
+}: { currentSong: song }) {
+  return (
+    <div className={styles.song}>
+      <SakuraImage url={currentSong.art} identify={styles.art} />
+      <div className={styles.songInfo}>
+        <strong className={styles.name}><Link href={`/album/${currentSong.albumId}`}>{currentSong.name}</Link></strong>
+        <span className={styles.artists}>
+          {currentSong.explicit == "explicit" && <span className={styles.explicit}>E</span>}
+          {currentSong.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != currentSong.artists.length - 1 && <p>,</p>}</span>)}
+        </span>
       </div>
     </div>
   )

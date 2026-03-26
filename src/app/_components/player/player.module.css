@@ -9,6 +9,19 @@
   gap: 10px;
 
   flex: 1;
+
+  animation: song 0.5s var(--trans-function-ani);
+}
+
+@keyframes song {
+  from {
+    translate: 0 4px;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
 }
 
 .songInfo {
