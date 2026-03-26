@@ -33,3 +33,9 @@
   color: oklch(var(--c3));
   font-size: 13px;
 }
+
+.buttons {
+  display: flex;
+  gap: 4px;
+  margin-bottom: calc(var(--pad) * 2);
+}

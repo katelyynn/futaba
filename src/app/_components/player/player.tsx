@@ -9,7 +9,7 @@ import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
 import React, { useEffect } from 'react';
 import { parseDuration } from '@/app/tools/duration';
-import { IconArticleFilled, IconPlayerPauseFilled, IconPlayerPlayFilled, IconVolume, IconVolume3 } from '@tabler/icons-react';
+import { IconArticleFilled, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconVolume, IconVolume3 } from '@tabler/icons-react';
 import { useSettings } from '@/app/api/settings';
 import { useSession } from '@/app/session';
 import { SakuraTooltip } from '../tooltip/tooltip';
@@ -36,8 +36,12 @@ export function Player() {
   const resume = usePlayer(s => s.resume);
   const seek = usePlayer(s => s.seek);
 
+  const playPrev = usePlayer(s => s.playPrev);
+  const playNext = usePlayer(s => s.playNext);
+
   const volume = useSettings(s => s.volume);
   const setVolume = useSettings(s => s.setVolume);
+  const setPlayerVolume = usePlayer(s => s.setVolume);
 
   const [ volumeBeforeMuting, setVolumeBeforeMuting ] = React.useState(0.5);
 
@@ -59,11 +63,8 @@ export function Player() {
   }, [ setToScrobble, scrobble ]);
 
   useEffect(() => {
-    const audio = getAudio();
-    if (!audio) return;
-
-    audio.volume = volume;
-  }, [ volume ]);
+    setPlayerVolume(volume);
+  }, [ setPlayerVolume, volume ]);
 
   return (
     <div className={styles.player}>
@@ -71,20 +72,38 @@ export function Player() {
         <SakuraImage url={currentSong.art} identify={styles.art} />
         <div className={styles.songInfo}>
           <strong className={styles.name}><Link href={`/album/${currentSong.albumId}`}>{currentSong.name}</Link></strong>
-          <span className={styles.artists}>{currentSong.artists.map(artist => <Link href={`/artist/${artist.id}`} className={styles.artist} key={artist.id}>{artist.name}</Link>)}</span>
+          <span className={styles.artists}>
+            {currentSong.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != currentSong.artists.length - 1 && <p>,</p>}</span>)}
+          </span>
         </div>
       </div>
       <div className={styles.middle}>
         <div className={styles.top}>
-          <SakuraButton elem="button" identify={`${styles.action} ${styles.play} ${nowPlaying && styles.actionActive}`} onClick={() => {
-            if (nowPlaying) {
-              pause();
-            } else {
-              resume();
-            }
-          }}>
-            {nowPlaying ? <IconPlayerPauseFilled size={16} /> : <IconPlayerPlayFilled size={16} />}
-          </SakuraButton>
+          <SakuraTooltip content="Previous">
+            <SakuraButton elem="button" identify={`${styles.action}`} onClick={() => {
+              playPrev(session!, scrobble);
+            }}>
+              <IconPlayerTrackPrevFilled size={16} />
+            </SakuraButton>
+          </SakuraTooltip>
+          <SakuraTooltip content="Play">
+            <SakuraButton elem="button" identify={`${styles.action} ${styles.play} ${nowPlaying && styles.actionActive}`} onClick={() => {
+              if (nowPlaying) {
+                pause();
+              } else {
+                resume();
+              }
+            }}>
+              {nowPlaying ? <IconPlayerPauseFilled size={16} /> : <IconPlayerPlayFilled size={16} />}
+            </SakuraButton>
+          </SakuraTooltip>
+          <SakuraTooltip content="Next">
+            <SakuraButton elem="button" identify={`${styles.action}`} onClick={() => {
+              playNext(session!, scrobble);
+            }}>
+              <IconPlayerTrackNextFilled size={16} />
+            </SakuraButton>
+          </SakuraTooltip>
         </div>
         <div className={styles.bottom}>
           <p className={styles.time}>{parseDuration(currentTime)}</p>

@@ -17,7 +17,8 @@ export interface album {
     month?: number,
     day?: number
   },
-  year?: number
+  year?: number,
+  starred?: string
 }
 
 export interface album_full {
@@ -31,7 +32,8 @@ export interface album_full {
   type: string,
   created: string,
   art: string,
-  explicit: boolean
+  explicit: boolean,
+  starred?: string
 }
 
 interface album_artist {

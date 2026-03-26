@@ -3,5 +3,6 @@ export interface artist {
   art: string,
   name: string,
   albums: number,
-  roles: string[]
+  roles: string[],
+  starred?: string
 }

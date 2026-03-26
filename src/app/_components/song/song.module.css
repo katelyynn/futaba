@@ -76,10 +76,17 @@
 }
 
 .artists {
-  color: oklch(var(--col) / 80%);
+  color: oklch(var(--col) / 60%);
+
+  display: flex;
+  gap: 4px;
+}
+
+.artist {
+  display: flex;
 
   & > a:not(:hover) {
-    color: inherit;
+    color: oklch(var(--col) / 80%);
   }
 }
 

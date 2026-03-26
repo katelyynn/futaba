@@ -39,6 +39,7 @@ export function SakuraSong({
   const play = usePlayer(s => s.play);
   const addToQueue = usePlayer(s => s.addToQueue);
   const removeFromQueue = usePlayer(s => s.removeFromQueue);
+  const clearQueue = usePlayer(s => s.clearQueue);
 
   const nowPlaying = usePlayer(s => s.nowPlaying);
   const currentSong = usePlayer(s => s.currentSong);
@@ -47,7 +48,10 @@ export function SakuraSong({
 
   const menu = (
     <>
-      <SakuraButton elem="button" identifyOwn="menu" onClick={() => play(song, session!, toScrobble)}>
+      <SakuraButton elem="button" identifyOwn="menu" onClick={() => {
+        clearQueue();
+        play(song, session!, toScrobble);
+      }}>
         <IconPlayerPlayFilled size={16} />
         Play
       </SakuraButton>
@@ -66,13 +70,16 @@ export function SakuraSong({
   );
 
   return (
-    <div className={`${styles.song} ${isPlaying && styles.active}`} onDoubleClick={() => play(song, session!, toScrobble)}>
+    <div className={`${styles.song} ${isPlaying && styles.active}`} onDoubleClick={() => {
+      clearQueue();
+      play(song, session!, toScrobble);
+    }}>
       {!inQueue && <p className={`${styles.index} ${isPlaying && styles.activeIndex}`}>{!isPlaying ? song.index : nowPlaying ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} />}</p>}
       {showArt && <SakuraImage url={song.art} identify={styles.art} />}
       <div className={styles.info}>
         <strong className={styles.name}>{song.name}</strong>
         <div className={styles.artists}>
-          {song.artists.map(artist => <Link href={`/artist/${artist.id}`} key={artist.id}>{artist.name}</Link>)}
+          {song.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>)}
         </div>
       </div>
       <div className={styles.actions}>

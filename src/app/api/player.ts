@@ -11,6 +11,7 @@ interface playerState {
   nowPlaying: boolean,
   currentTime: number,
   duration: number,
+  volume: number,
 
   play: (song: song, session: session, toScrobble: boolean, index?: number) => void,
   playNext: (session: session, toScrobble: boolean) => void,
@@ -18,29 +19,43 @@ interface playerState {
   addToQueue: (songs: song[], at?: number) => void,
   removeFromQueue: (index: number) => void,
   reorderQueue: (from: number, to: number) => void,
+  clearQueue: () => void,
   pause: () => void,
   resume: () => void,
   seek: (time: number) => void,
   setToScrobble: (value: boolean) => void,
+  setVolume: (value: number) => void,
 
   hydrate: (session: session) => void
 }
 
-let globalAudio: HTMLAudioElement | null = null;
+let currentAudio: HTMLAudioElement | null = null;
+let nextAudio: HTMLAudioElement | null = null;
 
 export function getAudio() {
   if (typeof window == "undefined") return null;
 
-  if (!globalAudio) {
-    globalAudio = new Audio();
+  if (!currentAudio) {
+    currentAudio = new Audio();
+    nextAudio = new Audio();
   }
 
-  return globalAudio;
+  return currentAudio;
 }
 
 let toScrobble = false;
 let scrobbled = false;
 let trackStartTime = 0;
+
+function preloadNext() {
+  const { queue, currentIndex } = usePlayer.getState();
+  const next = queue[currentIndex + 1];
+
+  if (!nextAudio || !next) return;
+
+  nextAudio.src = next.url;
+  nextAudio.preload = "auto";
+}
 
 export const usePlayer = create<playerState>((set, get) => ({
   queue: [],
@@ -49,31 +64,41 @@ export const usePlayer = create<playerState>((set, get) => ({
   nowPlaying: false,
   currentTime: 0,
   duration: 0,
+  volume: 0,
 
   play: (song, session, toScrobble, index) => {
     const audio = getAudio();
     if (!audio) return;
 
     const { queue } = get();
-    let newQueue = [...queue];
+    const newQueue = [...queue];
 
     let songIndex: number;
 
-    if (index) {
+    if (index != null) {
       songIndex = index;
+      song = newQueue[index];
     } else {
       songIndex = newQueue.findIndex(s => s.id == song.id);
 
       if (songIndex == -1) {
         newQueue.push(song);
         songIndex = newQueue.length - 1;
-        set({ queue: newQueue });
       }
     }
+
+    set({ queue: newQueue });
+
+    audio.pause();
+
+    attachEvents(audio, session);
 
     audio.src = song.url;
     audio.currentTime = 0;
     audio.play().catch(() => {});
+
+    set({ currentIndex: songIndex });
+    preloadNext();
 
     if (toScrobble) sendNowPlaying(session, song.id);
 
@@ -82,7 +107,6 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     set({
       currentSong: song,
-      currentIndex: songIndex,
       currentTime: 0
     });
   },
@@ -165,6 +189,21 @@ export const usePlayer = create<playerState>((set, get) => ({
     })
   },
 
+  clearQueue: () => {
+    const audio = getAudio();
+    if (!audio) return;
+
+    audio.pause();
+    audio.src = "";
+    audio.currentTime = 0;
+
+    set({
+      queue: [],
+      currentIndex: -1,
+      currentSong: null
+    });
+  },
+
   pause: () => {
     const audio = getAudio();
     if (!audio) return;
@@ -212,40 +251,98 @@ export const usePlayer = create<playerState>((set, get) => ({
         localStorage.removeItem("player");
       }
     }
+  },
 
-    audio.ontimeupdate = () => {
-      const time = audio.currentTime;
+  setVolume: (value) => {
+    if (currentAudio) currentAudio.volume = value;
+    if (nextAudio) nextAudio.volume = value;
 
-      set({ currentTime: audio.currentTime });
-
-      const { currentSong, nowPlaying } = get();
-
-      if (currentSong) {
-        localStorage.setItem("player", JSON.stringify({ song: currentSong, time }));
-
-        if (nowPlaying && toScrobble && !scrobbled) {
-          const validScrobble = audio.currentTime > 240 || (currentSong.duration && audio.currentTime > currentSong.duration * 0.5);
-
-          if (validScrobble) {
-            scrobbled = true;
-            scrobble(session, currentSong.id, trackStartTime);
-          }
-        }
-      }
-    };
-
-    audio.onloadedmetadata = () => {
-      set({ duration: audio.duration });
-    };
-
-    audio.onplay = () => set({ nowPlaying: true });
-    audio.onpause = () => set({ nowPlaying: false });
-
-    audio.onended = () => {
-      set({ nowPlaying: false });
-    };
+    set({
+      volume: value
+    });
   }
 }));
+
+function attachEvents(audio: HTMLAudioElement, session: session) {
+  const { volume } = usePlayer.getState();
+
+  audio.volume = volume;
+
+  audio.ontimeupdate = () => {
+    if (audio != currentAudio) return;
+
+    const time = audio.currentTime;
+
+    usePlayer.setState({currentTime: audio.currentTime});
+
+    const { currentSong, nowPlaying } = usePlayer.getState();
+
+    if (currentSong) {
+      localStorage.setItem("player", JSON.stringify({ song: currentSong, time }));
+
+      if (nowPlaying && toScrobble && !scrobbled) {
+        const validScrobble = audio.currentTime > 240 || (currentSong.duration && audio.currentTime > currentSong.duration * 0.5);
+
+        if (validScrobble) {
+          scrobbled = true;
+          scrobble(session, currentSong.id, trackStartTime);
+        }
+      }
+    }
+  };
+
+  audio.onloadedmetadata = () => {
+    if (audio != currentAudio) return;
+
+    usePlayer.setState({ duration: audio.duration });
+  };
+
+  audio.onplay = () => {
+    if (audio != currentAudio) return;
+
+    usePlayer.setState({ nowPlaying: true });
+  }
+  audio.onpause = () => {
+    if (audio != currentAudio) return;
+
+    usePlayer.setState({ nowPlaying: false });
+  }
+
+  audio.onended = () => {
+    if (audio != currentAudio) return;
+
+    const { queue, currentIndex, volume } = usePlayer.getState();
+    const index = currentIndex + 1;
+    const next = queue[index];
+
+    if (!nextAudio || !next) {
+      usePlayer.setState({ nowPlaying: false });
+      return;
+    }
+
+    // swap
+    const previousAudio = currentAudio;
+    currentAudio = nextAudio;
+    nextAudio = previousAudio;
+
+    const newAudio = currentAudio;
+
+    attachEvents(newAudio, session);
+
+    newAudio.currentTime = 0;
+    newAudio.play().catch(() => {});
+    newAudio.volume = volume;
+
+    usePlayer.setState({
+      currentSong: next,
+      currentIndex: index,
+      currentTime: 0,
+      duration: newAudio.duration || 0
+    });
+
+    preloadNext();
+  };
+}
 
 export function createStreamURL(id: string, session: session) {
   const auth = createAuth(session);
