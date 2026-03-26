@@ -1,5 +1,11 @@
 .nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pad);
+
   padding: var(--pad) 0;
+
+  width: 300px;
 }
 
 .list {

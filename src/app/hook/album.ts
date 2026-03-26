@@ -4,12 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { session } from '../api/client';
 import { getAlbum, getAlbums } from '../api/album';
 
-export function useAlbums(session: session | null) {
+export function useAlbums(session: session | null, size?: number) {
   console.log('useALBUMS', session);
 
   return useQuery({
-    queryKey: ["albums", session],
-    queryFn: () => getAlbums(session!)
+    queryKey: ["albums", session, size],
+    queryFn: () => getAlbums(session!, size)
   });
 }
 

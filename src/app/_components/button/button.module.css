@@ -59,7 +59,6 @@
   --button-verts: 8px;
   --button-sides: 12px;
   gap: 6px;
-  width: 200px;
 
   --bg: transparent;
   --bg-hov: oklch(var(--b4) / 60%);

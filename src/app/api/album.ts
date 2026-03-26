@@ -6,9 +6,9 @@ import { request, session } from './client';
 import { getCoverArt } from './cover';
 import { createStreamURL } from './player';
 
-export async function getAlbums(session: session) {
+export async function getAlbums(session: session, size = 100) {
   console.log('getAlbums');
-  const res = await request(session, "getAlbumList", { type: "recent", size: 100 });
+  const res = await request(session, "getAlbumList", { type: "recent", size });
 
   console.info('res', res);
 

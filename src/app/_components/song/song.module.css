@@ -79,6 +79,10 @@
 
 .name {
   font-weight: var(--font-weight);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 
 .artists {
@@ -86,6 +90,7 @@
 
   display: flex;
   gap: 4px;
+  flex-wrap: wrap;
 }
 
 .artist {

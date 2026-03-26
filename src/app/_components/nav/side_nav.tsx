@@ -5,6 +5,10 @@ import { SakuraButton } from '../button/button';
 import { usePathname } from 'next/navigation';
 import { AuthStatus } from './auth';
 import { IconCarambola, IconDisc, IconHeart, IconMusic, IconSettingsFilled, IconSmartHome } from '@tabler/icons-react';
+import { useSession } from '@/app/session';
+import { useAlbums } from '@/app/hook/album';
+import { ErrorHandler } from '@/app/errorHandler';
+import { SakuraAlbumListSide, SakuraAlbumSide } from '../album/album';
 
 export function SideNav() {
   const path = usePathname();
@@ -37,7 +41,27 @@ export function SideNav() {
           Settings
         </SakuraButton>
       </ul>
+      <SideAlbumList />
       <AuthStatus />
     </nav>
   );
+}
+
+export function SideAlbumList() {
+  const { session } = useSession();
+
+  const { data, isLoading, error } = useAlbums(session, 10);
+
+  if (isLoading) return <div>loading</div>;
+  if (error) return <ErrorHandler error={error} />;
+
+  console.log('album data', data);
+
+  return (
+    <SakuraAlbumListSide>
+      {data.map(album => (
+        <SakuraAlbumSide album={album} key={album.id} />
+      ))}
+    </SakuraAlbumListSide>
+  )
 }
