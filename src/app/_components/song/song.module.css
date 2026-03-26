@@ -21,6 +21,12 @@
   transition-property: background-color;
   transition-duration: var(--trans);
   transition-timing-function: var(--trans-function);
+
+  &:not(:hover, :focus-within) {
+    .action {
+      opacity: 0;
+    }
+  }
 }
 
 .active {

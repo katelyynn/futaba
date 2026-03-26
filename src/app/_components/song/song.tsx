@@ -11,7 +11,7 @@ import { IconDots, IconExplicit, IconMinus, IconPlayerPauseFilled, IconPlayerPla
 import { useSession } from '@/app/session';
 import { useSettings } from '@/app/api/settings';
 import { SakuraImage } from '../image/image';
-import { SakuraMenu } from '../menu/menu';
+import { SakuraContextMenu, SakuraMenu } from '../menu/menu';
 
 export function SakuraSongList({ children }: { children: React.ReactNode }) {
   return (
@@ -94,29 +94,31 @@ export function SakuraSong({
   );
 
   return (
-    <div className={`${styles.song} ${isPlaying && styles.active}`} onDoubleClick={() => {
-      const inQueue = queue.findIndex(s => s.id == song.id) > -1;
-      if (!inQueue) clearQueue();
+    <SakuraContextMenu content={menu}>
+      <div className={`${styles.song} ${isPlaying && styles.active}`} onDoubleClick={() => {
+        const inQueue = queue.findIndex(s => s.id == song.id) > -1;
+        if (!inQueue) clearQueue();
 
-      play(song, session!, toScrobble);
-    }}>
-      {!hideIndex && <p className={`${styles.index} ${isPlaying && styles.activeIndex}`}>{!isPlaying ? song.index : nowPlaying ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} />}</p>}
-      {showArt && <SakuraImage url={song.art} identify={styles.art} />}
-      <div className={styles.info}>
-        <strong className={styles.name}>{song.name}</strong>
-        <div className={styles.artists}>
-          {song.explicit == "explicit" && <span className={styles.explicit}>E</span>}
-          {song.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>)}
+        play(song, session!, toScrobble);
+      }}>
+        {!hideIndex && <p className={`${styles.index} ${isPlaying && styles.activeIndex}`}>{!isPlaying ? song.index : nowPlaying ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} />}</p>}
+        {showArt && <SakuraImage url={song.art} identify={styles.art} />}
+        <div className={styles.info}>
+          <strong className={styles.name}>{song.name}</strong>
+          <div className={styles.artists}>
+            {song.explicit == "explicit" && <span className={styles.explicit}>E</span>}
+            {song.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>)}
+          </div>
         </div>
+        <div className={styles.actions}>
+          <SakuraMenu content={menu}>
+            <SakuraButton elem="button" identify={styles.action}>
+              <IconDots size={16} />
+            </SakuraButton>
+          </SakuraMenu>
+        </div>
+        {!inQueue && <p className={styles.duration}>{parseDuration(song.duration)}</p>}
       </div>
-      <div className={styles.actions}>
-        <SakuraMenu content={menu}>
-          <SakuraButton elem="button" identify={styles.action}>
-            <IconDots size={16} />
-          </SakuraButton>
-        </SakuraMenu>
-      </div>
-      {!inQueue && <p className={styles.duration}>{parseDuration(song.duration)}</p>}
-    </div>
+    </SakuraContextMenu>
   )
 }
