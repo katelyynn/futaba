@@ -9,6 +9,7 @@ import { useSession } from '@/app/session';
 import { useAlbums } from '@/app/hook/album';
 import { ErrorHandler } from '@/app/errorHandler';
 import { SakuraAlbumListSide, SakuraAlbumSide } from '../album/album';
+import { usePlayer } from '@/app/api/player';
 
 export function SideNav() {
   const path = usePathname();
@@ -20,15 +21,15 @@ export function SideNav() {
           <IconSmartHome size={16} />
           Home
         </SakuraButton>
-        <SakuraButton elem="link" href="/artists" identifyOwn="tab" primary={path.startsWith('/artist')}>
+        <SakuraButton elem="link" href="/artists" identifyOwn="tab" primary={path.startsWith('/artists')}>
           <IconCarambola size={16} />
           Artists
         </SakuraButton>
-        <SakuraButton elem="link" href="/albums" identifyOwn="tab" primary={path.startsWith('/album')}>
+        <SakuraButton elem="link" href="/albums" identifyOwn="tab" primary={path.startsWith('/albums')}>
           <IconDisc size={16} />
           Albums
         </SakuraButton>
-        <SakuraButton elem="link" href="/songs" identifyOwn="tab" primary={path.startsWith('/song')}>
+        <SakuraButton elem="link" href="/songs" identifyOwn="tab" primary={path.startsWith('/songs')}>
           <IconMusic size={16} />
           Songs
         </SakuraButton>
@@ -49,8 +50,9 @@ export function SideNav() {
 
 export function SideAlbumList() {
   const { session } = useSession();
+  const currentSong = usePlayer(s => s.currentSong);
 
-  const { data, isLoading, error } = useAlbums(session, 10);
+  const { data, isLoading, error } = useAlbums(session, 10, currentSong.id);
 
   if (isLoading) return <div>loading</div>;
   if (error) return <ErrorHandler error={error} />;
