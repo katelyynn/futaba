@@ -145,6 +145,8 @@ export const usePlayer = create<playerState>((set, get) => ({
         newQueue.push(...songs);
       }
 
+      preloadNext();
+
       return { queue: newQueue };
     })
   },
@@ -164,6 +166,8 @@ export const usePlayer = create<playerState>((set, get) => ({
         audio.pause();
         newIndex = -1;
       }
+
+      preloadNext();
 
       return {
         queue: newQueue,
@@ -187,6 +191,8 @@ export const usePlayer = create<playerState>((set, get) => ({
       } else if (from > state.currentIndex && to <= state.currentIndex) {
         newIndex++;
       }
+
+      preloadNext();
 
       return {
         queue: newQueue,
