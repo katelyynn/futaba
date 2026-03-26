@@ -37,6 +37,7 @@ export function SakuraSong({
   const { session } = useSession();
   const toScrobble = useSettings(s => s.scrobble);
   const play = usePlayer(s => s.play);
+  const queue = usePlayer(s => s.queue);
   const addToQueue = usePlayer(s => s.addToQueue);
   const removeFromQueue = usePlayer(s => s.removeFromQueue);
   const clearQueue = usePlayer(s => s.clearQueue);
@@ -49,7 +50,9 @@ export function SakuraSong({
   const menu = (
     <>
       <SakuraButton elem="button" identifyOwn="menu" onClick={() => {
-        clearQueue();
+        const inQueue = queue.findIndex(s => s.id == song.id) > -1;
+        if (!inQueue) clearQueue();
+
         play(song, session!, toScrobble);
       }}>
         <IconPlayerPlayFilled size={16} />
@@ -71,7 +74,9 @@ export function SakuraSong({
 
   return (
     <div className={`${styles.song} ${isPlaying && styles.active}`} onDoubleClick={() => {
-      clearQueue();
+      const inQueue = queue.findIndex(s => s.id == song.id) > -1;
+      if (!inQueue) clearQueue();
+
       play(song, session!, toScrobble);
     }}>
       {!inQueue && <p className={`${styles.index} ${isPlaying && styles.activeIndex}`}>{!isPlaying ? song.index : nowPlaying ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} />}</p>}
@@ -89,7 +94,7 @@ export function SakuraSong({
           </SakuraButton>
         </SakuraMenu>
       </div>
-      <p className={styles.duration}>{parseDuration(song.duration)}</p>
+      {!inQueue && <p className={styles.duration}>{parseDuration(song.duration)}</p>}
     </div>
   )
 }

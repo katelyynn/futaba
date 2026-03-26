@@ -12,6 +12,8 @@ interface playerState {
   currentTime: number,
   duration: number,
   volume: number,
+  loop: true | "once" | false,
+  shuffle: boolean,
 
   play: (song: song, session: session, toScrobble: boolean, index?: number) => void,
   playNext: (session: session, toScrobble: boolean) => void,
@@ -25,6 +27,8 @@ interface playerState {
   seek: (time: number) => void,
   setToScrobble: (value: boolean) => void,
   setVolume: (value: number) => void,
+  setLoop: (value: true | "once" | false) => void,
+  setShuffle: (value: boolean) => void,
 
   hydrate: (session: session) => void
 }
@@ -65,6 +69,8 @@ export const usePlayer = create<playerState>((set, get) => ({
   currentTime: 0,
   duration: 0,
   volume: 0,
+  loop: false,
+  shuffle: false,
 
   play: (song, session, toScrobble, index) => {
     const audio = getAudio();
@@ -260,6 +266,18 @@ export const usePlayer = create<playerState>((set, get) => ({
     set({
       volume: value
     });
+  },
+
+  setLoop: (value) => {
+    set({
+      loop: value
+    });
+  },
+
+  setShuffle: (value) => {
+    set({
+      shuffle: value
+    });
   }
 }));
 
@@ -311,8 +329,27 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
   audio.onended = () => {
     if (audio != currentAudio) return;
 
-    const { queue, currentIndex, volume } = usePlayer.getState();
-    const index = currentIndex + 1;
+    const { queue, currentSong, currentIndex, volume, loop } = usePlayer.getState();
+    let index;
+    let swapAudio = false;
+
+    if (queue.length == 1 || loop == "once") {
+      index = currentIndex;
+    } else if (queue.length > 1 && loop == true) {
+      index = currentIndex + 1;
+
+      if (index > queue.length - 1) {
+        index = 0;
+      } else {
+        swapAudio = true;
+      }
+    } else if (queue.length > 1) {
+      index = currentIndex + 1;
+      swapAudio = true;
+    } else {
+      return;
+    }
+
     const next = queue[index];
 
     if (!nextAudio || !next) {
@@ -321,26 +358,41 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
     }
 
     // swap
-    const previousAudio = currentAudio;
-    currentAudio = nextAudio;
-    nextAudio = previousAudio;
+    let newAudio = currentAudio;
 
-    const newAudio = currentAudio;
+    if (swapAudio) {
+      const previousAudio = currentAudio;
+      currentAudio = nextAudio;
+      nextAudio = previousAudio;
 
-    attachEvents(newAudio, session);
+      newAudio = currentAudio;
 
-    newAudio.currentTime = 0;
-    newAudio.play().catch(() => {});
-    newAudio.volume = volume;
+      attachEvents(newAudio, session);
 
-    usePlayer.setState({
-      currentSong: next,
-      currentIndex: index,
-      currentTime: 0,
-      duration: newAudio.duration || 0
-    });
+      newAudio.currentTime = 0;
+      newAudio.play().catch(() => {});
+      newAudio.volume = volume;
 
-    preloadNext();
+      usePlayer.setState({
+        currentSong: next,
+        currentIndex: index,
+        currentTime: 0,
+        duration: newAudio.duration || 0
+      });
+
+      preloadNext();
+    } else {
+      if (currentSong != next) newAudio.src = next.url;
+      newAudio.currentTime = 0;
+      newAudio.play().catch(() => {});
+
+      usePlayer.setState({
+        currentSong: next,
+        currentIndex: index,
+        currentTime: 0,
+        duration: newAudio.duration || 0
+      });
+    }
   };
 }
 

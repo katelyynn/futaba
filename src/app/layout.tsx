@@ -5,6 +5,7 @@ import Provider from './provide';
 import { SideNav } from './_components/nav/side_nav';
 import { TopNav } from './_components/nav/top_nav';
 import { Player } from './_components/player/player';
+import { SakuraAside } from './_components/aside/aside';
 
 const funnelSans = Funnel_Sans({
   variable: "--font-funnel_sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
             <main>
               {children}
             </main>
+            <SakuraAside />
           </div>
           <Player />
         </Provider>

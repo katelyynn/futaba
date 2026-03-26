@@ -9,7 +9,7 @@ import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
 import React, { useEffect } from 'react';
 import { parseDuration } from '@/app/tools/duration';
-import { IconArticleFilled, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconVolume, IconVolume3 } from '@tabler/icons-react';
+import { IconArrowsShuffle2, IconArticleFilled, IconMicrophone2, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconRepeat, IconRepeatOff, IconRepeatOnce, IconVolume, IconVolume3 } from '@tabler/icons-react';
 import { useSettings } from '@/app/api/settings';
 import { useSession } from '@/app/session';
 import { SakuraTooltip } from '../tooltip/tooltip';
@@ -53,6 +53,17 @@ export function Player() {
 
   const waveform = useSettings(s => s.waveform);
 
+  const asideView = useSettings(s => s.asideView);
+  const setAsideView = useSettings(s => s.setAsideView);
+
+  const loop = useSettings(s => s.loop);
+  const setLoop = useSettings(s => s.setLoop);
+  const setPlayerLoop = usePlayer(s => s.setLoop);
+
+  const shuffle = useSettings(s => s.shuffle);
+  const setShuffle = useSettings(s => s.setShuffle);
+  const setPlayerShuffle = usePlayer(s => s.setShuffle);
+
   useEffect(() => {
     if (!session) return;
     hydrate(session);
@@ -65,6 +76,14 @@ export function Player() {
   useEffect(() => {
     setPlayerVolume(volume);
   }, [ setPlayerVolume, volume ]);
+
+  useEffect(() => {
+    setPlayerLoop(loop);
+  }, [ setPlayerLoop, loop ]);
+
+  useEffect(() => {
+    setPlayerShuffle(shuffle);
+  }, [ setPlayerShuffle, shuffle ]);
 
   return (
     <div className={styles.player}>
@@ -79,6 +98,13 @@ export function Player() {
       </div>
       <div className={styles.middle}>
         <div className={styles.top}>
+          <SakuraTooltip content={shuffle ? "Playing shuffled" : "Playing in order"}>
+            <SakuraButton elem="button" identify={`${styles.action} ${shuffle && styles.actionActive}`} onClick={() => {
+              setShuffle(!shuffle);
+            }}>
+              <IconArrowsShuffle2 size={16} />
+            </SakuraButton>
+          </SakuraTooltip>
           <SakuraTooltip content="Previous">
             <SakuraButton elem="button" identify={`${styles.action}`} onClick={() => {
               playPrev(session!, scrobble);
@@ -104,6 +130,19 @@ export function Player() {
               <IconPlayerTrackNextFilled size={16} />
             </SakuraButton>
           </SakuraTooltip>
+          <SakuraTooltip content={loop == "once" ? "Loop once" : loop == true ? "Loop queue" : "Do not loop"}>
+            <SakuraButton elem="button" identify={`${styles.action} ${loop && styles.actionActive}`} onClick={() => {
+              if (loop == true) {
+                setLoop("once");
+              } else if (loop == "once") {
+                setLoop(false);
+              } else {
+                setLoop(true);
+              }
+            }}>
+              {loop == "once" ? <IconRepeatOnce size={16} /> : <IconRepeat size={16} />}
+            </SakuraButton>
+          </SakuraTooltip>
         </div>
         <div className={styles.bottom}>
           <p className={styles.time}>{parseDuration(currentTime)}</p>
@@ -114,12 +153,19 @@ export function Player() {
         </div>
       </div>
       <div className={styles.right}>
+        <SakuraTooltip content="Lyrics">
+          <SakuraButton elem="button" identify={`${styles.action} ${asideView == "lyrics" && styles.actionActive}`} onClick={() => {
+            setAsideView("lyrics");
+          }}>
+            <IconMicrophone2 size={16} />
+          </SakuraButton>
+        </SakuraTooltip>
         <SakuraTooltip content="Queue">
-          <SakuraPopover content={<SakuraQueue />}>
-            <SakuraButton elem="button" identify={`${styles.action}`}>
-              <IconArticleFilled size={16} />
-            </SakuraButton>
-          </SakuraPopover>
+          <SakuraButton elem="button" identify={`${styles.action} ${asideView == "queue" && styles.actionActive}`} onClick={() => {
+            setAsideView("queue");
+          }}>
+            <IconArticleFilled size={16} />
+          </SakuraButton>
         </SakuraTooltip>
         <div className={styles.volume}>
           <SakuraTooltip content="Volume">
