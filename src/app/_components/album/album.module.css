@@ -71,6 +71,7 @@
     --bg-hov: oklch(var(--h4) / 25%);
     --bg-atv: oklch(var(--h4) / 30%);
     --col: var(--l3-c);
+    font-weight: var(--font-weight-medium);
   }
 
   .art {
@@ -79,6 +80,7 @@
   }
 
   .name {
+    font-weight: inherit;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
