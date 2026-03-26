@@ -2,9 +2,6 @@
   display: flex;
   align-items: stretch;
   gap: var(--pad);
-
-  position: relative;
-  z-index: 1;
 }
 
 .split {

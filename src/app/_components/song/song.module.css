@@ -21,8 +21,6 @@
   transition-property: background-color;
   transition-duration: var(--trans);
   transition-timing-function: var(--trans-function);
-
-  z-index: 1;
 }
 
 .active {
@@ -100,8 +98,6 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-
-  z-index: 1;
 }
 
 .action {
