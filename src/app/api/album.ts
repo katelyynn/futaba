@@ -1,24 +1,36 @@
 "use client";
 
+import { album } from '../types/album';
 import { request, session } from './client';
 import { getCoverArt } from './cover';
 import { createStreamURL } from './player';
 
-export async function getArtists(session: session) {
-  console.log('getArtists');
-  const res = await request(session, "getArtists");
+export async function getAlbums(session: session) {
+  console.log('getAlbums');
+  const res = await request(session, "getAlbumList", { type: "recent", size: 100 });
 
   console.info('res', res);
 
-  return res.artists.index.flatMap(group =>
-    group.artist.map(artist => ({
-      id: artist.id,
-      art: artist.artistImageUrl,
-      name: artist.name,
-      albums: artist.albumCount,
-      roles: artist.roles
-    }))
-  );
+  const albums = [];
+  res.albumList.album.forEach(album => {
+    const art = getCoverArt(session, album.id);
+
+    albums.push({
+      id: album.id,
+      name: album.name,
+      artists: album.artists,
+      duration: album.duration,
+      songs: album.songCount,
+      played: album.played,
+      plays: album.plays,
+      created: album.created,
+      art: art,
+      year: album.year,
+      explicit: album.explicitStatus
+    });
+  });
+
+  return albums;
 }
 
 export async function getAlbum(session: session, id: string) {

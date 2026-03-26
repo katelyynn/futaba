@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { album } from '@/app/types/album';
 import React from 'react';
 import { releaseType } from '@/app/tools/type';
+import { DateTime } from "luxon";
 
 export function SakuraAlbum({ album, showArtist = false }: { album: album, showArtist?: boolean }) {
   return (
@@ -13,8 +14,9 @@ export function SakuraAlbum({ album, showArtist = false }: { album: album, showA
         <strong className={styles.name}>{album.name}</strong>
         {showArtist && <span className={styles.artists}>{album.artists.map(artist => <p className={styles.artist} key={artist.id}>{artist.name}</p>)}</span>}
         <p className={styles.meta}>{album.songs} songs</p>
-        <p className={styles.meta}>{releaseType(album.type)}</p>
+        {album.type && <p className={styles.meta}>{releaseType(album.type)}</p>}
         <p className={styles.meta}>{album.year}</p>
+        {album.played && <p className={styles.meta}>{DateTime.fromISO(album.played).toRelative()}</p>}
       </div>
     </Link>
   )

@@ -2,15 +2,14 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { session } from '../api/client';
-import { getArtist, getArtists } from '../api/artist';
-import { getAlbum } from '../api/album';
+import { getAlbum, getAlbums } from '../api/album';
 
-export function useArtists(session: session | null) {
-  console.log('useArtists', session);
+export function useAlbums(session: session | null) {
+  console.log('useALBUMS', session);
 
   return useQuery({
-    queryKey: ["artists", session],
-    queryFn: () => getArtists(session!)
+    queryKey: ["albums", session],
+    queryFn: () => getAlbums(session!)
   });
 }
 

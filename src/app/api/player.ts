@@ -244,14 +244,17 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     if (savedPlayer) {
       try {
-        const { song, time } = JSON.parse(savedPlayer);
+        const { song, time, queue, currentIndex } = JSON.parse(savedPlayer);
 
         audio.src = song.url;
         audio.currentTime = time;
 
         set({
           currentSong: song,
-          currentTime: time
+          duration: audio.duration || 0,
+          currentTime: time,
+          queue: queue || [],
+          currentIndex: currentIndex || -1
         });
       } catch {
         localStorage.removeItem("player");
@@ -293,10 +296,10 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
 
     usePlayer.setState({currentTime: audio.currentTime});
 
-    const { currentSong, nowPlaying } = usePlayer.getState();
+    const { currentSong, nowPlaying, queue, currentIndex } = usePlayer.getState();
 
     if (currentSong) {
-      localStorage.setItem("player", JSON.stringify({ song: currentSong, time }));
+      localStorage.setItem("player", JSON.stringify({ song: currentSong, time, queue, currentIndex }));
 
       if (nowPlaying && toScrobble && !scrobbled) {
         const validScrobble = audio.currentTime > 240 || (currentSong.duration && audio.currentTime > currentSong.duration * 0.5);
@@ -333,7 +336,7 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
     let index;
     let swapAudio = false;
 
-    if (queue.length == 1 || loop == "once") {
+    if (queue.length == 1 && loop) {
       index = currentIndex;
     } else if (queue.length > 1 && loop == true) {
       index = currentIndex + 1;
@@ -356,6 +359,11 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
       usePlayer.setState({ nowPlaying: false });
       return;
     }
+
+    if (toScrobble) sendNowPlaying(session, next.id);
+
+    scrobbled = false;
+    trackStartTime = Date.now();
 
     // swap
     let newAudio = currentAudio;
