@@ -132,3 +132,24 @@
   --shadow: none;*/
   border-radius: 50px;
 }
+
+.explicit {
+  --w: 14px;
+  width: var(--w);
+  min-width: var(--w);
+  height: var(--w);
+  border-radius: 3px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 10px;
+  line-height: 6px;
+
+  background-color: oklch(var(--b2));
+  color: oklch(var(--c2));
+
+  position: relative;
+  top: 2px;
+}

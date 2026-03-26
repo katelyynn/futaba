@@ -92,6 +92,7 @@ export function Player() {
         <div className={styles.songInfo}>
           <strong className={styles.name}><Link href={`/album/${currentSong.albumId}`}>{currentSong.name}</Link></strong>
           <span className={styles.artists}>
+            {currentSong.explicit == "explicit" && <span className={styles.explicit}>E</span>}
             {currentSong.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != currentSong.artists.length - 1 && <p>,</p>}</span>)}
           </span>
         </div>

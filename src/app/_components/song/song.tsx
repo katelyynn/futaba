@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { parseDuration } from '@/app/tools/duration';
 import { usePlayer } from '@/app/api/player';
 import { SakuraButton } from '../button/button';
-import { IconDots, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerRecordFilled, IconPlaylistAdd } from '@tabler/icons-react';
+import { IconDots, IconExplicit, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerRecordFilled, IconPlaylistAdd } from '@tabler/icons-react';
 import { useSession } from '@/app/session';
 import { useSettings } from '@/app/api/settings';
 import { SakuraImage } from '../image/image';
@@ -16,6 +16,23 @@ import { SakuraMenu } from '../menu/menu';
 export function SakuraSongList({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.list}>
+      {children}
+    </div>
+  )
+}
+
+interface SakuraDiscProps {
+  number: number,
+  children: React.ReactNode
+}
+
+export function SakuraDisc({
+  number,
+  children
+}: SakuraDiscProps) {
+  return (
+    <div className={styles.disc}>
+      {number > 1 && <strong className={styles.discHeader}>Disc {number}</strong>}
       {children}
     </div>
   )
@@ -84,6 +101,7 @@ export function SakuraSong({
       <div className={styles.info}>
         <strong className={styles.name}>{song.name}</strong>
         <div className={styles.artists}>
+          {song.explicit == "explicit" && <span className={styles.explicit}>E</span>}
           {song.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>)}
         </div>
       </div>

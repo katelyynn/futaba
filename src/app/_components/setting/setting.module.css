@@ -51,6 +51,7 @@
   border-radius: 50px;
 
   background-color: oklch(var(--b3));
+  box-shadow: var(--normal-shadow), var(--interact-shadow);
 
   display: flex;
   align-items: center;
@@ -63,6 +64,7 @@
 
   &.primary {
     background-color: oklch(var(--h3));
+    box-shadow: var(--primary-shadow), 0 3px 12px oklch(var(--h4) / 32%), var(--interactable-outer);
 
     & > .toggleDot {
       background-color: oklch(var(--b7));

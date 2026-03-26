@@ -1,6 +1,7 @@
 "use client";
 
 import { album } from '../types/album';
+import { song } from '../types/song';
 import { request, session } from './client';
 import { getCoverArt } from './cover';
 import { createStreamURL } from './player';
@@ -41,14 +42,33 @@ export async function getAlbum(session: session, id: string) {
 
   const art = getCoverArt(session, album.coverArt);
 
-  const songs = [];
+  const songs: Record<string, song[]> = {};
+  const songsList: song[] = [];
   album.song.forEach(song => {
     const songArt = getCoverArt(session, song.coverArt);
 
-    songs.push({
+    const artists = [];
+    const unrelated = [];
+
+    song.contributors.forEach(contrib => {
+      unrelated.push(contrib.artist.id);
+    });
+
+    song.artists.forEach(artist => {
+      //if (artist.name == composer || display.includes(artist.name)) return;
+      if (unrelated.includes(artist.id)) return;
+
+      artists.push(artist);
+    });
+
+    const disc = song.discNumber || 0;
+
+    if (!songs[disc]) songs[disc] = [];
+
+    const newSong = {
       id: song.id,
       name: song.title,
-      artists: song.artists,
+      artists: artists,
       duration: song.duration,
       played: song.played,
       plays: song.plays,
@@ -67,7 +87,10 @@ export async function getAlbum(session: session, id: string) {
       url: createStreamURL(song.id, session),
       albumId: song.albumId,
       art: songArt
-    });
+    }
+
+    songsList.push(newSong);
+    songs[disc].push(newSong);
   });
 
   const type = album.isCompilation ? 'compilation' : album.releaseTypes[0]?.toLowerCase().trim() || 'album';
@@ -78,6 +101,7 @@ export async function getAlbum(session: session, id: string) {
     artists: album.artists,
     art: art,
     songs,
+    songsList: songsList,
     songCount: album.songCount,
     played: album.played,
     plays: album.plays,

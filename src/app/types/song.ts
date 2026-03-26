@@ -12,12 +12,12 @@ export interface song {
   bitRate: number,
   bpm: number,
   channelCount: number,
-  explicit: boolean,
+  explicit: string,
   genres: string[],
   index: number,
   suffix: string,
   path: string,
-  url: string,
+  url: URL,
   albumId: string,
   starred?: string
 }

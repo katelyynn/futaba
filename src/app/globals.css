@@ -906,6 +906,7 @@ h3 {
   line-height: 20px;
   color: oklch(var(--c1));
   font-weight: var(--font-weight-medium);
+  margin-bottom: var(--pad);
 }
 
 h4 {

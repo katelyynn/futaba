@@ -3,12 +3,15 @@
   align-items: center;
   gap: 30px;
   margin-bottom: var(--pad);
+  position: relative;
 }
 
 .info {
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  z-index: 1;
 }
 
 .name {
@@ -38,4 +41,23 @@
   display: flex;
   gap: 6px;
   margin-bottom: calc(var(--pad) * 2);
+
+  position: relative;
+  z-index: 1;
+}
+
+.background {
+  position: absolute;
+  inset: calc(-1 * var(--pad)) calc(-1 * var(--pad)) -100px calc(-1 * var(--pad));
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  --mask: linear-gradient(0deg, transparent, white);
+  mask-image: var(--mask);
+
+  opacity: 0.2;
+
+  z-index: 0;
 }

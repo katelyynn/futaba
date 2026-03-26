@@ -28,8 +28,8 @@
 
 .sliderRange {
   position: absolute;
-  background-color: oklch(var(--l3-c));
-  box-shadow: var(--primary-shadow);
+  background-color: oklch(var(--h3));
+  box-shadow: var(--primary-shadow), 0 3px 12px oklch(var(--h4) / 32%), var(--interactable-outer);
   border-radius: 50px;
   height: 100%;
 }
@@ -39,8 +39,8 @@
   width: 8px;
   height: 16px;
 
-  background-color: oklch(var(--l3-c));
-  box-shadow: var(--primary-shadow);
+  background-color: oklch(var(--h3));
+  box-shadow: var(--primary-shadow), 0 3px 12px oklch(var(--h4) / 32%), var(--interactable-outer);
   border-radius: var(--button-radius);
 
   transition-property: opacity, transform;
