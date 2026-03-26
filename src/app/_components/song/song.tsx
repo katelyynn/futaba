@@ -42,6 +42,7 @@ interface SakuraSongProps {
   song: song,
   inQueue?: boolean,
   showArt?: boolean,
+  hideIndex?: boolean,
   queueIndex?: number
 }
 
@@ -49,8 +50,11 @@ export function SakuraSong({
   song,
   inQueue = false,
   showArt = false,
+  hideIndex = false,
   queueIndex
 }: SakuraSongProps) {
+  if (inQueue) hideIndex = true;
+
   const { session } = useSession();
   const toScrobble = useSettings(s => s.scrobble);
   const play = usePlayer(s => s.play);
@@ -96,7 +100,7 @@ export function SakuraSong({
 
       play(song, session!, toScrobble);
     }}>
-      {!inQueue && <p className={`${styles.index} ${isPlaying && styles.activeIndex}`}>{!isPlaying ? song.index : nowPlaying ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} />}</p>}
+      {!hideIndex && <p className={`${styles.index} ${isPlaying && styles.activeIndex}`}>{!isPlaying ? song.index : nowPlaying ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} />}</p>}
       {showArt && <SakuraImage url={song.art} identify={styles.art} />}
       <div className={styles.info}>
         <strong className={styles.name}>{song.name}</strong>
