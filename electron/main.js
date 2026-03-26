@@ -13,7 +13,8 @@ function createWindow() {
     },
     title: "futaba",
     autoHideMenuBar: true,
-    frame: false
+    frame: false,
+    icon: path.join(__dirname, "icon", "futaba.ico")
   });
 
   mainWindow.loadURL("http://localhost:3000");
