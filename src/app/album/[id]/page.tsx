@@ -5,7 +5,7 @@ import { SakuraImage } from '@/app/_components/image/image';
 import { SakuraDisc, SakuraSong, SakuraSongList } from '@/app/_components/song/song';
 import { SakuraPage, SakuraSeparator, SakuraSplit } from '@/app/_components/split/split';
 import { ErrorHandler } from '@/app/errorHandler';
-import { useAlbum } from '@/app/hook/album';
+import { useAlbum, useAlbumInfo } from '@/app/hook/album';
 import { useSession } from '@/app/session';
 import { album_full } from '@/app/types/album';
 import { useParams } from 'next/navigation';
@@ -19,7 +19,7 @@ export default function Album() {
   const { data, isLoading, error } = useAlbum(session, id);
 
   if (isLoading) return <div>loading</div>;
-  if (error) return <ErrorHandler error={error} />
+  if (error) return <ErrorHandler error={error} />;
 
   console.log('album data', data);
 
@@ -41,9 +41,25 @@ export default function Album() {
         </SakuraSplit>
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
-          <h3>something</h3>
+          <h3>About</h3>
+          <About />
         </SakuraSplit>
       </SakuraPage>
     </>
   )
+
+  function About() {
+    const { data, isLoading, error } = useAlbumInfo(session, id);
+
+    if (isLoading) return <div>loading</div>;
+    if (error) return <ErrorHandler error={error} />;
+
+    console.log("info", data);
+
+    return (
+      <div>
+        {data.notes}
+      </div>
+    )
+  }
 }

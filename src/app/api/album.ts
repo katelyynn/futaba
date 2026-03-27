@@ -115,3 +115,9 @@ export async function getAlbum(session: session, id: string) {
     explicit: album.explicitStatus
   };
 }
+
+export async function getAlbumInfo(session: session, id: string) {
+  const res = await request(session, "getAlbumInfo2", { id });
+
+  return res.albumInfo;
+}
