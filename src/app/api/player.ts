@@ -157,7 +157,7 @@ export const usePlayer = create<playerState>((set, get) => ({
       const { currentIndex } = get();
       const newQueue = [...state.queue];
 
-      if (at) {
+      if (at != null) {
         newQueue.splice(at, 0, ...songs);
       } else {
         newQueue.push(...songs);
@@ -197,7 +197,6 @@ export const usePlayer = create<playerState>((set, get) => ({
 
   reorderQueue: (from, to) => {
     set(state => {
-      const { currentIndex } = get();
       const newQueue = [...state.queue];
       const [ moved ] = newQueue.splice(from, 1);
       newQueue.splice(to, 0, moved);

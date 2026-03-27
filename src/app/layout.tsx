@@ -6,6 +6,9 @@ import { SideNav } from './_components/nav/side_nav';
 import { TopNav } from './_components/nav/top_nav';
 import { Player } from './_components/player/player';
 import { SakuraAside } from './_components/aside/aside';
+import { closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { usePlayer } from './api/player';
+import { Draggable } from './_components/drag/drag';
 
 const funnelSans = Funnel_Sans({
   variable: "--font-funnel_sans",
@@ -30,13 +33,15 @@ export default function RootLayout({
       <body data-futaba--theme="oled">
         <Provider>
           <TopNav />
-          <div className="middle">
-            <SideNav />
-            <main>
-              {children}
-            </main>
-            <SakuraAside />
-          </div>
+          <Draggable>
+            <div className="middle">
+              <SideNav />
+              <main>
+                {children}
+              </main>
+              <SakuraAside />
+            </div>
+          </Draggable>
           <Player />
         </Provider>
       </body>
