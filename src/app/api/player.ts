@@ -174,7 +174,6 @@ export const usePlayer = create<playerState>((set, get) => ({
     if (!audio) return;
 
     set(state => {
-      const { currentIndex } = get();
       const newQueue = [...state.queue];
       newQueue.splice(index, 1);
 
@@ -186,7 +185,7 @@ export const usePlayer = create<playerState>((set, get) => ({
         newIndex = -1;
       }
 
-      preloadNext(newQueue[currentIndex + 1]);
+      preloadNext(newQueue[newIndex + 1]);
 
       return {
         queue: newQueue,
@@ -212,7 +211,7 @@ export const usePlayer = create<playerState>((set, get) => ({
         newIndex++;
       }
 
-      preloadNext(newQueue[currentIndex + 1]);
+      preloadNext(newQueue[newIndex + 1]);
 
       return {
         queue: newQueue,
