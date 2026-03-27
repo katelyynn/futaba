@@ -138,6 +138,14 @@ export function SakuraSong({
             {song.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>)}
           </div>
         </div>
+        {(!inQueue && song.plays) && (
+          <SakuraTooltip content="Play count">
+            <div className={styles.plays}>
+              <IconPlayerPlayFilled size={14} />
+              <span className={styles.playCount}>{song.plays.toLocaleString()}</span>
+            </div>
+          </SakuraTooltip>
+        )}
         <div className={styles.actions}>
           <SakuraMenu content={menu}>
             <SakuraButton elem="button" identify={`${styles.action} ${styles.menuButton}`}>

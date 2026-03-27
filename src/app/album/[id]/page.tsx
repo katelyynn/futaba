@@ -49,7 +49,17 @@ export default function Album() {
   )
 
   function About() {
-    const { data, isLoading, error } = useAlbumInfo(session, id);
+    const comment = (data as album_full).songsList[0]?.comment;
+
+    if (comment) {
+      return (
+        <div>
+          {comment}
+        </div>
+      )
+    }
+
+    /*const { data, isLoading, error } = useAlbumInfo(session, id);
 
     if (isLoading) return <div>loading</div>;
     if (error) return <ErrorHandler error={error} />;
@@ -60,6 +70,6 @@ export default function Album() {
       <div>
         {data.notes}
       </div>
-    )
+    )*/
   }
 }

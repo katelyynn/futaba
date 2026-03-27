@@ -151,3 +151,15 @@
 .loved {
   color: oklch(var(--l3-c));
 }
+
+.plays {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  color: oklch(var(--col) / 60%);
+}
+
+.playCount {
+  width: 100px;
+}

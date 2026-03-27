@@ -72,7 +72,7 @@ export async function getAlbum(session: session, id: string) {
       artists: artists,
       duration: song.duration,
       played: song.played,
-      plays: song.plays,
+      plays: song.playCount,
       created: song.created,
       comment: song.comment,
       contentType: song.contentType,
