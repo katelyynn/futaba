@@ -56,9 +56,11 @@ let toScrobble = false;
 let scrobbled = false;
 let trackStartTime = 0;
 
-function preloadNext() {
-  const { queue, currentIndex } = usePlayer.getState();
-  const next = queue[currentIndex + 1];
+function preloadNext(next?: song) {
+  if (!next) {
+    const { queue, currentIndex } = usePlayer.getState();
+    next = queue[currentIndex + 1];
+  }
 
   if (!nextAudio || !next) return;
 
@@ -152,6 +154,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
   addToQueue: (songs, at) => {
     set(state => {
+      const { currentIndex } = get();
       const newQueue = [...state.queue];
 
       if (at) {
@@ -160,7 +163,7 @@ export const usePlayer = create<playerState>((set, get) => ({
         newQueue.push(...songs);
       }
 
-      preloadNext();
+      preloadNext(newQueue[currentIndex + 1]);
 
       return { queue: newQueue };
     })
@@ -171,6 +174,7 @@ export const usePlayer = create<playerState>((set, get) => ({
     if (!audio) return;
 
     set(state => {
+      const { currentIndex } = get();
       const newQueue = [...state.queue];
       newQueue.splice(index, 1);
 
@@ -182,7 +186,7 @@ export const usePlayer = create<playerState>((set, get) => ({
         newIndex = -1;
       }
 
-      preloadNext();
+      preloadNext(newQueue[currentIndex + 1]);
 
       return {
         queue: newQueue,
@@ -194,6 +198,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
   reorderQueue: (from, to) => {
     set(state => {
+      const { currentIndex } = get();
       const newQueue = [...state.queue];
       const [ moved ] = newQueue.splice(from, 1);
       newQueue.splice(to, 0, moved);
@@ -207,7 +212,7 @@ export const usePlayer = create<playerState>((set, get) => ({
         newIndex++;
       }
 
-      preloadNext();
+      preloadNext(newQueue[currentIndex + 1]);
 
       return {
         queue: newQueue,
