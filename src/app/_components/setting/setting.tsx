@@ -14,7 +14,8 @@ interface SakuraSettingProps {
   onChange: (v: settingValue) => void,
   min?: number,
   max?: number,
-  step?: number
+  step?: number,
+  showSliderTooltipAs?: "raw" | "time" | "percent",
 }
 
 export function SakuraSetting({
@@ -24,7 +25,8 @@ export function SakuraSetting({
   onChange,
   min = 0,
   max = 1,
-  step
+  step,
+  showSliderTooltipAs = "raw"
 }: SakuraSettingProps) {
   const settingInfo = (
     <div className={styles.settingInfo}>
@@ -48,7 +50,7 @@ export function SakuraSetting({
     return (
       <div className={`${styles.setting} ${styles.settingSlider}`}>
         {settingInfo}
-        <SakuraSlider value={value} min={min} max={max} step={step} onChange={value => onChange(value)} />
+        <SakuraSlider value={value} min={min} max={max} step={step} onChange={value => onChange(value)} showTooltipAs={showSliderTooltipAs} />
       </div>
     )
   }

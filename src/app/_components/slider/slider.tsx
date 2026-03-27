@@ -6,6 +6,7 @@ import { parseDuration } from '@/app/tools/duration';
 interface SakuraSliderProps {
   className?: string,
   showTooltip?: boolean,
+  showTooltipAs?: "raw" | "time" | "percent",
   value: number,
   onChange: (v: number) => void,
   min?: number,
@@ -16,6 +17,7 @@ interface SakuraSliderProps {
 export function SakuraSlider({
   className,
   showTooltip = true,
+  showTooltipAs = "raw",
   value,
   onChange,
   min = 0,
@@ -34,7 +36,7 @@ export function SakuraSlider({
   if (!showTooltip) return slider;
 
   return (
-    <SakuraTooltip content={min == 0 && max == 1 ? `${Math.round(value * 100)}%` : parseDuration(value)}>
+    <SakuraTooltip content={showTooltipAs == "percent" ? `${Math.round(((value - min) / (max - min)) * 100)}%` : showTooltipAs == "time" ? parseDuration(value) : value}>
       {slider}
     </SakuraTooltip>
   )

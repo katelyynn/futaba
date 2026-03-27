@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { DEFAULT_VOLUME } from './player';
 
 export const useSettings = create(persist(
   (set) => ({
-    volume: 0.5,
+    volume: DEFAULT_VOLUME,
     theme: "darker",
     scrobble: true,
     waveform: false,

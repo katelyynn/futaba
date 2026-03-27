@@ -1,6 +1,7 @@
 "use client";
 
 import { SakuraSetting, SakuraSettingGroup } from '../_components/setting/setting';
+import { MAX_VOLUME } from '../api/player';
 import { useSettings } from '../api/settings';
 
 export default function SettingsPage() {
@@ -17,7 +18,7 @@ export default function SettingsPage() {
         <SakuraSetting name={"Scrobble to server"} body={"Must be configured in your Navidrome server"} value={scrobble} onChange={setScrobble} />
       </SakuraSettingGroup>
       <SakuraSettingGroup>
-        <SakuraSetting name={"Audio volume"} value={volume} onChange={setVolume} />
+        <SakuraSetting name={"Audio volume"} value={volume} onChange={setVolume} max={MAX_VOLUME} />
       </SakuraSettingGroup>
     </>
   )

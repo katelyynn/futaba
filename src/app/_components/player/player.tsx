@@ -1,6 +1,6 @@
 "use client";
 
-import { getAudio, usePlayer } from '@/app/api/player';
+import { getAudio, MAX_VOLUME, usePlayer } from '@/app/api/player';
 import styles from "./player.module.css";
 import { song } from '@/app/types/song';
 import { SakuraButton } from '../button/button';
@@ -139,7 +139,7 @@ export function Player() {
         <div className={styles.bottom}>
           <p className={styles.time}>{parseDuration(currentTime)}</p>
           <div className={styles.playerBar}>
-            <SakuraSlider className={styles.playerRoot} value={currentTime} min={0} max={duration || 0} onChange={value => seek(value)} showTooltip={false} />
+            <SakuraSlider className={styles.playerRoot} value={currentTime} min={0} max={duration || 0} onChange={value => seek(value)} />
           </div>
           <p className={styles.time}>{parseDuration(duration)}</p>
         </div>
@@ -172,7 +172,7 @@ export function Player() {
               {volume == 0 ? <IconVolume3 size={16} /> : <IconVolume size={16} />}
             </SakuraButton>
           </SakuraTooltip>
-          <SakuraSlider className={styles.volumeRoot} value={volume} min={0} max={1} step={0.01} onChange={value => setVolume(value)} />
+          <SakuraSlider className={styles.volumeRoot} value={volume} min={0} max={MAX_VOLUME} step={0.01} onChange={value => setVolume(value)} showTooltipAs="percent" />
         </div>
       </div>
     </div>

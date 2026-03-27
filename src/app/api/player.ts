@@ -4,6 +4,9 @@ import { useSession } from '../session';
 import { createAuth, session } from './client';
 import { sendNowPlaying, scrobble } from './scrobble';
 
+export const DEFAULT_VOLUME = 0.3;
+export const MAX_VOLUME = 0.6;
+
 interface playerState {
   queue: song[],
   currentIndex: number,
