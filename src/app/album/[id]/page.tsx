@@ -33,7 +33,7 @@ export default function Album() {
             <SakuraDisc number={Number(disc)} key={disc}>
               <SakuraSongList>
                 {songs.map(song => (
-                  <SakuraSong song={song} key={song.id} />
+                  <SakuraSong song={song} key={song.id} songsList={(data as album_full).songsList} />
                 ))}
               </SakuraSongList>
             </SakuraDisc>

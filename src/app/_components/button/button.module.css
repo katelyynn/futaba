@@ -78,8 +78,15 @@
   --bg: transparent;
   --bg-hov: oklch(var(--b2) / 20%);
   --bg-atv: oklch(var(--b2) / 30%);
-  --shadow: none;
+  --shadow: none !important;
 
   width: 100%;
   min-width: 150px;
+
+  &.primary {
+    --bg: oklch(var(--h4) / 20%);
+    --bg-hov: oklch(var(--h4) / 30%);
+    --bg-atv: oklch(var(--h4) / 40%);
+    --col: oklch(var(--l3-c));
+  }
 }

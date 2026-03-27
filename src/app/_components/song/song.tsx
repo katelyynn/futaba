@@ -45,6 +45,7 @@ interface SakuraSongProps {
   inQueue?: boolean,
   showArt?: boolean,
   hideIndex?: boolean,
+  songsList?: song[],
   queueIndex?: number
 }
 
@@ -53,6 +54,7 @@ export function SakuraSong({
   inQueue = false,
   showArt = false,
   hideIndex = false,
+  songsList,
   queueIndex
 }: SakuraSongProps) {
   if (inQueue) hideIndex = true;
@@ -73,14 +75,40 @@ export function SakuraSong({
   const lovedMap = usePlayer(s => s.loved);
   const setLoved = usePlayer(s => s.setLoved);
 
+  const loved = lovedMap[song.id] ?? !!song.starred;
+
+  function playSong() {
+    if (songsList) {
+      clearQueue();
+      addToQueue(songsList);
+    } else {
+      const inQueue = queue.findIndex(s => s.id == song.id) > -1;
+      if (!inQueue) clearQueue();
+    }
+
+    play(song, session!, toScrobble);
+  }
+
+  async function loveSong() {
+    const currentState = loved;
+    const newState = !currentState;
+
+    try {
+      await setLove(session!, song.id, currentState, "song");
+
+      setLoved(song.id, newState);
+    } catch {
+      setLoved(song.id, currentState);
+    }
+  }
+
   const menu = (
     <>
-      <SakuraButton elem="button" identifyOwn="menu" onClick={() => {
-        const inQueue = queue.findIndex(s => s.id == song.id) > -1;
-        if (!inQueue) clearQueue();
-
-        play(song, session!, toScrobble);
-      }}>
+      <SakuraButton primary={loved} elem="button" identifyOwn="menu" onClick={() => loveSong()}>
+        {loved ? <IconHeartFilled size={16} /> : <IconHeart size={16} />}
+        {loved ? "Unlove song" : "Love song"}
+      </SakuraButton>
+      <SakuraButton elem="button" identifyOwn="menu" onClick={() => playSong()}>
         <IconPlayerPlayFilled size={16} />
         Play
       </SakuraButton>
@@ -98,16 +126,9 @@ export function SakuraSong({
     </>
   );
 
-  const loved = lovedMap[song.id] ?? !!song.starred;
-
   return (
     <SakuraContextMenu content={menu}>
-      <div className={`${styles.song} ${isPlaying && styles.active}`} onDoubleClick={() => {
-        const inQueue = queue.findIndex(s => s.id == song.id) > -1;
-        if (!inQueue) clearQueue();
-
-        play(song, session!, toScrobble);
-      }}>
+      <div className={`${styles.song} ${isPlaying && styles.active}`} onDoubleClick={() => playSong()}>
         {!hideIndex && <p className={`${styles.index} ${isPlaying && styles.activeIndex}`}>{!isPlaying ? song.index : nowPlaying ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} />}</p>}
         {showArt && <SakuraImage url={song.art} identify={styles.art} />}
         <div className={styles.info}>
@@ -124,18 +145,7 @@ export function SakuraSong({
             </SakuraButton>
           </SakuraMenu>
           <SakuraTooltip content={loved ? "Loved" : "Love"}>
-            <SakuraButton elem="button" identify={`${styles.action} ${loved && styles.dontHide}`} onClick={async () => {
-              const currentState = loved;
-              const newState = !currentState;
-
-              try {
-                await setLove(session!, song.id, currentState, "song");
-
-                setLoved(song.id, newState);
-              } catch {
-                setLoved(song.id, currentState);
-              }
-            }}>
+            <SakuraButton elem="button" identify={`${styles.action} ${loved && styles.dontHide}`} onClick={() => loveSong()}>
               {loved ? <IconHeartFilled className={styles.loved} size={16} /> : <IconHeart size={16} />}
             </SakuraButton>
           </SakuraTooltip>
