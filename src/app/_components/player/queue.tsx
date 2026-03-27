@@ -10,7 +10,7 @@ export function SakuraQueue() {
   return (
     <div className={styles.queue}>
       <SakuraSongList>
-        {queue.map((song, i) => <SakuraSong song={song} key={song.id} inQueue showArt queueIndex={i} />)}
+        {queue.map((song, i) => <SakuraSong song={song} key={i} inQueue showArt queueIndex={i} />)}
       </SakuraSongList>
     </div>
   )
