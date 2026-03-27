@@ -160,8 +160,9 @@
   font-size: 10px;
   line-height: 6px;
 
-  background-color: oklch(var(--b2));
-  color: oklch(var(--c2));
+  background-color: oklch(var(--c3));
+  color: oklch(var(--b6));
+  font-weight: var(--font-weight-bold);
 
   position: relative;
   top: 2px;
