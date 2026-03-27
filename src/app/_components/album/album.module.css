@@ -16,6 +16,10 @@
     --w: auto !important;
     border-radius: var(--item-small-radius) !important;
   }
+
+  .meta {
+    margin-top: 4px;
+  }
 }
 
 .albumSide {
@@ -106,9 +110,13 @@
   gap: 2px;
 }
 
+.artists {
+  color: oklch(var(--c2) / 80%);
+}
+
 .meta {
   font-size: 13px;
-  color: oklch(var(--c2) / 80%);
+  color: oklch(var(--c3));
 }
 
 .listSide {

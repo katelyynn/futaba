@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import styles from "./top_nav.module.css";
 import { SakuraButton } from '../button/button';
-import { IconChevronDown, IconChevronLeft, IconChevronRight, IconFolderSearch, IconMaximize, IconMinus, IconSquare, IconX } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronLeft, IconChevronRight, IconFolderSearch, IconLogout, IconMaximize, IconMinus, IconSquare, IconUser, IconUserQuestion, IconX } from '@tabler/icons-react';
 import { SakuraTooltip } from '../tooltip/tooltip';
 import { useSession } from '@/app/session';
 import { startScan } from '@/app/api/scan';
 import { SakuraInput } from '../input/input';
 import { useRouter } from 'next/navigation';
+import { SakuraMenu } from '../menu/menu';
 
 export function TopNav() {
   const { session } = useSession();
@@ -38,6 +39,7 @@ export function TopNav() {
         }} />
       </div>
       <div className={`${styles.controls} ${styles.windowControls}`}>
+        <AuthStatus />
         <SakuraTooltip content="Start scan">
           <SakuraButton elem="button" identify={`${styles.windowControl}`} onClick={() => startScan(session!)}>
             <IconFolderSearch size={iconSize} />
@@ -55,4 +57,31 @@ export function TopNav() {
       </div>
     </nav>
   );
+}
+
+export function AuthStatus() {
+  const { session, setSession } = useSession();
+
+  if (!session) {
+    return (
+      <SakuraButton elem="link" href="/auth/login" identify={`${styles.windowControl}`}>
+        <IconUserQuestion size={16} />
+        Not logged in
+      </SakuraButton>
+    );
+  }
+
+  return (
+    <SakuraMenu content={(
+      <SakuraButton elem="link" identifyOwn="menu" href="/auth/logout">
+        <IconLogout size={16} />
+        Logout
+      </SakuraButton>
+    )}>
+      <SakuraButton elem="button" identify={`${styles.windowControl}`}>
+        <IconUser size={16} />
+        {session.username}
+      </SakuraButton>
+    </SakuraMenu>
+  )
 }

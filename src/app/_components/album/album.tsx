@@ -9,19 +9,41 @@ import { useSession } from '@/app/session';
 import { usePlayer } from '@/app/api/player';
 import { usePathname } from 'next/navigation';
 import { song } from '@/app/types/song';
-import { IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
+import { IconCalendar, IconCalendarWeekFilled, IconDisc, IconHeadphonesFilled, IconMusic, IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
+import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '../meta/meta';
 
 export function SakuraAlbum({ album, showArtist = false }: { album: album, showArtist?: boolean }) {
   return (
     <Link href={`/album/${album.id}`} className={styles.album}>
       <SakuraImage url={album.art} type="album" identify={styles.art} />
       <div className={styles.info}>
+        {(album.type || album.played) && (
+          <SakuraMetaList>
+            {album.type && (
+              <SakuraMeta name="Release type">
+                {releaseType(album.type)}
+              </SakuraMeta>
+            )}
+            {album.played && (
+              <SakuraMeta name="Last listened">
+                <IconHeadphonesFilled size={META_ICON_SIZE} />
+                {DateTime.fromISO(album.played).toRelative({ style: "short" })}
+              </SakuraMeta>
+            )}
+          </SakuraMetaList>
+        )}
         <strong className={styles.name}>{album.name}</strong>
         {showArtist && <span className={styles.artists}>{album.artists.map(artist => <p className={styles.artist} key={artist.id}>{artist.name}</p>)}</span>}
-        <p className={styles.meta}>{album.songs} songs</p>
-        {album.type && <p className={styles.meta}>{releaseType(album.type)}</p>}
-        <p className={styles.meta}>{album.year}</p>
-        {album.played && <p className={styles.meta}>{DateTime.fromISO(album.played).toRelative()}</p>}
+        <SakuraMetaList>
+          <SakuraMeta name="Release date">
+            <IconCalendarWeekFilled size={META_ICON_SIZE} />
+            {album.year || "????"}
+          </SakuraMeta>
+          <SakuraMeta name="Song count">
+            <IconMusic size={META_ICON_SIZE} />
+            {album.songs} song{album.songs > 1 && "s"}
+          </SakuraMeta>
+        </SakuraMetaList>
       </div>
     </Link>
   )

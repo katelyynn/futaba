@@ -30,7 +30,7 @@ export default function Search() {
         <SakuraGroup name="Albums">
           <SakuraAlbumList>
             {data.albums.map(album => (
-              <SakuraAlbum album={album} key={album.id} />
+              <SakuraAlbum album={album} key={album.id} showArtist />
             ))}
           </SakuraAlbumList>
         </SakuraGroup>

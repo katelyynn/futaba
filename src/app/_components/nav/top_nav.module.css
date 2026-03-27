@@ -12,7 +12,7 @@
   align-items: center;
   gap: 10px;
 
-  width: 200px;
+  flex: 1;
 }
 
 .controls {
@@ -21,7 +21,7 @@
 }
 
 .windowControls {
-  width: 200px;
+  flex: 1;
   justify-content: end;
 }
 
@@ -33,7 +33,7 @@
   --button-sides: var(--button-verts);
   --button-verts: 9px;
 
-  width: 34px;
+  min-width: 34px;
   height: 34px;
 
   justify-content: center;

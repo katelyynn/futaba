@@ -3,7 +3,6 @@
 import styles from "./side_nav.module.css";
 import { SakuraButton } from '../button/button';
 import { usePathname } from 'next/navigation';
-import { AuthStatus } from './auth';
 import { IconCarambola, IconDisc, IconHeart, IconMusic, IconSettingsFilled, IconSmartHome } from '@tabler/icons-react';
 import { useSession } from '@/app/session';
 import { useAlbums } from '@/app/hook/album';
@@ -43,7 +42,6 @@ export function SideNav() {
         </SakuraButton>
       </ul>
       <SideAlbumList />
-      <AuthStatus />
     </nav>
   );
 }

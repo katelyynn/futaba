@@ -64,7 +64,16 @@ function preloadNext() {
 export const usePlayer = create<playerState>((set, get) => ({
   queue: [],
   currentIndex: -1,
-  currentSong: null,
+  currentSong: {
+    id: '',
+    name: '...',
+    artists: [
+      {
+        id: '',
+        name: '...'
+      }
+    ]
+  },
   nowPlaying: false,
   currentTime: 0,
   duration: 0,

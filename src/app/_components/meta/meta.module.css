@@ -1,0 +1,14 @@
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  color: oklch(var(--c3));
+  font-size: 13px;
+}
+
+.list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
