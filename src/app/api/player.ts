@@ -366,9 +366,13 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
     let index;
     let swapAudio = false;
 
-    if (queue.length == 1 && loop) {
+    console.log("queue length", queue.length, "loop is", loop, loop == true, loop === true);
+
+    if ((queue.length == 1 && loop) || loop == "once") {
+      console.log("length is 1 and loop enabled");
       index = currentIndex;
-    } else if (queue.length > 1 && loop == true) {
+    } else if (queue.length > 1 && loop === true) {
+      console.log("length over 1 and loop is true");
       index = currentIndex + 1;
 
       if (index > queue.length - 1) {
@@ -377,9 +381,11 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
         swapAudio = true;
       }
     } else if (queue.length > 1) {
+      console.log("length over 1");
       index = currentIndex + 1;
       swapAudio = true;
     } else {
+      usePlayer.setState({ nowPlaying: false });
       return;
     }
 
