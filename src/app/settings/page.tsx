@@ -18,7 +18,7 @@ export default function SettingsPage() {
         <SakuraSetting name={"Scrobble to server"} body={"Must be configured in your Navidrome server"} value={scrobble} onChange={setScrobble} />
       </SakuraSettingGroup>
       <SakuraSettingGroup>
-        <SakuraSetting name={"Audio volume"} value={volume} onChange={setVolume} max={MAX_VOLUME} />
+        <SakuraSetting name={"Audio volume"} value={volume} onChange={setVolume} max={MAX_VOLUME} showSliderTooltipAs="percent" />
       </SakuraSettingGroup>
     </>
   )
