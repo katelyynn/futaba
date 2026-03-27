@@ -9,7 +9,7 @@ import { useSession } from '@/app/session';
 import { usePlayer } from '@/app/api/player';
 import { usePathname } from 'next/navigation';
 import { song } from '@/app/types/song';
-import { IconCalendar, IconCalendarWeekFilled, IconDisc, IconHeadphonesFilled, IconMusic, IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
+import { IconCalendar, IconCalendarWeekFilled, IconDisc, IconHeadphonesFilled, IconHeartFilled, IconMusic, IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
 import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '../meta/meta';
 
 export function SakuraAlbum({ album, showArtist = false }: { album: album, showArtist?: boolean }) {
@@ -17,8 +17,13 @@ export function SakuraAlbum({ album, showArtist = false }: { album: album, showA
     <Link href={`/album/${album.id}`} className={styles.album}>
       <SakuraImage url={album.art} type="album" identify={styles.art} />
       <div className={styles.info}>
-        {(album.type || album.played) && (
+        {(album.type || album.played || album.starred) && (
           <SakuraMetaList>
+            {album.starred && (
+              <SakuraMeta name="Loved">
+                <IconHeartFilled className={styles.loved} size={META_ICON_SIZE} />
+              </SakuraMeta>
+            )}
             {album.type && (
               <SakuraMeta name="Release type">
                 {releaseType(album.type)}

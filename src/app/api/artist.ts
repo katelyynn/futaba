@@ -44,7 +44,8 @@ export async function getArtist(session: session, id: string) {
       created: album.created,
       art: art,
       date: album.releaseDate,
-      year: album.year
+      year: album.year,
+      starred: album.starred
     });
   });
 

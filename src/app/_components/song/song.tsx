@@ -7,11 +7,13 @@ import React, { useEffect, useState } from 'react';
 import { parseDuration } from '@/app/tools/duration';
 import { usePlayer } from '@/app/api/player';
 import { SakuraButton } from '../button/button';
-import { IconDots, IconExplicit, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerRecordFilled, IconPlaylistAdd } from '@tabler/icons-react';
+import { IconDots, IconExplicit, IconHeart, IconHeartFilled, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerRecordFilled, IconPlaylistAdd } from '@tabler/icons-react';
 import { useSession } from '@/app/session';
 import { useSettings } from '@/app/api/settings';
 import { SakuraImage } from '../image/image';
 import { SakuraContextMenu, SakuraMenu } from '../menu/menu';
+import { SakuraTooltip } from '../tooltip/tooltip';
+import { setLove } from '@/app/api/love';
 
 export function SakuraSongList({ children }: { children: React.ReactNode }) {
   return (
@@ -93,6 +95,8 @@ export function SakuraSong({
     </>
   );
 
+  const loved = !!song.starred;
+
   return (
     <SakuraContextMenu content={menu}>
       <div className={`${styles.song} ${isPlaying && styles.active}`} onDoubleClick={() => {
@@ -112,10 +116,47 @@ export function SakuraSong({
         </div>
         <div className={styles.actions}>
           <SakuraMenu content={menu}>
-            <SakuraButton elem="button" identify={styles.action}>
+            <SakuraButton elem="button" identify={`${styles.action} ${styles.menuButton}`}>
               <IconDots size={16} />
             </SakuraButton>
           </SakuraMenu>
+          <SakuraTooltip content={loved ? "Loved" : "Love"}>
+            <SakuraButton elem="button" identify={`${styles.action} ${loved && styles.dontHide}`} onClick={async () => {
+              const currentState = loved;
+              const newState = !currentState;
+
+              try {
+                await setLove(session!, song.id, currentState, "song");
+                song.starred = newState ? "true" : undefined;
+
+                usePlayer.setState(state => ({
+                  currentSong: state.currentSong?.id == song.id ? {
+                    ...state.currentSong,
+                    starred: newState ? "true" : undefined
+                  } : state.currentSong,
+                  queue: state.queue.map(s => s.id == song.id ? {
+                    ...s,
+                    starred: newState ? "true" : undefined
+                  } : s)
+                }));
+              } catch {
+                song.starred = currentState ? "true" : undefined;
+
+                usePlayer.setState(state => ({
+                  currentSong: state.currentSong?.id == song.id ? {
+                    ...state.currentSong,
+                    starred: currentState ? "true" : undefined
+                  } : state.currentSong,
+                  queue: state.queue.map(s => s.id == song.id ? {
+                    ...s,
+                    starred: currentState ? "true" : undefined
+                  } : s)
+                }));
+              }
+            }}>
+              {loved ? <IconHeartFilled className={styles.loved} size={16} /> : <IconHeart size={16} />}
+            </SakuraButton>
+          </SakuraTooltip>
         </div>
         {!inQueue && <p className={styles.duration}>{parseDuration(song.duration)}</p>}
       </div>

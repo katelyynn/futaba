@@ -27,7 +27,8 @@ export async function getAlbums(session: session, size = 100) {
       created: album.created,
       art: art,
       year: album.year,
-      explicit: album.explicitStatus
+      explicit: album.explicitStatus,
+      starred: album.starred
     });
   });
 
@@ -86,7 +87,8 @@ export async function getAlbum(session: session, id: string) {
       path: song.path,
       url: createStreamURL(song.id, session),
       albumId: song.albumId,
-      art: songArt
+      art: songArt,
+      starred: song.starred
     }
 
     songsList.push(newSong);

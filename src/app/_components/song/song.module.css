@@ -23,7 +23,7 @@
   transition-timing-function: var(--trans-function);
 
   &:not(:hover, :focus-within) {
-    .action {
+    .action:not(.dontHide) {
       opacity: 0;
     }
   }
@@ -111,6 +111,11 @@
   gap: 2px;
 }
 
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
 .action {
   --button-verts: var(--button-sides);
   --button-sides: 6px;
@@ -141,4 +146,8 @@
 
   position: relative;
   top: 2px;
+}
+
+.loved {
+  color: oklch(var(--l3-c));
 }

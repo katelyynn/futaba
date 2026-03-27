@@ -27,6 +27,13 @@ export default function Search() {
   return (
     <>
       <SakuraGroupList>
+        <SakuraGroup name="Artists">
+          <SakuraArtistList>
+            {data.artists.map(artist => (
+              <SakuraArtist artist={artist} key={artist.id} />
+            ))}
+          </SakuraArtistList>
+        </SakuraGroup>
         <SakuraGroup name="Albums">
           <SakuraAlbumList>
             {data.albums.map(album => (
@@ -40,13 +47,6 @@ export default function Search() {
               <SakuraSong song={song} key={song.id} showArt hideIndex />
             ))}
           </SakuraSongList>
-        </SakuraGroup>
-        <SakuraGroup name="Artists">
-          <SakuraArtistList>
-            {data.artists.map(artist => (
-              <SakuraArtist artist={artist} key={artist.id} />
-            ))}
-          </SakuraArtistList>
         </SakuraGroup>
       </SakuraGroupList>
     </>

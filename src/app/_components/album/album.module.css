@@ -124,3 +124,7 @@
   flex-direction: column;
   gap: 2px;
 }
+
+.loved {
+  color: oklch(var(--l3-c));
+}

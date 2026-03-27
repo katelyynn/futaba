@@ -9,7 +9,7 @@ import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
 import React, { useEffect } from 'react';
 import { parseDuration } from '@/app/tools/duration';
-import { IconArrowsShuffle2, IconArticleFilled, IconMicrophone2, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconRepeat, IconRepeatOff, IconRepeatOnce, IconVolume, IconVolume3 } from '@tabler/icons-react';
+import { IconArrowsShuffle2, IconArticleFilled, IconHeartFilled, IconMicrophone2, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconRepeat, IconRepeatOff, IconRepeatOnce, IconVolume, IconVolume3 } from '@tabler/icons-react';
 import { useSettings } from '@/app/api/settings';
 import { useSession } from '@/app/session';
 import { SakuraTooltip } from '../tooltip/tooltip';
@@ -139,7 +139,7 @@ export function Player() {
         <div className={styles.bottom}>
           <p className={styles.time}>{parseDuration(currentTime)}</p>
           <div className={styles.playerBar}>
-            <SakuraSlider className={styles.playerRoot} value={currentTime} min={0} max={duration || 0} onChange={value => seek(value)} />
+            <SakuraSlider className={styles.playerRoot} value={currentTime} min={0} max={duration || 0} onChange={value => seek(value)} showTooltip={false} />
           </div>
           <p className={styles.time}>{parseDuration(duration)}</p>
         </div>
@@ -188,6 +188,7 @@ export function PlaybackSongPreview({
       <div className={styles.songInfo}>
         <strong className={styles.name}><Link href={`/album/${currentSong.albumId}`}>{currentSong.name}</Link></strong>
         <span className={styles.artists}>
+          {currentSong.starred && <IconHeartFilled className={styles.loved} size={14} />}
           {currentSong.explicit == "explicit" && <span className={styles.explicit}>E</span>}
           {currentSong.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != currentSong.artists.length - 1 && <p>,</p>}</span>)}
         </span>

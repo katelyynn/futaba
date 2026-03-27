@@ -3,7 +3,7 @@ import { getCoverArt } from './cover';
 import { createStreamURL } from './player';
 
 export async function search(session: session, query: string) {
-  const res = await request(session, "search3", { query });
+  const res = await request(session, "search3", { query, artistCount: 10 });
 
   const results = res.searchResult3;
 
@@ -28,7 +28,8 @@ export async function search(session: session, query: string) {
         created: album.created,
         art: art,
         date: album.releaseDate,
-        year: album.year
+        year: album.year,
+        starred: album.starred
       });
     })
   }
