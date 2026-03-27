@@ -17,6 +17,7 @@ interface playerState {
   volume: number,
   loop: true | "once" | false,
   shuffle: boolean,
+  loved: {},
 
   play: (song: song, session: session, toScrobble: boolean, index?: number) => void,
   playNext: (session: session, toScrobble: boolean) => void,
@@ -32,6 +33,7 @@ interface playerState {
   setVolume: (value: number) => void,
   setLoop: (value: true | "once" | false) => void,
   setShuffle: (value: boolean) => void,
+  setLoved: (id: string, value: boolean) => void,
 
   hydrate: (session: session) => void
 }
@@ -83,6 +85,7 @@ export const usePlayer = create<playerState>((set, get) => ({
   volume: 0,
   loop: false,
   shuffle: false,
+  loved: {},
 
   play: (song, session, toScrobble, index) => {
     const audio = getAudio();
@@ -278,6 +281,15 @@ export const usePlayer = create<playerState>((set, get) => ({
         localStorage.removeItem("player");
       }
     }
+  },
+
+  setLoved: (id, value) => {
+    set(state => ({
+      loved: {
+        ...state.loved,
+        [id]: value
+      }
+    }))
   },
 
   setVolume: (value) => {

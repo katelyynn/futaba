@@ -169,8 +169,5 @@
 }
 
 .loved {
-  position: relative;
-  top: 1px;
-
   color: oklch(var(--l3-c));
 }

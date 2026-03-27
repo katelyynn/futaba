@@ -9,13 +9,15 @@ import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
 import React, { useEffect } from 'react';
 import { parseDuration } from '@/app/tools/duration';
-import { IconArrowsShuffle2, IconArticleFilled, IconHeartFilled, IconMicrophone2, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconRepeat, IconRepeatOff, IconRepeatOnce, IconVolume, IconVolume3 } from '@tabler/icons-react';
+import { IconArrowsShuffle2, IconArticleFilled, IconHeart, IconHeartFilled, IconMicrophone2, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconRepeat, IconRepeatOff, IconRepeatOnce, IconVolume, IconVolume3 } from '@tabler/icons-react';
 import { useSettings } from '@/app/api/settings';
 import { useSession } from '@/app/session';
 import { SakuraTooltip } from '../tooltip/tooltip';
 import { SakuraSlider } from '../slider/slider';
 import { SakuraPopover } from '../popover/popover';
 import { SakuraQueue } from './queue';
+import { setLove } from '@/app/api/love';
+import { session } from '@/app/api/client';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -87,7 +89,7 @@ export function Player() {
 
   return (
     <div className={styles.player}>
-      <PlaybackSongPreview currentSong={currentSong} key={currentSong.id} />
+      <PlaybackSongPreview session={session!} currentSong={currentSong} key={currentSong.id} />
       <div className={styles.middle}>
         <div className={styles.top}>
           <SakuraTooltip content={shuffle ? "Playing shuffled" : "Playing in order"}>
@@ -180,18 +182,41 @@ export function Player() {
 }
 
 export function PlaybackSongPreview({
+  session,
   currentSong
-}: { currentSong: song }) {
+}: { session: session, currentSong: song }) {
+  const lovedMap = usePlayer(s => s.loved);
+  const setLoved = usePlayer(s => s.setLoved);
+
+  const loved = lovedMap[currentSong.id] ?? !!currentSong.starred;
+
   return (
     <div className={styles.song}>
       <SakuraImage url={currentSong.art} identify={styles.art} />
       <div className={styles.songInfo}>
         <strong className={styles.name}><Link href={`/album/${currentSong.albumId}`}>{currentSong.name}</Link></strong>
         <span className={styles.artists}>
-          {currentSong.starred && <IconHeartFilled className={styles.loved} size={14} />}
           {currentSong.explicit == "explicit" && <span className={styles.explicit}>E</span>}
           {currentSong.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != currentSong.artists.length - 1 && <p>,</p>}</span>)}
         </span>
+      </div>
+      <div className={styles.songActions}>
+        <SakuraTooltip content={loved ? "Loved" : "Love"}>
+          <SakuraButton elem="button" identify={`${styles.action} ${loved && styles.dontHide}`} onClick={async () => {
+            const currentState = loved;
+            const newState = !currentState;
+
+            try {
+              await setLove(session!, currentSong.id, currentState, "song");
+
+              setLoved(currentSong.id, newState);
+            } catch {
+              setLoved(currentSong.id, currentState);
+            }
+          }}>
+            {loved ? <IconHeartFilled className={styles.loved} size={16} /> : <IconHeart size={16} />}
+          </SakuraButton>
+        </SakuraTooltip>
       </div>
     </div>
   )

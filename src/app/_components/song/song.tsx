@@ -70,6 +70,9 @@ export function SakuraSong({
 
   const isPlaying = currentSong?.id == song.id;
 
+  const lovedMap = usePlayer(s => s.loved);
+  const setLoved = usePlayer(s => s.setLoved);
+
   const menu = (
     <>
       <SakuraButton elem="button" identifyOwn="menu" onClick={() => {
@@ -95,7 +98,7 @@ export function SakuraSong({
     </>
   );
 
-  const loved = !!song.starred;
+  const loved = lovedMap[song.id] ?? !!song.starred;
 
   return (
     <SakuraContextMenu content={menu}>
@@ -127,31 +130,10 @@ export function SakuraSong({
 
               try {
                 await setLove(session!, song.id, currentState, "song");
-                song.starred = newState ? "true" : undefined;
 
-                usePlayer.setState(state => ({
-                  currentSong: state.currentSong?.id == song.id ? {
-                    ...state.currentSong,
-                    starred: newState ? "true" : undefined
-                  } : state.currentSong,
-                  queue: state.queue.map(s => s.id == song.id ? {
-                    ...s,
-                    starred: newState ? "true" : undefined
-                  } : s)
-                }));
+                setLoved(song.id, newState);
               } catch {
-                song.starred = currentState ? "true" : undefined;
-
-                usePlayer.setState(state => ({
-                  currentSong: state.currentSong?.id == song.id ? {
-                    ...state.currentSong,
-                    starred: currentState ? "true" : undefined
-                  } : state.currentSong,
-                  queue: state.queue.map(s => s.id == song.id ? {
-                    ...s,
-                    starred: currentState ? "true" : undefined
-                  } : s)
-                }));
+                setLoved(song.id, currentState);
               }
             }}>
               {loved ? <IconHeartFilled className={styles.loved} size={16} /> : <IconHeart size={16} />}
