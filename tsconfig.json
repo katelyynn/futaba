@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "electron/main.js"  ],
   "exclude": ["node_modules"]
 }
