@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Funnel_Sans } from "next/font/google";
+import { Funnel_Sans, Noto_Sans_JP, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import Provider from './provide';
 import { SideNav } from './_components/nav/side_nav';
@@ -13,6 +13,14 @@ import { Draggable } from './_components/drag/drag';
 const funnelSans = Funnel_Sans({
   variable: "--font-funnel_sans",
   subsets: ["latin"],
+});
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"]
+});
+
+const notoSansKR = Noto_Sans_KR({
+  subsets: ["latin"]
 });
 
 export const metadata: Metadata = {
