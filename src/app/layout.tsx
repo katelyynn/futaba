@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Funnel_Sans, Noto_Sans_JP, Noto_Sans_KR } from "next/font/google";
+import { Funnel_Sans, Gamja_Flower, Noto_Sans_JP, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import Provider from './provide';
 import { SideNav } from './_components/nav/side_nav';
@@ -21,6 +21,10 @@ const notoSansJP = Noto_Sans_JP({
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"]
+});
+
+const gamja = Gamja_Flower({
+  weight: "400"
 });
 
 export const metadata: Metadata = {

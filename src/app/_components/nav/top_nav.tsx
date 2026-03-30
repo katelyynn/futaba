@@ -10,6 +10,7 @@ import { startScan } from '@/app/api/scan';
 import { SakuraInput } from '../input/input';
 import { useRouter } from 'next/navigation';
 import { SakuraMenu } from '../menu/menu';
+import { Futaba } from '../logo/logo';
 
 export function TopNav() {
   const { session } = useSession();
@@ -31,7 +32,7 @@ export function TopNav() {
             </SakuraButton>
           </SakuraTooltip>
         </div>
-        <Link href="/">futaba</Link>
+        <Futaba />
       </div>
       <div className={styles.searchHolder}>
         <SakuraInput className={styles.search} placeholder="Search" onEnter={(val: string) => {
