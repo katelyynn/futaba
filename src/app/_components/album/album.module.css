@@ -120,7 +120,19 @@
 }
 
 .artists {
-  color: oklch(var(--c2) / 80%);
+  color: oklch(var(--c2) / 60%);
+
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.artist {
+  display: flex;
+
+  & > .artistName {
+    color: oklch(var(--c2) / 80%);
+  }
 }
 
 .meta {

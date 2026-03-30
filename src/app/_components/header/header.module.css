@@ -24,11 +24,20 @@
 .artists {
   font-size: 20px;
   line-height: 24px;
-  color: oklch(var(--c2));
   font-weight: var(--font-weight);
 
+  color: oklch(var(--c2) / 80%);
+
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.artist {
+  display: flex;
+
   & > a:not(:hover) {
-    color: inherit;
+    color: oklch(var(--c2));
   }
 }
 

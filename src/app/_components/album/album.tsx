@@ -38,7 +38,7 @@ export function SakuraAlbum({ album, showArtist = false }: { album: album, showA
           </SakuraMetaList>
         )}
         <strong className={styles.name}>{album.name}</strong>
-        {showArtist && <span className={styles.artists}>{album.artists.map(artist => <p className={styles.artist} key={artist.id}>{artist.name}</p>)}</span>}
+        {showArtist && <span className={styles.artists}>{album.artists.map((artist, i) => <span className={styles.artist} key={i}><span className={styles.artistName}>{artist.name}</span>{i != album.artists.length - 1 && <p>,</p>}</span>)}</span>}
         <SakuraMetaList>
           <SakuraMeta name="Release date">
             <IconCalendarWeekFilled size={META_ICON_SIZE} />
@@ -74,7 +74,6 @@ export function SakuraAlbumSide({ album, showArtist = false }: { album: album, s
       <SakuraImage url={album.art} type="album" identify={styles.art} />
       <div className={styles.info}>
         <strong className={styles.name}>{album.name}</strong>
-        {showArtist && <span className={styles.artists}>{album.artists.map(artist => <p className={styles.artist} key={artist.id}>{artist.name}</p>)}</span>}
         {album.type && <p className={styles.meta}>{releaseType(album.type)}</p>}
         {album.played && <p className={styles.meta}>{DateTime.fromISO(album.played).toRelative()}</p>}
       </div>
