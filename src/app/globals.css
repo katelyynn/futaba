@@ -871,7 +871,7 @@ a {
   text-decoration: none;
 
   &:hover {
-    color: oklch(var(--l2-c));
+    color: oklch(var(--l2-c-theme-switch));
     text-decoration: underline oklch(var(--l3-c) / 50%);
   }
 }

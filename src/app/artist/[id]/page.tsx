@@ -23,8 +23,11 @@ export default function Artist() {
 
   const ordering = [
     "album",
+    "deluxe",
     "ep",
     "single",
+    "live",
+    "compilation",
     "other"
   ];
 

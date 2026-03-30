@@ -2,6 +2,7 @@
   --w: 200px;
   width: var(--w);
   height: var(--w);
+  position: relative;
   display: flex;
   border-radius: var(--item-med-radius);
   overflow: hidden;
@@ -21,4 +22,13 @@
   }
 
   flex-shrink: 0;
+
+  &:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+
+    box-shadow: 0 0 0 1px inset rgba(255, 255, 255, 3%);
+  }
 }
