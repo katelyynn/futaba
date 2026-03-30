@@ -5,6 +5,9 @@ import { MAX_VOLUME } from '../api/player';
 import { useSettings } from '../api/settings';
 
 export default function SettingsPage() {
+  const theme = useSettings(s => s.theme);
+  const setTheme = useSettings(s => s.setTheme);
+
   const scrobble = useSettings(s => s.scrobble);
   const setScrobble = useSettings(s => s.setScrobble);
 
@@ -14,6 +17,14 @@ export default function SettingsPage() {
   return (
     <>
       <h2>Settings</h2>
+      <SakuraSettingGroup>
+        <SakuraSetting name={"Interface theme"} value={theme} values={{
+          "light": "Light",
+          "dark": "Ash",
+          "darker": "Dark",
+          "oled": "Void"
+        }} onChange={setTheme} type="select" />
+      </SakuraSettingGroup>
       <SakuraSettingGroup>
         <SakuraSetting name={"Scrobble to server"} body={"Must be configured in your Navidrome server"} value={scrobble} onChange={setScrobble} />
       </SakuraSettingGroup>

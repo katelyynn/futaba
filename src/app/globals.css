@@ -835,18 +835,7 @@ body {
       --blur-contrast: 1;
 
       --solarium-compensate: brightness(110%);
-  }
 
-  &[data-futaba--theme="ink"] {
-      --menu-bg: var(--b5);
-      --menu-opacity: 94%;
-
-      --blur-saturate: 130%;
-      --blur-brightness: 1;
-      --menu-shadow: 0 4px 40px oklch(0 0 0 / 0.2);
-  }
-
-  &[data-futaba--theme_type="light"] {
       --card-shadow: oklch(0 0 0 / 0.05) 0 2px 4px 0;
       --card-shadow: 0 1.5px 4px 0 oklch(0 0 0 / 0.05);
 

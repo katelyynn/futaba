@@ -4,13 +4,16 @@ import React from 'react';
 import styles from "./setting.module.css";
 import { Slider } from 'radix-ui';
 import { SakuraSlider } from '../slider/slider';
+import { SakuraSelect } from '../select/select';
 
 type settingValue = string | number | boolean;
 
 interface SakuraSettingProps {
+  type?: string,
   name: string,
   body?: string,
   value: settingValue,
+  values?: Record<string, string>,
   onChange: (v: settingValue) => void,
   min?: number,
   max?: number,
@@ -19,9 +22,11 @@ interface SakuraSettingProps {
 }
 
 export function SakuraSetting({
+  type,
   name,
   body,
   value,
+  values,
   onChange,
   min = 0,
   max = 1,
@@ -34,6 +39,15 @@ export function SakuraSetting({
       {body && <p className={styles.body}>{body}</p>}
     </div>
   );
+
+  if (type == "select" && values) {
+    return (
+      <div className={`${styles.setting} ${styles.settingSelect}`}>
+        {settingInfo}
+        <SakuraSelect value={value as string} values={values} onChange={onChange} />
+      </div>
+    )
+  }
 
   if (typeof value == "boolean") {
     return (
