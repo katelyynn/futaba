@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styles from "./image.module.css";
 
 interface SakuraImageProps {
@@ -6,14 +7,18 @@ interface SakuraImageProps {
   identify?: string
 }
 
-export function SakuraImage({
-  url,
-  type = 'other',
-  identify
-}: SakuraImageProps) {
-  return (
-    <div className={`${styles.image} ${identify && identify}`}>
-      <img src={url} alt="something" />
-    </div>
-  );
-}
+export const SakuraImage = forwardRef<HTMLDivElement, SakuraImageProps>(
+  ({
+    url,
+    type = 'other',
+    identify
+  }, ref) => {
+    return (
+      <div ref={ref} className={`${styles.image} ${identify && identify}`}>
+        <img src={url} alt="something" />
+      </div>
+    );
+  }
+)
+
+SakuraImage.displayName = "SakuraImage";

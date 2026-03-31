@@ -1,8 +1,10 @@
+"use client";
+
 import styles from "./album.module.css";
 import { SakuraImage } from '../image/image';
 import Link from 'next/link';
 import { album } from '@/app/types/album';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { releaseType } from '@/app/tools/type';
 import { DateTime } from "luxon";
 import { useSession } from '@/app/session';
@@ -11,11 +13,55 @@ import { usePathname } from 'next/navigation';
 import { song } from '@/app/types/song';
 import { IconCalendar, IconCalendarWeekFilled, IconDisc, IconHeadphonesFilled, IconHeartFilled, IconMusic, IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
 import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '../meta/meta';
+import { FastAverageColor } from 'fast-average-color';
+import { convertColour } from '@/app/tools/colour';
+
+const fac = new FastAverageColor();
 
 export function SakuraAlbum({ album, showArtist = false }: { album: album, showArtist?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [ colour, setColour ] = useState<{ h: number, s: number, l: number } | null>(null);
+
+  useEffect(() => {
+    if (!album.art) return;
+
+    let cancelled = false;
+
+    const run = async () => {
+      const image = new Image();
+
+      image.crossOrigin = "anonymous";
+      image.src = album.art;
+
+      await image.decode();
+      if (cancelled) return;
+
+      const values = fac.getColor(image);
+      if (cancelled) return;
+
+      const { h, s, l } = convertColour(values.value);
+
+      setColour({h, s, l});
+    }
+
+    run();
+
+    return () => {
+      cancelled = true;
+    }
+  }, [ album ]);
+
+  useEffect(() => {
+    if (!colour || !ref.current) return;
+
+    ref.current.style.setProperty(`--hue-over`, colour.h.toString());
+    ref.current.style.setProperty(`--sat-over`, colour.s.toString());
+    ref.current.style.setProperty(`--lit-over`, colour.l.toString());
+  }, [ colour ]);
+
   return (
     <Link href={`/album/${album.id}`} className={styles.album}>
-      <SakuraImage url={album.art} type="album" identify={styles.art} />
+      <SakuraImage url={album.art} type="album" identify={`${styles.art} colourful`} ref={ref} />
       <div className={styles.info}>
         {(album.type || album.played || album.starred) && (
           <SakuraMetaList>
