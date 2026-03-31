@@ -36,7 +36,7 @@ export function convertColour(values: [ number, number, number, number ]) {
 
   const h = converted.h;
   const s = clampSat((converted.s / 100) * 3);
-  const l = clampLit(converted.l / 100 + 0.35);
+  const l = clampLit(converted.l / 100 + 0.45);
 
   return {
     h,
