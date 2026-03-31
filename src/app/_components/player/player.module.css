@@ -54,6 +54,7 @@
 
 .art {
   --w: 60px !important;
+  box-shadow: 0 0 50px 2px oklch(var(--h4) / 60%), var(--standout-shadow);
 }
 
 .middle {
