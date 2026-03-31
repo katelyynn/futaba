@@ -15,6 +15,7 @@
   .art {
     --w: auto !important;
     border-radius: var(--item-small-radius) !important;
+    box-shadow: var(--standout-shadow);
   }
 
   .meta {

@@ -18,6 +18,8 @@
     "@tabler/icons-react": "^3.40.0",
     "@tanstack/react-query": "^5.95.2",
     "concurrently": "^9.2.1",
+    "culori": "^4.0.2",
+    "fast-average-color": "^9.5.1",
     "luxon": "^3.7.2",
     "md5": "^2.3.0",
     "next": "16.2.1",
@@ -27,6 +29,7 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@types/culori": "^4.0.1",
     "@types/luxon": "^3.7.1",
     "@types/node": "^20",
     "@types/react": "^19",
