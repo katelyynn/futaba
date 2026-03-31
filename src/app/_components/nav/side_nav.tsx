@@ -48,6 +48,9 @@ export function SideNav() {
 
 export function SideAlbumList() {
   const { session } = useSession();
+
+  if (!session) return;
+
   const currentSong = usePlayer(s => s.currentSong);
 
   const { data, isLoading, error } = useAlbums(session, 10, currentSong.id);

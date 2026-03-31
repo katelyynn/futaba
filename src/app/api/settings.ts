@@ -12,6 +12,7 @@ export const useSettings = create(persist(
     showAsideView: true,
     loop: false,
     shuffle: false,
+    fullscreen: false,
 
     setVolume: (volume: number) => set({ volume }),
     setTheme: (theme: "light" | "dark" | "darker" | "oled") => set({ theme }),
@@ -20,7 +21,8 @@ export const useSettings = create(persist(
     setAsideView: (asideView: string) => set({ asideView }),
     setShowAsideView: (showAsideView: boolean) => set({ showAsideView }),
     setLoop: (loop: true | "once" | false) => set({ loop }),
-    setShuffle: (shuffle: boolean) => set({ shuffle })
+    setShuffle: (shuffle: boolean) => set({ shuffle }),
+    setFullscreen: (fullscreen: boolean) => set({ fullscreen })
   }),
   {
     name: "settings"

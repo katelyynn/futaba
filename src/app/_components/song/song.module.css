@@ -163,3 +163,13 @@
 .playCount {
   width: 100px;
 }
+
+.disc {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & + .disc {
+    margin-top: var(--pad);
+  }
+}

@@ -9,7 +9,7 @@ import { SakuraImage } from '../image/image';
 import { Slider } from 'radix-ui';
 import React, { useEffect } from 'react';
 import { parseDuration } from '@/app/tools/duration';
-import { IconArrowsShuffle2, IconArticleFilled, IconHeart, IconHeartFilled, IconMicrophone2, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconRepeat, IconRepeatOff, IconRepeatOnce, IconVolume, IconVolume3 } from '@tabler/icons-react';
+import { IconArrowsShuffle2, IconArticleFilled, IconHeart, IconHeartFilled, IconMaximize, IconMicrophone2, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconRepeat, IconRepeatOff, IconRepeatOnce, IconVolume, IconVolume3 } from '@tabler/icons-react';
 import { useSettings } from '@/app/api/settings';
 import { useSession } from '@/app/session';
 import { SakuraTooltip } from '../tooltip/tooltip';
@@ -65,6 +65,8 @@ export function Player() {
   const shuffle = useSettings(s => s.shuffle);
   const setShuffle = useSettings(s => s.setShuffle);
   const setPlayerShuffle = usePlayer(s => s.setShuffle);
+
+  const setFullscreen = useSettings(s => s.setFullscreen);
 
   useEffect(() => {
     if (!session) return;
@@ -176,6 +178,13 @@ export function Player() {
           </SakuraTooltip>
           <SakuraSlider className={styles.volumeRoot} value={volume} min={0} max={MAX_VOLUME} step={0.01} onChange={value => setVolume(value)} showTooltipAs="percent" />
         </div>
+        <SakuraTooltip content="Fullscreen">
+          <SakuraButton elem="button" identify={`${styles.action}`} onClick={() => {
+            setFullscreen(true);
+          }}>
+            <IconMaximize size={16} />
+          </SakuraButton>
+        </SakuraTooltip>
       </div>
     </div>
   )

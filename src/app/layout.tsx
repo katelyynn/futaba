@@ -45,19 +45,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${funnelSans.variable}`}>
       <Body>
-        <Provider>
-          <TopNav />
-          <Draggable>
-            <div className="middle">
-              <SideNav />
-              <main>
-                {children}
-              </main>
-              <SakuraAside />
-            </div>
-          </Draggable>
-          <Player />
-        </Provider>
+        <TopNav />
+        <Draggable>
+          <div className="middle">
+            <SideNav />
+            <main>
+              {children}
+            </main>
+            <SakuraAside />
+          </div>
+        </Draggable>
+        <Player />
       </Body>
     </html>
   );
