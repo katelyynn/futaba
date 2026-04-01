@@ -1,0 +1,12 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  background: oklch(var(--b7) / 50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}

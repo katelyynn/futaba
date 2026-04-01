@@ -37,7 +37,7 @@ export function SakuraHeader({
     <>
       <header className={styles.header}>
         <div className={styles.background} style={{ backgroundImage: `url(${data.art})` }} />
-        <SakuraImage url={data.art} type={type} identify={styles.art} />
+        <SakuraImage url={data.art} type={type} identify={styles.art} expand />
         <div className={styles.info}>
           <p className={styles.type}>{text}</p>
           <h1 className={styles.name}>{data.name}</h1>
