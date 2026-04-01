@@ -26,13 +26,17 @@
     margin-top: 4px;
   }
 
-  transition-property: background-color, scale;
+  transition-property: opacity, background-color, scale;
   transition-duration: var(--trans);
   transition-timing-function: var(--trans-function);
 
   &:active {
     background-color: var(--bg-atv);
     scale: 0.98;
+  }
+
+  &:not(.visible) {
+    opacity: 0;
   }
 }
 

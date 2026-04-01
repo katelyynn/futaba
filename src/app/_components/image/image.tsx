@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import styles from "./image.module.css";
 
 interface SakuraImageProps {
-  url: string,
+  url?: string,
   type?: 'artist' | 'album' | 'track' | 'user' | 'other',
   identify?: string
 }

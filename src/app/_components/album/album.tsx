@@ -19,11 +19,14 @@ import { convertColour } from '@/app/tools/colour';
 const fac = new FastAverageColor();
 
 export function SakuraAlbum({ album, showArtist = false }: { album: album, showArtist?: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const artworkRef = useRef<HTMLDivElement>(null);
   const [ colour, setColour ] = useState<{ h: number, s: number, l: number } | null>(null);
 
+  const ref = useRef<HTMLAnchorElement>(null);
+  const [ visible, setVisible ] = useState(false);
+
   useEffect(() => {
-    if (!album.art) return;
+    if (!album.art || !visible) return;
 
     let cancelled = false;
 
@@ -49,19 +52,35 @@ export function SakuraAlbum({ album, showArtist = false }: { album: album, showA
     return () => {
       cancelled = true;
     }
-  }, [ album ]);
+  }, [ album, visible ]);
 
   useEffect(() => {
-    if (!colour || !ref.current) return;
+    if (!colour || !artworkRef.current || !visible) return;
 
-    ref.current.style.setProperty(`--hue-over`, colour.h.toString());
-    ref.current.style.setProperty(`--sat-over`, colour.s.toString());
-    ref.current.style.setProperty(`--lit-over`, colour.l.toString());
-  }, [ colour ]);
+    artworkRef.current.style.setProperty(`--hue-over`, colour.h.toString());
+    artworkRef.current.style.setProperty(`--sat-over`, colour.s.toString());
+    artworkRef.current.style.setProperty(`--lit-over`, colour.l.toString());
+  }, [ colour, visible ]);
+
+  useEffect(() => {
+    const elem = ref.current;
+    if (!elem) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setVisible(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "200px" });
+
+    observer.observe(elem);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <Link href={`/album/${album.id}`} className={styles.album}>
-      <SakuraImage url={album.art} type="album" identify={`${styles.art} colourful`} ref={ref} />
+    <Link href={`/album/${album.id}`} className={`${styles.album} ${visible && styles.visible}`} ref={ref}>
+      <SakuraImage url={visible ? album.art : undefined} type="album" identify={`${styles.art} colourful`} ref={artworkRef} />
       <div className={styles.info}>
         {(album.type || album.played || album.starred) && (
           <SakuraMetaList>
