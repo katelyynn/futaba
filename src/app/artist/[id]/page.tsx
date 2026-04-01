@@ -31,18 +31,22 @@ export default function Artist() {
     "other"
   ];
 
-  const sortedGroups = Object.entries(data.albums).sort(([a], [b]) => {
-    const indexA = ordering.indexOf(a);
-    const indexB = ordering.indexOf(b);
+  let sortedGroups;
 
-    return (indexA == -1 ? 20 : indexA) - (indexB == -1 ? 20 : indexB);
-  });
+  if (data.albums) {
+    sortedGroups = Object.entries(data.albums).sort(([a], [b]) => {
+      const indexA = ordering.indexOf(a);
+      const indexB = ordering.indexOf(b);
+
+      return (indexA == -1 ? 20 : indexA) - (indexB == -1 ? 20 : indexB);
+    });
+  }
 
   return (
     <>
       <SakuraHeader data={data} type="artist" />
       <SakuraGroupList>
-        {sortedGroups.map(([group, items]) => (
+        {sortedGroups && sortedGroups.map(([group, items]) => (
           <SakuraGroup name={group} key={group}>
             <SakuraAlbumList key={group}>
               {items.map(album => (

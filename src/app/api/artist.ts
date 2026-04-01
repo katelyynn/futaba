@@ -27,27 +27,30 @@ export async function getArtist(session: session, id: string) {
   console.info('artist req', artist);
 
   const albums = {};
-  artist.album.forEach(album => {
-    const art = getCoverArt(session, album.id);
-    const type = album.isCompilation ? 'compilation' : album.releaseTypes[0]?.toLowerCase().trim() || 'album';
 
-    if (!albums[type]) albums[type] = [];
-    albums[type].push({
-      id: album.id,
-      name: album.name,
-      artists: album.artists,
-      duration: album.duration,
-      songs: album.songCount,
-      played: album.played,
-      plays: album.plays,
-      type,
-      created: album.created,
-      art: art,
-      date: album.releaseDate,
-      year: album.year,
-      starred: album.starred
+  if (artist.album) {
+    artist.album.forEach(album => {
+      const art = getCoverArt(session, album.id);
+      const type = album.isCompilation ? 'compilation' : album.releaseTypes[0]?.toLowerCase().trim() || 'album';
+
+      if (!albums[type]) albums[type] = [];
+      albums[type].push({
+        id: album.id,
+        name: album.name,
+        artists: album.artists,
+        duration: album.duration,
+        songs: album.songCount,
+        played: album.played,
+        plays: album.plays,
+        type,
+        created: album.created,
+        art: art,
+        date: album.releaseDate,
+        year: album.year,
+        starred: album.starred
+      });
     });
-  });
+  }
 
   return {
     id: artist.id,
