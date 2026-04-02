@@ -9,6 +9,8 @@ import { useAlbums } from '@/app/hook/album';
 import { ErrorHandler } from '@/app/errorHandler';
 import { SakuraAlbumListSide, SakuraAlbumSide } from '../album/album';
 import { usePlayer } from '@/app/api/player';
+import { usePlaylists } from '@/app/hook/playlist';
+import { SakuraPlaylistListSide, SakuraPlaylistSide } from '../playlist/playlist';
 
 export function SideNav() {
   const path = usePathname();
@@ -42,14 +44,13 @@ export function SideNav() {
         </SakuraButton>
       </ul>
       <SideAlbumList />
+      <SidePlaylistList />
     </nav>
   );
 }
 
 export function SideAlbumList() {
   const { session } = useSession();
-
-  if (!session) return;
 
   const currentSong = usePlayer(s => s.currentSong);
 
@@ -66,5 +67,22 @@ export function SideAlbumList() {
         <SakuraAlbumSide album={album} key={album.id} />
       ))}
     </SakuraAlbumListSide>
+  )
+}
+
+export function SidePlaylistList() {
+  const { session } = useSession();
+
+  const { data, isLoading, error } = usePlaylists(session);
+
+  if (isLoading) return <div>loading</div>;
+  if (error) return <ErrorHandler error={error} />;
+
+  return (
+    <SakuraPlaylistListSide>
+      {data.map(playlist => (
+        <SakuraPlaylistSide playlist={playlist} key={playlist.id} />
+      ))}
+    </SakuraPlaylistListSide>
   )
 }

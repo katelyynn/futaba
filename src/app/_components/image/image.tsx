@@ -4,7 +4,7 @@ import { SakuraDialog } from '../dialog/dialog';
 
 interface SakuraImageProps {
   url?: string,
-  type?: 'artist' | 'album' | 'track' | 'user' | 'other',
+  type?: 'artist' | 'album' | 'track' | 'user' | 'other' | 'playlist',
   identify?: string,
   expand?: boolean
 }
