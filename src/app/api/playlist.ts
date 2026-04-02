@@ -38,7 +38,7 @@ export async function getPlaylist(session: session, id: string) {
   const art = getCoverArt(session, playlist.coverArt);
 
   const songs: song[] = [];
-  playlist.entry.forEach(song => {
+  playlist.entry.forEach((song, index) => {
     const songArt = getCoverArt(session, song.coverArt);
 
     const artists = [];
@@ -71,7 +71,7 @@ export async function getPlaylist(session: session, id: string) {
       channelCount: song.channelCount,
       explicit: song.explicitStatus,
       genres: song.genres,
-      index: song.track,
+      index: index + 1,
       suffix: song.suffix,
       path: song.path,
       url: createStreamURL(song.id, session),

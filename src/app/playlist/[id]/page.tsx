@@ -32,7 +32,7 @@ export default function Playlist() {
           <SortableContext items={(data as playlistFull).songs.map(s => s.id)}>
             <SakuraSongList>
                 {(data as playlistFull).songs.map(song => (
-                  <SortableSong song={song} key={song.id} container="album" songsList={(data as playlistFull).songs} />
+                  <SortableSong song={song} key={song.id} container="album" songsList={(data as playlistFull).songs} showArt />
                 ))}
             </SakuraSongList>
           </SortableContext>
