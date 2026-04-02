@@ -25,6 +25,8 @@ export async function getPlaylists(session: session) {
     });
   });
 
+  playlists.sort((a, b) => new Date(b.changed).getTime() - new Date(a.changed).getTime());
+
   return playlists;
 }
 
