@@ -11,10 +11,11 @@ import { IconPlayerPlayFilled, IconPlaylistAdd, IconShare } from '@tabler/icons-
 import { useSession } from '@/app/session';
 import { useSettings } from '@/app/api/settings';
 import { copy } from '@/app/tools/clipboard';
+import { playlistFull } from '@/app/types/playlist';
 
 interface SakuraHeaderProps {
-  data: artist | album,
-  type: 'artist' | 'album'
+  data: artist | album | playlistFull,
+  type: 'artist' | 'album' | 'playlist'
 }
 
 export function SakuraHeader({
@@ -24,6 +25,8 @@ export function SakuraHeader({
   let text = 'Artist';
   if (type == 'album') {
     text = releaseType((data as album_full).type);
+  } else if (type == 'playlist') {
+    text = "Playlist";
   }
 
   const { session } = useSession();
@@ -45,7 +48,7 @@ export function SakuraHeader({
         </div>
       </header>
       <div className={styles.buttons}>
-        {type == 'album' && (data as album_full).songCount && (
+        {(type == 'album' && (data as album_full).songCount) ? (
           <>
             <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
               clearQueue();
@@ -62,7 +65,24 @@ export function SakuraHeader({
               Add to queue
             </SakuraButton>
           </>
-        )}
+        ) : (type == 'playlist' && (data as playlistFull).songCount) ? (
+          <>
+            <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
+              clearQueue();
+              addToQueue((data as playlistFull).songs);
+              play((data as playlistFull).songs[0], session!, toScrobble);
+            }}>
+              <IconPlayerPlayFilled size={16} />
+              Play
+            </SakuraButton>
+            <SakuraButton elem="button" identify={styles.button} onClick={() => {
+              addToQueue((data as playlistFull).songs);
+            }}>
+              <IconPlaylistAdd size={16} />
+              Add to queue
+            </SakuraButton>
+          </>
+        ) : <></>}
         <SakuraButton elem="button" identify={styles.button} onClick={() => copy(window.location.href)}>
           <IconShare size={16} />
           Share
