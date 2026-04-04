@@ -132,7 +132,10 @@ export function SakuraSong({
         {!hideIndex && <p className={`${styles.index} ${isPlaying && styles.activeIndex}`}>{!isPlaying ? song.index : nowPlaying ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} />}</p>}
         {showArt && <SakuraImage url={song.art} identify={styles.art} />}
         <div className={styles.info}>
-          <strong className={styles.name}>{song.name}</strong>
+          <strong className={styles.name}>
+            {song.name}
+            <SakuraComment text={song.comment} />
+          </strong>
           <div className={styles.artists}>
             {song.explicit == "explicit" && <span className={styles.explicit}>E</span>}
             {song.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>)}
@@ -161,5 +164,17 @@ export function SakuraSong({
         {!inQueue && <p className={styles.duration}>{parseDuration(song.duration)}</p>}
       </div>
     </SakuraContextMenu>
+  )
+}
+
+export function SakuraComment({
+  text
+}: { text?: string }) {
+  if (!text) return <></>;
+
+  return (
+    <label className={styles.comment}>
+      {text}
+    </label>
   )
 }
