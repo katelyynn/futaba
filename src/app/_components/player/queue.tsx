@@ -21,7 +21,7 @@ export function SakuraQueue() {
     <div className={styles.queue} ref={setNodeRef}>
       <SortableContext items={queue.map(s => s.id)} strategy={verticalListSortingStrategy}>
         <SakuraSongList>
-            {queue.map((song, i) => <SortableSong song={song} key={i} index={i} container="queue" showArt />)}
+          {queue.map((song, i) => <SortableSong song={song} key={i} index={i} container="queue" showArt />)}
         </SakuraSongList>
       </SortableContext>
     </div>
