@@ -139,7 +139,7 @@ main {
 
 body {
   --font:
-    var(--custom_font, ""), Funnel Sans, Inter, Ubuntu Sans, Spline Sans,
+    var(--custom_font, ""), Hanken Grotesk, Funnel Sans, Inter, Ubuntu Sans, Spline Sans,
     Roboto, Apple Color Emoji, var(--font_emoji_name, ""), Segoe UI Symbol, Apple Symbols, Noto Sans, Noto Sans JP, Noto Sans KR, Noto Sans TC,
     Lucida Grande, Verdana, -apple-system, BlinkMacSystemFont,
     sans-serif;
@@ -256,10 +256,10 @@ body,
 
   /* any additional highlights */
   --b2: 0.52 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
-  --b3: 0.36 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
+  --b3: 0.38 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
 
   /* card border */
-  --b4: 0.38 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
+  --b4: 0.33 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
 
   /* card */
   --b5: 0.3 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
@@ -271,11 +271,11 @@ body,
   --b9: var(--b6);
 
   --card-border: inset 0 0 0 1px oklch(var(--b4) / 0.6);
-  --card-border-base: oklch(var(--b3) / 0.7);
+  --card-border-base: oklch(var(--b3) / 0.6);
   --card-border-base-highlight: oklch(var(--b2) / 0.55);
 
   --separator: var(--separator-base);
-  --separator-base: oklch(var(--b3) / 0.5);
+  --separator-base: oklch(var(--b3) / 0.9);
 
   --textarea: oklch(var(--b6) / 20%);
   --textarea-hov: oklch(var(--b6) / 40%);
@@ -283,22 +283,33 @@ body,
   --banner-overlay: transparent;
   --banner-mix: none;
 
-  --normal-shadow: inset 0 0 0 1px oklch(var(--b2) / 20%);
-  --input-shadow: inset 0 0 0 1px oklch(var(--b3) / 0.7), inset 0 1px 2px oklch(0 0 0 / 0.2);
-  --focused-input-shadow: inset 0 0 0 1px oklch(var(--h3) / 0.4), var(--input-shadow);
-  --group-shadow: inset 0 0 0 1px oklch(var(--b2) / 0.3);
+  --normal-shadow: none;
+
+  --input-shadow:
+      inset 0 0 0 1px oklch(var(--b3) / 70%),
+      inset 0 1px 2px 1px oklch(var(--b6) / 80%);
+  --focused-input-shadow:
+      inset 0 0 0 1px oklch(var(--h3) / 0.4),
+      var(--input-shadow);
+
+  --group-shadow: inset 0 0 0 1px oklch(var(--b2) / 0.36);
+
+  --inset-background: oklch(var(--b6) / 20%);
+  --inset-shadow: inset 0 4px 10px oklch(var(--b6) / 50%);
 
   --sidebar-bg: color-mix(in oklch, oklch(var(--b6)) 22%, oklch(var(--b5)));
-  --sidebar-border: color-mix(in oklch, oklch(var(--b5)), oklch(var(--b4)) 25%);
+  --sidebar-border: color-mix(in oklch, oklch(var(--b5)), oklch(var(--b2)) 20%);
+  --sidebar-shadow: 4px 0 5px 1px oklch(var(--b6) / 80%);
+
   --toolbar-bg: oklch(var(--b6) / 30%);
-  --toolbar-border: 1px solid oklch(var(--b4) / 75%);
+  --toolbar-border: oklch(var(--b4) / 75%);
   --subtle-border: 1px solid oklch(var(--b4) / 55%);
 
-  --card-blur-bg: oklch(var(--b5) / var(--solarium-opacity, 70%));
+  --card-blur-bg: oklch(0.3 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue) / var(--solarium-opacity, 70%));
   --card-blur-bg-alt: oklch(var(--b5) / var(--solarium-opacity, 35%));
 
   --nav-filter-shadow: drop-shadow(0 0 4px oklch(var(--b6))) drop-shadow(0 0 10px oklch(var(--b6) / 90%));
-  --header-filter-shadow: drop-shadow(0 0 3px oklch(var(--b6))) drop-shadow(0 0 10px oklch(var(--b6)));
+  --header-filter-shadow: drop-shadow(0 1px 3px oklch(var(--b6) / 80%)) drop-shadow(0 3px 10px oklch(var(--b6) / 60%));
 
   --menu-item-hov: oklch(var(--b4) / 40%);
   --menu-item-atv: oklch(var(--b4) / 60%);
@@ -324,13 +335,29 @@ body,
   --card-overlay-opacity: 0.16;
   --card-overlay-mix-mode: lighten;
 
+  --card-shadow: 0 8px 35px oklch(0.01 calc(var(--sat) * 0.02 * var(--sat-bg, 1)) var(--hue) / 0.3);
+
+  --modal-bg: oklch(var(--b6) / 0.6);
+
+  --menu-bg: var(--b6);
+  --menu-opacity: 92%;
+
+  --tracklist-hover: oklch(var(--b4) / 30%);
+
+  --modal-button-hov: oklch(var(--b4) / 40%);
+  --modal-button-atv: oklch(var(--b4) / 60%);
+
+  --button-outline: inset 0 0 1px 0 oklch(var(--b2) / 80%);
+
+  --shout-tree: oklch(var(--b2) / 20%);
+
   &[data-futaba--theme="darker"] {
     /* any additional highlights */
     --b2: 0.41 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
     --b3: 0.31 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
 
     /* card border */
-    --b4: 0.26 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
+    --b4: 0.28 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
 
     /* card */
     --b5: 0.21 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
@@ -343,14 +370,21 @@ body,
     --menu-item-hov: oklch(var(--b4) / 60%);
     --menu-item-atv: oklch(var(--b4) / 80%);
 
-    --separator-base: oklch(var(--b3) / 0.3);
+    --separator-base: oklch(var(--b3) / 0.7);
 
     --setting-hover: oklch(var(--b4) / 30%);
 
-    --card-blur-bg: oklch(var(--b5) / var(--solarium-opacity, 50%));
+    --sidebar-border: color-mix(in oklch, oklch(var(--b5)), oklch(var(--b2)) 25%);
+
+    --card-blur-bg: oklch(0.21 calc(var(--sat) * 0.05 * var(--sat-bg, 1)) var(--hue) / var(--solarium-opacity, 50%));
     --card-blur-bg-alt: oklch(var(--b5) / var(--solarium-opacity, 35%));
 
-    --normal-shadow: inset 0 0 0 1px oklch(var(--b2) / 40%);
+    --normal-shadow: none;
+
+    --card-border-base: oklch(var(--b3) / 0.5);
+    --card-border-base-highlight: oklch(var(--b2) / 0.55);
+
+    --shout-tree: oklch(var(--b2) / 30%);
   }
   &[data-futaba--theme="oled"] {
     /* any additional highlights */
@@ -412,7 +446,7 @@ body,
   &[data-futaba--theme="light"] {
     /* any additional highlights */
     --b2: 0.82 0 0;
-    --b3: 1 0 0;
+    --b3: 0.94 0 0;
 
     /* card border */
     --b4: 0.91 0 0;
@@ -421,7 +455,7 @@ body,
     --b5: 1 0 0;
 
     /* root */
-    --b6: 0.94 0 0;
+    --b6: 0.96 calc(var(--sat) * 0.02 * var(--sat-bg, 1)) var(--hue);
     --b8: 1 0 0;
     --b7: 0 0 0;
     --b9: 1 0 0;
@@ -431,11 +465,10 @@ body,
     --card-border-base: oklch(0.87 0 0) !important;
     --card-border-base-highlight: oklch(0.89 0 0);
 
-    --normal-shadow:
-        inset 0 0 0 1px oklch(var(--b2) / 50%);
+    --normal-shadow: none;
     --input-shadow:
         inset 0 0 0 1px oklch(var(--b2) / 30%),
-        inset 0 1px 3px oklch(0 0 0 / 5%);
+        inset 0 1px 3px oklch(0 0 0 / 2%);
     --focused-input-shadow:
         inset 0 0 0 1px oklch(var(--l3-c) / 30%),
         var(--input-shadow);
@@ -448,19 +481,19 @@ body,
         oklch(var(--b4)) 55%
     );
     --toolbar-bg: oklch(var(--b5) / 50%);
-    --toolbar-border: 1px solid oklch(var(--b4) / 85%);
+    --toolbar-border: oklch(var(--b4) / 85%);
     --subtle-border: 1px solid oklch(var(--b4) / 65%);
 
-    --card-blur-bg: oklch(var(--b5) / var(--solarium-opacity, 65%));
+    --card-blur-bg: oklch(0.98 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue) / var(--solarium-opacity, 70%));
     --card-blur-bg-alt: oklch(var(--b5) / var(--solarium-opacity, 22%));
 
     --menu-item-hov: oklch(var(--b4) / 60%);
     --menu-item-atv: oklch(var(--b4) / 80%);
 
     --nav-filter-shadow: drop-shadow(0 0 2px oklch(var(--b5)));
-    --header-filter-shadow: drop-shadow(0 0 10px oklch(var(--b5)));
+    --header-filter-shadow: drop-shadow(0 3px 7px oklch(var(--b5)));
 
-    --banner-overlay: oklch(var(--b5) / 50%);
+    --banner-overlay: oklch(var(--b5) / 30%);
     --banner-mix: lighten;
 
     --setting-group: oklch(var(--b6) / 5%);
@@ -474,8 +507,8 @@ body,
     --view-buttons-hov: oklch(var(--b4) / 60%);
     --view-buttons-atv: oklch(var(--b4) / 80%);
 
-    --background-overlay: oklch(var(--b5) / 50%);
-    --background-mix-mode: lighten;
+    --background-overlay: oklch(var(--b5));
+    --background-mix-mode: overlay;
 
     --card-overlay-filter: invert(0.4);
     --card-overlay-opacity: 0.2;
@@ -668,7 +701,7 @@ body {
 body {
   --card-padding: 20px;
   --card-padding-v: 40px;
-  --card-radius: var(--item-big-radius);
+  --card-radius: 8px;
   --card-shadow: 0 8px 35px rgba(0, 0, 0, 0.45);
   --card-gap: 15px;
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Funnel_Sans, Gamja_Flower, Noto_Sans_JP, Noto_Sans_KR } from "next/font/google";
+import { Funnel_Sans, Gamja_Flower, Hanken_Grotesk, Noto_Sans_JP, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import Provider from './provide';
 import { SideNav } from './_components/nav/side_nav';
@@ -12,7 +12,7 @@ import { Draggable } from './_components/drag/drag';
 import { useSettings } from './api/settings';
 import { Body } from './body';
 
-const funnelSans = Funnel_Sans({
+const funnelSans = Hanken_Grotesk({
   variable: "--font-funnel_sans",
   subsets: ["latin"],
 });
