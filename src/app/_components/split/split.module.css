@@ -24,5 +24,6 @@
   }
   &.vertical {
     width: 1px;
+    display: none;
   }
 }
