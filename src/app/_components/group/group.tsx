@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from "./group.module.css";
 import { releaseType } from '@/app/tools/type';
+import { SakuraSerif } from '../serif/serif';
 
 interface SakuraGroupProps {
   name: string,
@@ -13,7 +14,7 @@ export function SakuraGroup({
 }: SakuraGroupProps) {
   return (
     <div className={styles.group}>
-      <h3 className={styles.name}>{releaseType(name)}</h3>
+      <SakuraSerif>{releaseType(name)}</SakuraSerif>
       {children}
     </div>
   )

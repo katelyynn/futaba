@@ -6,5 +6,5 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--pad);
+  gap: 30px;
 }

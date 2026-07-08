@@ -2,9 +2,48 @@
 
 import { album } from '../types/album';
 import { song } from '../types/song';
-import { request, session } from './client';
+import { request, requestV2, session } from './client';
 import { getCoverArt } from './cover';
 import { createStreamURL } from './player';
+
+export async function getAlbumsV2(session: session, start = 0, end = 20, order = 'DESC', sort = 'recently_added') {
+  const res = await requestV2(session, 'api/album', {
+    _start: start,
+    _end: end,
+    _order: order,
+    _sort: sort
+  });
+
+  const albums: album[] = [];
+  res.data.forEach(album => {
+    const artists = album.participants.artist || [];
+    const art = getCoverArt(session, album.id);
+    const date = new Date(album.date);
+
+    albums.push({
+      id: album.id,
+      name: album.name,
+      artists,
+      duration: album.duration,
+      songs: album.songCount,
+      played: album.playDate,
+      plays: album.playCount,
+      type: album.mbzAlbumType || 'album',
+      created: album.createdAt,
+      art,
+      explicit: album.explicitStatus != '',
+      date: {
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        day: date.getDate()
+      },
+      year: album.maxYear,
+      starred: album.starred
+    });
+  });
+
+  return albums;
+}
 
 export async function getAlbums(session: session, size = 100) {
   console.log('getAlbums');
