@@ -1,0 +1,8 @@
+.serif {
+  font-family: var(--font-head);
+  font-size: 28px;
+  line-height: 32px;
+  color: oklch(var(--c1));
+  font-weight: 100;
+  margin-bottom: var(--pad);
+}

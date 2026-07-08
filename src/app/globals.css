@@ -125,6 +125,7 @@ main {
   scroll-behavior: smooth;
 
   pointer-events: auto;
+  position: relative;
 }
 
 .middle {
@@ -154,6 +155,7 @@ body {
     Google Sans Code, JetBrains Mono, Roboto Mono, monospace,
     var(--font);
   --font-brand: var(--font);
+  --font-head: Instrument Serif, var(--font);
   --font-size: 14px;
   --line-height: calc(var(--font-size) + 4px);
   --font-size-sm: 12px;
@@ -955,4 +957,9 @@ form {
   flex-direction: column;
   align-items: center;
   gap: 6px;
+}
+
+b {
+  font-style: italic;
+  color: oklch(var(--l3-c));
 }

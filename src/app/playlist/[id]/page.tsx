@@ -1,6 +1,7 @@
 "use client";
 
-import { SakuraHeader } from '@/app/_components/header/header';
+import { SakuraActions } from '@/app/_components/header/actions';
+import { SakuraBackground, SakuraHeader } from '@/app/_components/header/header';
 import { SakuraDisc, SakuraSong, SakuraSongList } from '@/app/_components/song/song';
 import { SortableSong } from '@/app/_components/song/sortable_song';
 import { SakuraPage, SakuraSeparator, SakuraSplit } from '@/app/_components/split/split';
@@ -25,9 +26,10 @@ export default function Playlist() {
 
   return (
     <>
-      <SakuraHeader data={data as playlistFull} type="playlist" />
+      <SakuraBackground data={data as playlistFull} />
       <SakuraPage split>
         <SakuraSplit side="left">
+          <SakuraActions data={data as playlistFull} type="playlist" />
           <h3>Tracklist</h3>
           <SortableContext items={(data as playlistFull).songs.map(s => s.id)}>
             <SakuraSongList>
@@ -39,6 +41,7 @@ export default function Playlist() {
         </SakuraSplit>
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
+          <SakuraHeader data={data as playlistFull} type="playlist" />
           <h3>About</h3>
           <About />
         </SakuraSplit>

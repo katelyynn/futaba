@@ -3,6 +3,7 @@
 import { SakuraButton } from '@/app/_components/button/button';
 import { SakuraInput } from '@/app/_components/input/input';
 import { Column, Span } from '@/app/_components/layout/layout';
+import { SakuraSerif } from '@/app/_components/serif/serif';
 import { authenticateV2, createAuth, request } from '@/app/api/client';
 import { useSession } from '@/app/session';
 import { IconChevronRight } from '@tabler/icons-react';
@@ -11,7 +12,7 @@ import { useState } from 'react';
 export default function Login() {
   const { setSession } = useSession();
 
-  const [ server, setServer ] = useState("");
+  const [ server, setServer ] = useState("127.0.0.1:4533");
   const [ username, setUsername ] = useState("");
   const [ password, setPassword ] = useState("");
   const [ error, setError ] = useState<string | null>(null);
@@ -37,7 +38,7 @@ export default function Login() {
   return (
     <Span>
       <Column>
-        <h1>Login</h1>
+        <SakuraSerif>Login to <b>futaba</b></SakuraSerif>
         <form onSubmit={handleLogin}>
           <SakuraInput placeholder="Server" value={server} onChange={e => setServer(e.target.value)} />
           <SakuraInput placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />

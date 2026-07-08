@@ -2,7 +2,9 @@
 
 import { SakuraAlbum, SakuraAlbumList } from '@/app/_components/album/album';
 import { SakuraGroup, SakuraGroupList } from '@/app/_components/group/group';
-import { SakuraHeader } from '@/app/_components/header/header';
+import { SakuraActions } from '@/app/_components/header/actions';
+import { SakuraBackground, SakuraHeader } from '@/app/_components/header/header';
+import { SakuraPage, SakuraSeparator, SakuraSplit } from '@/app/_components/split/split';
 import { ErrorHandler } from '@/app/errorHandler';
 import { useArtist } from '@/app/hook/artist';
 import { useSession } from '@/app/session';
@@ -44,18 +46,27 @@ export default function Artist() {
 
   return (
     <>
-      <SakuraHeader data={data} type="artist" />
-      <SakuraGroupList>
-        {sortedGroups && sortedGroups.map(([group, items]) => (
-          <SakuraGroup name={group} key={group}>
-            <SakuraAlbumList key={group}>
-              {items.map((album, i) => (
-                <SakuraAlbum album={album} key={album.id} index={i} />
-              ))}
-            </SakuraAlbumList>
-          </SakuraGroup>
-        ))}
-      </SakuraGroupList>
+      <SakuraBackground data={data} />
+      <SakuraPage split>
+        <SakuraSplit side="left">
+          <SakuraActions data={data} type="artist" />
+          <SakuraGroupList>
+            {sortedGroups && sortedGroups.map(([group, items]) => (
+              <SakuraGroup name={group} key={group}>
+                <SakuraAlbumList key={group}>
+                  {items.map((album, i) => (
+                    <SakuraAlbum album={album} key={album.id} index={i} />
+                  ))}
+                </SakuraAlbumList>
+              </SakuraGroup>
+            ))}
+          </SakuraGroupList>
+        </SakuraSplit>
+        <SakuraSeparator orientation="vertical" />
+        <SakuraSplit side="right">
+          <SakuraHeader data={data} type="artist" />
+        </SakuraSplit>
+      </SakuraPage>
     </>
   )
 }

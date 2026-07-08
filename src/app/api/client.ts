@@ -148,7 +148,7 @@ export async function request(session: session, endpoint: string, params = {}) {
 }
 
 export async function validateSessionV2(session: session): Promise<session> {
-  const res = await requestV2(session, 'auth/login');
+  const res = await authenticateV2(session);
 
   return {
     ...session,

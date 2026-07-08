@@ -16,8 +16,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const saved = localStorage.getItem("session");
     if (saved) {
-      setSession(JSON.parse(saved));
-
       validateSessionV2(JSON.parse(saved))
         .then((session) => {
           setSession(session);
@@ -25,7 +23,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         .catch((e) => {
           console.error('failure validating login', e);
           setSession(null);
-          localStorage.removeItem('session');
         });
     }
   }, []);

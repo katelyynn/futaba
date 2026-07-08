@@ -3,6 +3,7 @@
 import { useSettings } from '@/app/api/settings';
 import styles from "./aside.module.css";
 import { SakuraQueue } from '../player/queue';
+import { SakuraSerif } from '../serif/serif';
 
 export function SakuraAside() {
   const asideView = useSettings(s => s.asideView);
@@ -12,14 +13,14 @@ export function SakuraAside() {
   if (asideView == "queue") {
     view = (
       <>
-        <h3>Queue</h3>
+        <SakuraSerif>Queue</SakuraSerif>
         <SakuraQueue />
       </>
     )
   } else if (asideView == "lyrics") {
     view = (
       <>
-        <h3>Lyrics</h3>
+        <SakuraSerif>Lyrics</SakuraSerif>
         <p className="subtle">not implemented</p>
       </>
     )
