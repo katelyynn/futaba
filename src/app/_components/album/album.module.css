@@ -51,6 +51,23 @@
       text-decoration-color: oklch(var(--l3-c) / 50%);
     }
   }
+
+  animation-name: show;
+  animation-duration: 0.5s;
+  animation-timing-function: var(--trans-function);
+  animation-delay: var(--delay, 0s);
+  animation-fill-mode: backwards;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .albumSide {

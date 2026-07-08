@@ -3,7 +3,7 @@
 import { SakuraButton } from '@/app/_components/button/button';
 import { SakuraInput } from '@/app/_components/input/input';
 import { Column, Span } from '@/app/_components/layout/layout';
-import { createAuth, request } from '@/app/api/client';
+import { authenticateV2, createAuth, request } from '@/app/api/client';
 import { useSession } from '@/app/session';
 import { IconChevronRight } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -23,9 +23,12 @@ export default function Login() {
     try {
       const session = { server, username, password };
 
-      await request(session, "ping");
+      const result = await authenticateV2(session);
 
-      setSession(session);
+      setSession({
+        ...session,
+        jwt: result.token
+      });
     } catch (e) {
       setError(e instanceof Error ? e.message : "login failed");
     }

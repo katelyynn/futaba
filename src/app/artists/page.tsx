@@ -17,8 +17,8 @@ export default function Artists() {
 
   return (
     <SakuraArtistList>
-      {data.map(artist => (
-        <SakuraArtist artist={artist} key={artist.id} />
+      {data.map((artist, i) => (
+        <SakuraArtist artist={artist} key={artist.id} index={i} />
       ))}
     </SakuraArtistList>
   )

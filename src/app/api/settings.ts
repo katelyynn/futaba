@@ -13,6 +13,7 @@ export const useSettings = create(persist(
     loop: false,
     shuffle: false,
     fullscreen: false,
+    colourFromNowPlaying: false,
 
     setVolume: (volume: number) => set({ volume }),
     setTheme: (theme: "light" | "dark" | "darker" | "oled") => set({ theme }),
@@ -22,7 +23,8 @@ export const useSettings = create(persist(
     setShowAsideView: (showAsideView: boolean) => set({ showAsideView }),
     setLoop: (loop: true | "once" | false) => set({ loop }),
     setShuffle: (shuffle: boolean) => set({ shuffle }),
-    setFullscreen: (fullscreen: boolean) => set({ fullscreen })
+    setFullscreen: (fullscreen: boolean) => set({ fullscreen }),
+    setColourFromNowPlaying: (colourFromNowPlaying: boolean) => set({ colourFromNowPlaying })
   }),
   {
     name: "settings"

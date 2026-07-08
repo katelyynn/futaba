@@ -18,7 +18,17 @@ import { convertColour } from '@/app/tools/colour';
 
 const fac = new FastAverageColor();
 
-export function SakuraAlbum({ album, showArtist = false }: { album: album, showArtist?: boolean }) {
+interface SakuraAlbumProps {
+  album: album,
+  showArtist?: boolean,
+  index?: number
+}
+
+export function SakuraAlbum({
+  album,
+  showArtist = false,
+  index = 0
+}: SakuraAlbumProps) {
   const artworkRef = useRef<HTMLDivElement>(null);
   const [ colour, setColour ] = useState<{ h: number, s: number, l: number } | null>(null);
 
@@ -79,7 +89,7 @@ export function SakuraAlbum({ album, showArtist = false }: { album: album, showA
   }, []);
 
   return (
-    <Link href={`/album/${album.id}`} className={`${styles.album} ${visible && styles.visible}`} ref={ref}>
+    <Link href={`/album/${album.id}`} className={`${styles.album} ${visible && styles.visible}`} ref={ref} style={{'--delay': index * 0.02 + 's'} as React.CSSProperties}>
       <SakuraImage url={visible ? album.art : undefined} type="album" identify={`${styles.art} colourful`} ref={artworkRef} />
       <div className={styles.info}>
         {(album.type || album.played || album.starred) && (

@@ -1,5 +1,5 @@
 .nav {
-
+  pointer-events: auto;
   width: 300px;
 
   position: relative;

@@ -3,9 +3,17 @@ import styles from "./artist.module.css";
 import { SakuraImage } from '../image/image';
 import Link from 'next/link';
 
-export function SakuraArtist({ artist }: { artist: artist }) {
+interface SakuraArtistProps {
+  artist: artist,
+  index?: number
+}
+
+export function SakuraArtist({
+  artist,
+  index = 0
+}: SakuraArtistProps) {
   return (
-    <Link href={`/artist/${artist.id}`} className={styles.artist}>
+    <Link href={`/artist/${artist.id}`} className={styles.artist} style={{'--delay': index * 0.02 + 's'} as React.CSSProperties}>
       <SakuraImage url={artist.art} type="artist" identify={styles.art} />
       <div className={styles.info}>
         <strong className={styles.name}>{artist.name}</strong>

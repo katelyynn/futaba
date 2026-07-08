@@ -18,7 +18,7 @@
   font-size: 24px;
   line-height: 28px;
   color: oklch(var(--c1));
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-bold);
 }
 
 .artists {

@@ -38,7 +38,7 @@ export async function getPlaylist(session: session, id: string) {
   const art = getCoverArt(session, playlist.coverArt);
 
   const songs: song[] = [];
-  playlist.entry.forEach((song, index) => {
+  playlist.entry?.forEach((song, index) => {
     const songArt = getCoverArt(session, song.coverArt);
 
     const artists = [];

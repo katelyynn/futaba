@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { session } from './api/client';
+import { session, validateSessionV2 } from './api/client';
 
 interface sessionContext {
   session: session | null,
@@ -15,7 +15,19 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("session");
-    if (saved) setSession(JSON.parse(saved));
+    if (saved) {
+      setSession(JSON.parse(saved));
+
+      validateSessionV2(JSON.parse(saved))
+        .then((session) => {
+          setSession(session);
+        })
+        .catch((e) => {
+          console.error('failure validating login', e);
+          setSession(null);
+          localStorage.removeItem('session');
+        });
+    }
   }, []);
 
   useEffect(() => {

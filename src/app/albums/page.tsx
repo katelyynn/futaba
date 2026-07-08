@@ -18,8 +18,8 @@ export default function Albums() {
 
   return (
     <SakuraAlbumList>
-      {data.map(album => (
-        <SakuraAlbum album={album} key={album.id} showArtist />
+      {data.map((album, i) => (
+        <SakuraAlbum album={album} key={album.id} showArtist index={i} />
       ))}
     </SakuraAlbumList>
   )

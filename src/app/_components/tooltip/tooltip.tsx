@@ -20,7 +20,7 @@ export function SakuraTooltip({
           {children}
         </Tooltip.Trigger>
         <Tooltip.Portal>
-          <Tooltip.Content className={styles.tooltip} onPointerDownOutside={(event) => {
+          <Tooltip.Content className={styles.tooltip} sideOffset={6} onPointerDownOutside={(event) => {
             if (showOnPointerOutside) event.preventDefault();
           }}>
             {content}

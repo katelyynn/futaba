@@ -19,7 +19,7 @@ export function SakuraPopover({
         {children}
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className={`${styles.popover} ${className && className}`}>
+        <Popover.Content className={`${styles.popover} ${className && className}`} sideOffset={6}>
           {content}
         </Popover.Content>
       </Popover.Portal>

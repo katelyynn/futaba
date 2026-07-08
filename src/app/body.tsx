@@ -15,9 +15,20 @@ export function Body({
   const fullscreen = useSettings(s => s.fullscreen);
 
   const currentSong = usePlayer(s => s.currentSong);
+  const colourFromNowPlaying = useSettings(s => s.colourFromNowPlaying);
 
   useEffect(() => {
     if (!currentSong || !currentSong?.art) return;
+
+    if (!colourFromNowPlaying) {
+      const host = document.body;
+
+      host.style.removeProperty('--hue-album');
+      host.style.removeProperty('--sat-album');
+      host.style.removeProperty('--lit-album');
+
+      return;
+    }
 
     const fac = new FastAverageColor();
 
@@ -53,7 +64,7 @@ export function Body({
     return () => {
       cancelled = true;
     }
-  }, [ currentSong ]);
+  }, [ currentSong, colourFromNowPlaying ]);
 
   return (
     <body data-futaba--theme={theme}>
