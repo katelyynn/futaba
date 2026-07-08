@@ -11,6 +11,17 @@
 
   color: oklch(var(--c2)) !important;
   text-decoration: none !important;
+
+  &:hover {
+    .art {
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .name {
+      text-decoration-line: underline;
+      text-decoration-color: oklch(var(--l3-c) / 50%);
+    }
+  }
 }
 
 .info {
@@ -27,4 +38,10 @@
 .art {
   --w: auto !important;
   border-radius: var(--item-small-radius) !important;
+
+  transform: translateY(0) scale(1);
+
+  transition-property: box-shadow, transform;
+  transition-duration: 0.4s;
+  transition-timing-function: var(--trans-function-ani);
 }

@@ -3,7 +3,7 @@ import styles from "./dialog.module.css";
 import React from 'react';
 
 interface SakuraDialogProps {
-  title?: string,
+  title: string,
   content: React.ReactNode,
   children: React.ReactNode
 }
@@ -21,7 +21,7 @@ export function SakuraDialog({
       <Dialog.Portal>
         <Dialog.Overlay className={styles.overlay}>
           <Dialog.Content className={styles.dialog}>
-            {title && <Dialog.Title className={styles.title}>{title}</Dialog.Title>}
+            <Dialog.Title className={styles.title}>{title}</Dialog.Title>
             <Dialog.Description>
               {content}
             </Dialog.Description>

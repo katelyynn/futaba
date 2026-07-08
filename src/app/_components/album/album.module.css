@@ -15,9 +15,11 @@
   .art {
     --w: auto !important;
     border-radius: var(--item-small-radius) !important;
-    box-shadow: 0 8px 40px oklch(var(--h4) / 40%), var(--standout-shadow);
+    box-shadow: 0 8px 40px oklch(var(--h4) / 20%), var(--standout-shadow);
 
-    transition-property: box-shadow;
+    transform: translateY(0) scale(1);
+
+    transition-property: box-shadow, transform;
     transition-duration: 0.4s;
     transition-timing-function: var(--trans-function-ani);
   }
@@ -37,6 +39,17 @@
 
   &:not(.visible) {
     opacity: 0;
+  }
+
+  &:hover {
+    .art {
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .name {
+      text-decoration-line: underline;
+      text-decoration-color: oklch(var(--l3-c) / 50%);
+    }
   }
 }
 

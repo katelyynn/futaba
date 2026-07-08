@@ -18,7 +18,7 @@ export const SakuraImage = forwardRef<HTMLDivElement, SakuraImageProps>(
   }, ref) => {
     if (expand) {
       return (
-        <SakuraDialog content={(
+        <SakuraDialog title={'avatar'} content={(
           <img src={url} alt="something" />
         )}>
           <div ref={ref} className={`${styles.image} ${identify && identify}`}>
