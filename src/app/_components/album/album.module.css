@@ -47,8 +47,7 @@
     }
 
     .name {
-      text-decoration-line: underline;
-      text-decoration-color: oklch(var(--l3-c) / 50%);
+      color: oklch(var(--l3-c));
     }
   }
 
@@ -156,6 +155,12 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.name {
+  transition-property: color;
+  transition-duration: var(--trans);
+  transition-timing-function: var(--trans-function);
 }
 
 .artists {

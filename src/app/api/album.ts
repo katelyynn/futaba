@@ -81,16 +81,17 @@ export async function getAlbum(session: session, id: string) {
   console.info('album req', album);
 
   const art = getCoverArt(session, album.coverArt);
+  const album_artist = album.artists[0];
 
   const songs: Record<string, song[]> = {};
   const songsList: song[] = [];
   album.song.forEach(song => {
     const songArt = getCoverArt(session, song.coverArt);
 
-    const artists = [];
+    let artists = [];
     const unrelated = [];
 
-    song.contributors.forEach(contrib => {
+    song.contributors?.forEach(contrib => {
       unrelated.push(contrib.artist.id);
     });
 
@@ -101,6 +102,10 @@ export async function getAlbum(session: session, id: string) {
       artists.push(artist);
     });
 
+    if (artists.length == 0) {
+      artists = song.artists;
+    }
+
     const disc = song.discNumber || 0;
 
     if (!songs[disc]) songs[disc] = [];
@@ -108,7 +113,7 @@ export async function getAlbum(session: session, id: string) {
     const newSong = {
       id: song.id,
       name: song.title,
-      artists: artists,
+      artists,
       duration: song.duration,
       played: song.played,
       plays: song.playCount,
