@@ -7,6 +7,9 @@ export default function Home() {
     <>
       <SakuraGroupList>
         <SakuraGroup name="Most played">
+          <AlbumsList order="DESC" sort="play_count" />
+        </SakuraGroup>
+        <SakuraGroup name="Recently played">
           <AlbumsList order="DESC" sort="play_date" />
         </SakuraGroup>
         <SakuraGroup name="Recently added">

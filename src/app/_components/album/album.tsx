@@ -129,9 +129,17 @@ export function SakuraAlbum({
   )
 }
 
-export function SakuraAlbumList({ children }: { children: React.ReactNode }) {
+interface SakuraAlbumListProps {
+  single?: boolean,
+  children: React.ReactNode
+}
+
+export function SakuraAlbumList({
+  single = false,
+  children
+}: SakuraAlbumListProps) {
   return (
-    <div className={styles.list}>
+    <div className={`${styles.list} ${single ? styles.single : ''}`}>
       {children}
     </div>
   )

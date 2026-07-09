@@ -2,6 +2,11 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 20px 12px;
+
+  &.single {
+    grid-auto-flow: column;
+    width: calc((160px + 12px) * 20);
+  }
 }
 
 .album {

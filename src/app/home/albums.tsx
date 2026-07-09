@@ -26,9 +26,9 @@ export function AlbumsList({
   if (error) return <ErrorHandler error={error} />;
 
   return (
-    <SakuraAlbumList>
+    <SakuraAlbumList single>
       {data.map((album, i) => (
-        <SakuraAlbum album={album} key={album.id} index={i} />
+        <SakuraAlbum album={album} key={album.id} index={i} showArtist />
       ))}
     </SakuraAlbumList>
   )
