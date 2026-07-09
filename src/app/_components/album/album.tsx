@@ -30,6 +30,7 @@ export function SakuraAlbum({
   index = 0
 }: SakuraAlbumProps) {
   const artworkRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLDivElement>(null);
   const [ colour, setColour ] = useState<{ h: number, s: number, l: number } | null>(null);
 
   const ref = useRef<HTMLAnchorElement>(null);
@@ -41,20 +42,22 @@ export function SakuraAlbum({
     let cancelled = false;
 
     const run = async () => {
-      const image = new Image();
+      try {
+        const image = new Image();
 
-      image.crossOrigin = "anonymous";
-      image.src = album.art;
+        image.crossOrigin = "anonymous";
+        image.src = album.art;
 
-      await image.decode();
-      if (cancelled) return;
+        await image.decode();
+        if (cancelled) return;
 
-      const values = fac.getColor(image);
-      if (cancelled) return;
+        const values = fac.getColor(image);
+        if (cancelled) return;
 
-      const { h, s, l } = convertColour(values.value);
+        const { h, s, l } = convertColour(values.value);
 
-      setColour({h, s, l});
+        setColour({h, s, l});
+      } catch {}
     }
 
     run();
@@ -67,9 +70,16 @@ export function SakuraAlbum({
   useEffect(() => {
     if (!colour || !artworkRef.current || !visible) return;
 
-    artworkRef.current.style.setProperty(`--hue-over`, colour.h.toString());
-    artworkRef.current.style.setProperty(`--sat-over`, colour.s.toString());
-    artworkRef.current.style.setProperty(`--lit-over`, colour.l.toString());
+    apply(artworkRef);
+    apply(nameRef);
+
+    function apply(ref: React.RefObject<HTMLDivElement | null>) {
+      if (!ref.current) return;
+
+      ref.current.style.setProperty(`--hue-over`, colour!.h.toString());
+      ref.current.style.setProperty(`--sat-over`, colour!.s.toString());
+      ref.current.style.setProperty(`--lit-over`, colour!.l.toString());
+    }
   }, [ colour, visible ]);
 
   useEffect(() => {
@@ -112,7 +122,7 @@ export function SakuraAlbum({
             )}
           </SakuraMetaList>
         )}
-        <strong className={styles.name}>{album.name}</strong>
+        <strong className={`${styles.name} colourful`} ref={nameRef}>{album.name}</strong>
         {showArtist && <span className={styles.artists}>{album.artists.map((artist, i) => <span className={styles.artist} key={i}><span className={styles.artistName}>{artist.name}</span>{i != album.artists.length - 1 && <span className={styles.comma}>,</span>}</span>)}</span>}
         <SakuraMetaList>
           <SakuraMeta name="Release date">
@@ -138,8 +148,28 @@ export function SakuraAlbumList({
   single = false,
   children
 }: SakuraAlbumListProps) {
+  const listRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className={`${styles.list} ${single ? styles.single : ''}`}>
+    <div className={`${styles.list} ${single ? styles.single : ''}`} ref={listRef} onWheel={(e) => {
+      if (!single) return;
+
+      e.preventDefault();
+
+      if (e.deltaY > 0) {
+        listRef.current!.scrollBy({
+          top: 0,
+          left: +600,
+          behavior: 'smooth'
+        });
+      } {
+        listRef.current!.scrollBy({
+          top: 0,
+          left: -600,
+          behavior: 'smooth'
+        });
+      }
+    }}>
       {children}
     </div>
   )

@@ -52,7 +52,7 @@ export default function Artist() {
           <SakuraGroupList>
             {sortedGroups && sortedGroups.map(([group, items]) => (
               <SakuraGroup name={group} key={group}>
-                <SakuraAlbumList key={group}>
+                <SakuraAlbumList key={group} single>
                   {items.map((album, i) => (
                     <SakuraAlbum album={album} key={album.id} index={i} />
                   ))}

@@ -14,3 +14,11 @@
 
   position: relative;
 }
+
+.label {
+  margin-bottom: 10px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: var(--font-weight-medium);
+  color: oklch(var(--c1));
+}

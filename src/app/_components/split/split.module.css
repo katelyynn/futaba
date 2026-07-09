@@ -5,6 +5,10 @@
 }
 
 .split {
+  overflow: hidden;
+  padding: 0 var(--pad);
+  margin: 0 calc(-1 * var(--pad));
+
   &.left {
     flex: 1;
   }

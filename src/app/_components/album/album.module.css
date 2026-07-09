@@ -4,8 +4,12 @@
   gap: 20px 12px;
 
   &.single {
-    grid-auto-flow: column;
-    width: calc((160px + 12px) * 20);
+    display: flex;
+    width: max-content;
+
+    .album {
+      width: 160px;
+    }
   }
 }
 
@@ -25,7 +29,7 @@
     outline: 2px solid transparent;
 
     transition-property: outline-color;
-    transition-duration: 0.4s;
+    transition-duration: var(--trans);
     transition-timing-function: var(--trans-function-ani);
   }
 
@@ -49,6 +53,7 @@
   &:hover {
     .art {
       outline-color: oklch(var(--l3-c));
+      transition: none;
     }
 
     .name {

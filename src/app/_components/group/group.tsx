@@ -14,7 +14,7 @@ export function SakuraGroup({
 }: SakuraGroupProps) {
   return (
     <div className={styles.group}>
-      <SakuraSerif>{releaseType(name)}</SakuraSerif>
+      <label className={styles.label}>{releaseType(name)}</label>
       {children}
     </div>
   )

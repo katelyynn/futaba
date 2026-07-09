@@ -1,5 +1,6 @@
 "use client";
 
+import { sanitiseReleaseType } from '../tools/type';
 import { request, session } from './client';
 import { getCoverArt } from './cover';
 
@@ -32,9 +33,10 @@ export async function getArtist(session: session, id: string) {
     artist.album.forEach(album => {
       const art = getCoverArt(session, album.id);
       const type = album.isCompilation ? 'compilation' : album.releaseTypes[0]?.toLowerCase().trim() || 'album';
+      const sortedType = sanitiseReleaseType(type);
 
-      if (!albums[type]) albums[type] = [];
-      albums[type].push({
+      if (!albums[sortedType]) albums[sortedType] = [];
+      albums[sortedType].push({
         id: album.id,
         name: album.name,
         artists: album.artists,
@@ -43,6 +45,7 @@ export async function getArtist(session: session, id: string) {
         played: album.played,
         plays: album.plays,
         type,
+        sortedType,
         created: album.created,
         art: art,
         date: album.releaseDate,
