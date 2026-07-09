@@ -15,6 +15,7 @@
   &:hover {
     .art {
       outline-color: oklch(var(--l3-c));
+      transition: none;
     }
 
     .name {
@@ -47,6 +48,11 @@
 }
 
 .name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+
   transition-property: color;
   transition-duration: var(--trans);
   transition-timing-function: var(--trans-function);
@@ -64,6 +70,6 @@
   outline: 2px solid transparent;
 
   transition-property: outline-color;
-  transition-duration: 0.4s;
+  transition-duration: var(--trans);
   transition-timing-function: var(--trans-function-ani);
 }

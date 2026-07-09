@@ -100,7 +100,7 @@ export function SakuraAlbum({
 
   return (
     <Link href={`/album/${album.id}`} className={`${styles.album} ${visible && styles.visible}`} ref={ref} style={{'--delay': index * 0.02 + 's'} as React.CSSProperties}>
-      <SakuraImage url={visible ? album.art : undefined} type="album" identify={`${styles.art} colourful`} ref={artworkRef} />
+      <SakuraImage url={album.art} type="album" identify={`${styles.art} colourful`} ref={artworkRef} />
       <div className={styles.info}>
         {(album.type || album.played || album.starred) && (
           <SakuraMetaList>
