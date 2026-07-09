@@ -2,7 +2,15 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { session } from '../api/client';
-import { getArtist, getArtists } from '../api/artist';
+import { getArtist, getArtists, getArtistsV2 } from '../api/artist';
+
+export function useArtistsV2(session: session | null, start = 0, end = 20, order = 'DESC', sort = 'recently_added') {
+  return useQuery({
+    queryKey: ["artistsV2", session, start, end, order, sort],
+    queryFn: () => getArtistsV2(session!, start, end, order, sort),
+    staleTime: 10000
+  });
+}
 
 export function useArtists(session: session | null) {
   console.log('useArtists', session);

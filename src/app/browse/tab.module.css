@@ -1,0 +1,13 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--pad);
+  margin-bottom: var(--pad);
+  border-bottom: 1px solid var(--separator-base);
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}

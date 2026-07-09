@@ -83,6 +83,7 @@ export async function authenticateV2(session: session): Promise<authenticateV2> 
 
 export async function requestV2(session: session, endpoint: string, params = {}) {
   if (!session.jwt) {
+    console.error('missing jwt, authenticate first');
     throw new Error('missing jwt, authenticate first');
   }
 
@@ -101,9 +102,11 @@ export async function requestV2(session: session, endpoint: string, params = {})
 
   if (!res.ok) {
     if (res.status == 401) {
+      console.error('session expired');
       throw new Error('session expired');
     }
 
+    console.error('unexpected apiV2 error');
     throw new Error('unexpected apiV2 error');
   }
 

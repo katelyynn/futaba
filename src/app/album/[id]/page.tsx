@@ -13,7 +13,7 @@ import { useSession } from '@/app/session';
 import { bytes } from '@/app/tools/size';
 import { album_full } from '@/app/types/album';
 import { SortableContext } from '@dnd-kit/sortable';
-import { IconCalendarWeekFilled, IconFolder, IconHeadphonesFilled, IconMusic } from '@tabler/icons-react';
+import { IconCalendarWeekFilled, IconFolder, IconHeadphonesFilled, IconMusic, IconPlayerPlayFilled } from '@tabler/icons-react';
 import { DateTime, Duration } from 'luxon';
 import { useParams } from 'next/navigation';
 
@@ -71,11 +71,18 @@ export default function Album() {
               {dataV2.songs} song{dataV2.songs > 1 && "s"}, {duration.hours ? `${duration.hours}h ` : ''}{duration.minutes}m
             </SakuraMeta>
             {dataV2.played && (
-              <SakuraMeta name="Last listened" small={false}>
-                <IconHeadphonesFilled size={META_ICON_SIZE_BIG} />
-                <SakuraMetaLabel>Last listened</SakuraMetaLabel>
-                {DateTime.fromISO(dataV2.played).toRelative({ style: 'short' })}
-              </SakuraMeta>
+              <>
+                <SakuraMeta name="Total listens" small={false}>
+                  <IconPlayerPlayFilled size={META_ICON_SIZE_BIG} />
+                  <SakuraMetaLabel>Total listens</SakuraMetaLabel>
+                  {dataV2.plays} plays
+                </SakuraMeta>
+                <SakuraMeta name="Last listened" small={false}>
+                  <IconHeadphonesFilled size={META_ICON_SIZE_BIG} />
+                  <SakuraMetaLabel>Last listened</SakuraMetaLabel>
+                  {DateTime.fromISO(dataV2.played).toRelative({ style: 'short' })}
+                </SakuraMeta>
+              </>
             )}
             <SakuraMeta name="File size" small={false}>
               <IconFolder size={META_ICON_SIZE_BIG} />

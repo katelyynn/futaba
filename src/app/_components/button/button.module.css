@@ -61,8 +61,27 @@
   gap: 6px;
 
   --bg: transparent;
-  --bg-hov: oklch(var(--b4) / 60%);
-  --bg-atv: oklch(var(--b4) / 80%);
+  --bg-hov: oklch(var(--b2) / 40%);
+  --bg-atv: oklch(var(--b2) / 60%);
+  --col: oklch(var(--c2));
+  --shadow: none;
+
+  &.primary {
+    --bg: oklch(var(--h4) / 20%);
+    --bg-hov: oklch(var(--h4) / 25%);
+    --bg-atv: oklch(var(--h4) / 30%);
+    --col: oklch(var(--l3-c));
+  }
+}
+
+.tab2 {
+  --button-verts: 6px;
+  --button-sides: 12px;
+  gap: 6px;
+
+  --bg: transparent;
+  --bg-hov: oklch(var(--b2) / 40%);
+  --bg-atv: oklch(var(--b2) / 60%);
   --col: oklch(var(--c2));
   --shadow: none;
 
