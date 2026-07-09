@@ -10,20 +10,23 @@ import { useSession } from '../session';
 export default function Artists() {
   const { session } = useSession();
 
-  const { data, isLoading, error } = useArtistsV2(session, 0, 100, 'ASC', 'play_date');
+  const { data, isLoading, error } = useArtistsV2(session, 0, 100, 'DESC', 'play_date');
+  if (isLoading) return (
+    <>
+      <BrowseTabs />
+    </>
+  );
 
   console.log('artist data', data);
 
   return (
     <>
       <BrowseTabs />
-      <Suspense>
-        <SakuraArtistList>
-          {data.map((artist, i) => (
-            <SakuraArtist artist={artist} key={artist.id} index={i} />
-          ))}
-        </SakuraArtistList>
-      </Suspense>
+      <SakuraArtistList>
+        {data.map((artist, i) => (
+          <SakuraArtist artist={artist} key={i} index={i} />
+        ))}
+      </SakuraArtistList>
     </>
   )
 }

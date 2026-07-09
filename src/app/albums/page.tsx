@@ -12,19 +12,22 @@ export default function Albums() {
   const { session } = useSession();
 
   const { data, isLoading, error } = useAlbums(session);
+  if (isLoading) return (
+    <>
+      <BrowseTabs />
+    </>
+  );
 
   console.log('album data', data);
 
   return (
     <>
       <BrowseTabs />
-      <Suspense>
-        <SakuraAlbumList>
-          {data.map((album, i) => (
-            <SakuraAlbum album={album} key={album.id} showArtist index={i} />
-          ))}
-        </SakuraAlbumList>
-      </Suspense>
+      <SakuraAlbumList>
+        {data.map((album, i) => (
+          <SakuraAlbum album={album} key={album.id} showArtist index={i} />
+        ))}
+      </SakuraAlbumList>
     </>
   )
 }

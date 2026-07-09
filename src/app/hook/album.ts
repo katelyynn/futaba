@@ -7,8 +7,7 @@ import { getAlbum, getAlbumInfo, getAlbums, getAlbumsV2, getAlbumV2 } from '../a
 export function useAlbumsV2(session: session | null, start = 0, end = 20, order = 'DESC', sort = 'recently_added') {
   return useQuery({
     queryKey: ["albumsV2", session, start, end, order, sort],
-    queryFn: () => getAlbumsV2(session!, start, end, order, sort),
-    staleTime: 10000
+    queryFn: () => getAlbumsV2(session!, start, end, order, sort)
   });
 }
 
