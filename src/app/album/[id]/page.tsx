@@ -70,12 +70,12 @@ export default function Album() {
               <SakuraMetaLabel>Song count</SakuraMetaLabel>
               {dataV2.songs} song{dataV2.songs > 1 && "s"}, {duration.hours ? `${duration.hours}h ` : ''}{duration.minutes}m
             </SakuraMeta>
-            {dataV2.played && (
+            {dataV2.played && dataV2.plays && (
               <>
                 <SakuraMeta name="Total listens" small={false}>
                   <IconPlayerPlayFilled size={META_ICON_SIZE_BIG} />
                   <SakuraMetaLabel>Total listens</SakuraMetaLabel>
-                  {dataV2.plays} plays
+                  {dataV2.plays} play{dataV2.plays > 1 && "s"}
                 </SakuraMeta>
                 <SakuraMeta name="Last listened" small={false}>
                   <IconHeadphonesFilled size={META_ICON_SIZE_BIG} />
