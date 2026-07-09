@@ -991,3 +991,8 @@ b {
   font-style: italic;
   color: oklch(var(--l3-c));
 }
+
+
+em {
+  font-style: italic;
+}

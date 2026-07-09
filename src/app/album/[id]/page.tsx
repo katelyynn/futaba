@@ -10,6 +10,7 @@ import { SakuraPage, SakuraSeparator, SakuraSplit } from '@/app/_components/spli
 import { ErrorHandler } from '@/app/errorHandler';
 import { useAlbum, useAlbumInfo, useAlbumV2 } from '@/app/hook/album';
 import { useSession } from '@/app/session';
+import { bytes } from '@/app/tools/size';
 import { album_full } from '@/app/types/album';
 import { SortableContext } from '@dnd-kit/sortable';
 import { IconCalendarWeekFilled, IconFolder, IconHeadphonesFilled, IconMusic } from '@tabler/icons-react';
@@ -79,7 +80,7 @@ export default function Album() {
             <SakuraMeta name="File size" small={false}>
               <IconFolder size={META_ICON_SIZE_BIG} />
               <SakuraMetaLabel>File size</SakuraMetaLabel>
-              {dataV2.size}
+              {bytes(dataV2.size)}
             </SakuraMeta>
           </SakuraMetaList>
           <h3>About</h3>
@@ -99,6 +100,12 @@ export default function Album() {
         </div>
       )
     }
+
+    return (
+      <div>
+        <em>No comment</em>
+      </div>
+    )
 
     /*const { data, isLoading, error } = useAlbumInfo(session, id);
 
