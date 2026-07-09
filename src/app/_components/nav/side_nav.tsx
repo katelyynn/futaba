@@ -3,7 +3,7 @@
 import styles from "./side_nav.module.css";
 import { SakuraButton } from '../button/button';
 import { usePathname } from 'next/navigation';
-import { IconCarambola, IconDisc, IconHeart, IconMusic, IconSettingsFilled, IconSmartHome } from '@tabler/icons-react';
+import { IconCarambola, IconDisc, IconHeart, IconListSearch, IconMusic, IconSettingsFilled, IconSmartHome } from '@tabler/icons-react';
 import { useSession } from '@/app/session';
 import { useAlbums } from '@/app/hook/album';
 import { ErrorHandler } from '@/app/errorHandler';
@@ -27,25 +27,13 @@ export function SideNav() {
             <IconSmartHome size={16} />
             Home
           </SakuraButton>
-          <SakuraButton elem="link" href="/artists" identifyOwn="tab" primary={path.startsWith('/artists')}>
-            <IconCarambola size={16} />
-            Artists
-          </SakuraButton>
-          <SakuraButton elem="link" href="/albums" identifyOwn="tab" primary={path.startsWith('/albums')}>
-            <IconDisc size={16} />
-            Albums
-          </SakuraButton>
-          <SakuraButton elem="link" href="/songs" identifyOwn="tab" primary={path.startsWith('/songs')}>
-            <IconMusic size={16} />
-            Songs
+          <SakuraButton elem="link" href="/albums" identifyOwn="tab" primary={path.startsWith('/albums') || path.startsWith('/artists') || path.startsWith('/songs')}>
+            <IconListSearch size={16} />
+            Browse
           </SakuraButton>
           <SakuraButton elem="link" href="/loved" identifyOwn="tab" primary={path.startsWith('/loved')}>
             <IconHeart size={16} />
             Loved
-          </SakuraButton>
-          <SakuraButton elem="link" href="/settings" identifyOwn="tab" primary={path.startsWith('/settings')}>
-            <IconSettingsFilled size={16} />
-            Settings
           </SakuraButton>
         </ul>
         <SideAlbumList session={session} />

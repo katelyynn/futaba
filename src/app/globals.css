@@ -1,3 +1,21 @@
+@font-face {
+  font-family: 'Familjen Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: block;
+  src: url('/fonts/FamiljenGrotesk-VariableFont_wght.ttf');
+  ascent-override: 86%;
+}
+
+@font-face {
+  font-family: 'Familjen Grotesk';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: block;
+  src: url('/fonts/FamiljenGrotesk-Italic-VariableFont_wght.ttf');
+  ascent-override: 86%;
+}
+
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -148,7 +166,7 @@ main {
 
 body {
   --font:
-    var(--custom_font, ""), Hanken Grotesk, Funnel Sans, Inter, Ubuntu Sans, Spline Sans,
+    var(--custom_font, ""), Familjen Grotesk, Hanken Grotesk, Funnel Sans, Inter, Ubuntu Sans, Spline Sans,
     Roboto, Apple Color Emoji, var(--font_emoji_name, ""), Segoe UI Symbol, Apple Symbols, Noto Sans, Noto Sans JP, Noto Sans KR, Noto Sans TC,
     Lucida Grande, Verdana, -apple-system, BlinkMacSystemFont,
     sans-serif;

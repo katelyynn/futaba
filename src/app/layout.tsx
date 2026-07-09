@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Funnel_Sans, Gamja_Flower, Hanken_Grotesk, Instrument_Serif, Noto_Sans_JP, Noto_Sans_KR } from "next/font/google";
+import { Familjen_Grotesk, Funnel_Sans, Gamja_Flower, Hanken_Grotesk, Instrument_Serif, Noto_Sans_JP, Noto_Sans_KR, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Provider from './provide';
 import { SideNav } from './_components/nav/side_nav';

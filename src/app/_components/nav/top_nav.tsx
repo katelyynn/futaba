@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styles from "./top_nav.module.css";
 import { SakuraButton } from '../button/button';
-import { IconChevronDown, IconChevronLeft, IconChevronRight, IconFolderSearch, IconLogout, IconMaximize, IconMinus, IconSquare, IconUser, IconUserQuestion, IconX } from '@tabler/icons-react';
+import { IconChevronLeft, IconChevronRight, IconFolderSearch, IconLogout, IconMinus, IconSettingsFilled, IconSquare, IconUser, IconUserQuestion, IconX } from '@tabler/icons-react';
 import { SakuraTooltip } from '../tooltip/tooltip';
 import { useSession } from '@/app/session';
 import { startScan } from '@/app/api/scan';
@@ -44,6 +44,11 @@ export function TopNav() {
         <SakuraTooltip content="Start scan">
           <SakuraButton elem="button" identify={`${styles.windowControl}`} onClick={() => startScan(session!)}>
             <IconFolderSearch size={iconSize} />
+          </SakuraButton>
+        </SakuraTooltip>
+        <SakuraTooltip content="Settings">
+          <SakuraButton elem="link" identify={`${styles.windowControl}`} href="/settings">
+            <IconSettingsFilled size={iconSize} />
           </SakuraButton>
         </SakuraTooltip>
         <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.minimise}`} onClick={() => window.windowControls.minimise()}>

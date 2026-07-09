@@ -22,7 +22,7 @@ export const SakuraImage = forwardRef<HTMLDivElement, SakuraImageProps>(
           <img src={url} alt="something" />
         )}>
           <div ref={ref} className={`${styles.image} ${identify && identify}`}>
-            <img src={`${url}&size=500`} alt="something" />
+            <img src={`${url}&size=500`} alt="something" loading="lazy" />
           </div>
         </SakuraDialog>
       )
@@ -30,7 +30,7 @@ export const SakuraImage = forwardRef<HTMLDivElement, SakuraImageProps>(
 
     return (
       <div ref={ref} className={`${styles.image} ${identify && identify}`}>
-        <img src={`${url}&size=500`} alt="something" />
+        <img src={`${url}&size=500`} alt="something" loading="lazy" />
       </div>
     );
   }

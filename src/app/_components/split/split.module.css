@@ -17,6 +17,7 @@
 .separator {
   display: block;
   background: var(--separator);
+  opacity: 0.6;
 
   &.horizontal {
     width: 100%;
@@ -24,6 +25,5 @@
   }
   &.vertical {
     width: 1px;
-    display: none;
   }
 }

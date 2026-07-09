@@ -1,9 +1,11 @@
 .tooltip {
   padding: 4px 8px;
-  background-color: oklch(var(--b4));
+  background-color: oklch(var(--b8) / 90%);
   border-radius: var(--item-small-radius);
   box-shadow: var(--card-shadow);
   color: oklch(var(--c2));
+
+  backdrop-filter: var(--solarium);
 
   font-size: 13px;
 

@@ -60,7 +60,7 @@
   top: calc(-1 * var(--pad));
   left: calc(-1 * var(--pad));
   right: calc(-1 * var(--pad));
-  height: 500px;
+  height: 400px;
 
   background-size: cover;
   background-position: center;
@@ -69,7 +69,10 @@
   --mask: linear-gradient(0deg, transparent, white);
   mask-image: var(--mask);
 
-  opacity: 0.03;
+  opacity: 0.1;
+
+  filter: blur(10px);
+  scale: 1.1;
 
   pointer-events: none;
 }

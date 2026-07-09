@@ -22,9 +22,9 @@
     border-radius: var(--item-small-radius) !important;
     box-shadow: 0 8px 40px oklch(var(--h4) / 20%), var(--standout-shadow);
 
-    transform: translateY(0) scale(1);
+    outline: 2px solid transparent;
 
-    transition-property: box-shadow, transform;
+    transition-property: outline-color;
     transition-duration: 0.4s;
     transition-timing-function: var(--trans-function-ani);
   }
@@ -48,7 +48,7 @@
 
   &:hover {
     .art {
-      transform: translateY(-2px) scale(1.02);
+      outline-color: oklch(var(--l3-c));
     }
 
     .name {
@@ -188,7 +188,7 @@
 }
 
 .comma {
-  padding-right: 4px;
+  padding-right: 3px;
 }
 
 .meta {
