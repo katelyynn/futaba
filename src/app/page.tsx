@@ -6,8 +6,11 @@ export default function Home() {
   return (
     <>
       <SakuraGroupList>
-        <SakuraGroup name="Recently played">
+        <SakuraGroup name="Jump back in">
           <AlbumsList order="DESC" sort="play_date" />
+        </SakuraGroup>
+        <SakuraGroup name="Recently released">
+          <AlbumsList order="DESC" sort="date" />
         </SakuraGroup>
         <SakuraGroup name="Recently added">
           <AlbumsList order="DESC" sort="recently_added" />
@@ -17,9 +20,6 @@ export default function Home() {
         </SakuraGroup>
         <SakuraGroup name="Most played">
           <AlbumsList order="DESC" sort="play_count" />
-        </SakuraGroup>
-        <SakuraGroup name="Recently released">
-          <AlbumsList order="DESC" sort="max_year" />
         </SakuraGroup>
       </SakuraGroupList>
     </>

@@ -16,8 +16,6 @@ import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '../meta/meta';
 import { FastAverageColor } from 'fast-average-color';
 import { convertColour } from '@/app/tools/colour';
 
-const fac = new FastAverageColor();
-
 interface SakuraAlbumProps {
   album: album,
   showArtist?: boolean,
@@ -43,21 +41,23 @@ export function SakuraAlbum({
 
     const run = async () => {
       try {
-        const image = new Image();
+        const fac = new FastAverageColor();
 
-        image.crossOrigin = "anonymous";
-        image.src = album.art;
+        const image = artworkRef.current?.querySelector('img');
+        if (!image) return;
 
-        await image.decode();
-        if (cancelled) return;
+        const values = await fac.getColorAsync(image, {
+          crossOrigin: 'anonymous'
+        });
 
-        const values = fac.getColor(image);
         if (cancelled) return;
 
         const { h, s, l } = convertColour(values.value);
 
         setColour({h, s, l});
-      } catch {}
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     run();
@@ -127,12 +127,14 @@ export function SakuraAlbum({
         <SakuraMetaList>
           <SakuraMeta name="Release date">
             <IconCalendarWeekFilled size={META_ICON_SIZE} />
-            {album.year || "????"}
+            {album.date ? DateTime.fromISO(album.date).toLocaleString(DateTime.DATE_MED) : album.year || "????"}
           </SakuraMeta>
-          <SakuraMeta name="Song count">
-            <IconMusic size={META_ICON_SIZE} />
-            {album.songs} song{album.songs > 1 && "s"}
-          </SakuraMeta>
+          {!album.date ? (
+            <SakuraMeta name="Song count">
+              <IconMusic size={META_ICON_SIZE} />
+              {album.songs} song{album.songs > 1 && "s"}
+            </SakuraMeta>
+          ) : ''}
         </SakuraMetaList>
       </div>
     </Link>
@@ -148,28 +150,8 @@ export function SakuraAlbumList({
   single = false,
   children
 }: SakuraAlbumListProps) {
-  const listRef = useRef<HTMLDivElement>(null);
-
   return (
-    <div className={`${styles.list} ${single ? styles.single : ''}`} ref={listRef} onWheel={(e) => {
-      if (!single) return;
-
-      e.preventDefault();
-
-      if (e.deltaY > 0) {
-        listRef.current!.scrollBy({
-          top: 0,
-          left: +600,
-          behavior: 'smooth'
-        });
-      } {
-        listRef.current!.scrollBy({
-          top: 0,
-          left: -600,
-          behavior: 'smooth'
-        });
-      }
-    }}>
+    <div className={`${styles.list} ${single ? styles.single : ''}`}>
       {children}
     </div>
   )

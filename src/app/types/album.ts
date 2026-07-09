@@ -12,11 +12,7 @@ export interface album {
   created: string,
   art: string,
   explicit: boolean,
-  date: {
-    year?: number,
-    month?: number,
-    day?: number
-  },
+  date?: string,
   year?: number,
   starred?: string
 }

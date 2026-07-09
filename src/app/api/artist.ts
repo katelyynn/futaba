@@ -48,7 +48,6 @@ export async function getArtist(session: session, id: string) {
         sortedType,
         created: album.created,
         art: art,
-        date: album.releaseDate,
         year: album.year,
         starred: album.starred
       });

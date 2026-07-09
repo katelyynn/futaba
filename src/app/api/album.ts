@@ -18,7 +18,6 @@ export async function getAlbumsV2(session: session, start = 0, end = 20, order =
   res.data.forEach(album => {
     const artists = album.participants.albumartist || [];
     const art = getCoverArt(session, album.id);
-    const date = new Date(album.date);
 
     if (sort == 'play_date' && !album.playDate) return;
     if (sort == 'play_count' && !album.playCount) return;
@@ -35,11 +34,7 @@ export async function getAlbumsV2(session: session, start = 0, end = 20, order =
       created: album.createdAt,
       art,
       explicit: album.explicitStatus != '',
-      date: {
-        year: date.getFullYear(),
-        month: date.getMonth(),
-        day: date.getDate()
-      },
+      date: album.date,
       year: album.maxYear,
       starred: album.starred
     });
