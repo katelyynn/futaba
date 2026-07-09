@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { session } from '../api/client';
-import { getAlbum, getAlbumInfo, getAlbums, getAlbumsV2 } from '../api/album';
+import { getAlbum, getAlbumInfo, getAlbums, getAlbumsV2, getAlbumV2 } from '../api/album';
 
 export function useAlbumsV2(session: session | null, start = 0, end = 20, order = 'DESC', sort = 'recently_added') {
   return useQuery({
@@ -19,6 +19,13 @@ export function useAlbums(session: session | null, size?: number, nowPlayingId?:
     queryKey: ["albums", session, size, nowPlayingId],
     queryFn: () => getAlbums(session!, size),
     staleTime: 10000
+  });
+}
+
+export function useAlbumV2(session: session | null, id: string | null) {
+  return useQuery({
+    queryKey: ["albumV2", id, session],
+    queryFn: () => getAlbumV2(session!, id!)
   });
 }
 

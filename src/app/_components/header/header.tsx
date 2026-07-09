@@ -6,9 +6,10 @@ import { album, album_full } from '@/app/types/album';
 import Link from 'next/link';
 import { releaseType } from '@/app/tools/type';
 import { playlistFull } from '@/app/types/playlist';
+import { AlbumV2 } from '@/app/api/album';
 
 interface SakuraBackgroundProps {
-  data: artist | album | playlistFull
+  data: artist | album | playlistFull | AlbumV2
 }
 
 export function SakuraBackground({
@@ -30,7 +31,7 @@ export function SakuraHeader({
 }: SakuraHeaderProps) {
   let text = 'Artist';
   if (type == 'album') {
-    text = releaseType((data as album_full).type);
+    text = releaseType((data as AlbumV2).type);
   } else if (type == 'playlist') {
     text = "Playlist";
   }
@@ -42,7 +43,7 @@ export function SakuraHeader({
         <div className={styles.info}>
           <p className={styles.type}>{text}</p>
           <h1 className={styles.name}>{data.name}</h1>
-          {type == 'album' && <h2 className={styles.artists}>{(data as album).artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != (data as album).artists.length - 1 && <p>,</p>}</span>)}</h2>}
+          {type == 'album' && <h2 className={styles.artists}>{(data as AlbumV2).artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != (data as AlbumV2).artists.length - 1 && <p>,</p>}</span>)}</h2>}
         </div>
       </header>
     </>

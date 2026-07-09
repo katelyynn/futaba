@@ -49,7 +49,7 @@
 .buttons {
   display: flex;
   gap: 6px;
-  margin-bottom: calc(var(--pad) * 2);
+  margin-bottom: 20px;
 
   position: relative;
   z-index: 1;

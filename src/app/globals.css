@@ -140,6 +140,7 @@ main {
   border-radius: var(--card-radius);
   flex: 1;
 
+  overflow-x: hidden;
   overflow-y: auto;
   scroll-behavior: smooth;
 

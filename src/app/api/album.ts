@@ -77,6 +77,55 @@ export async function getAlbums(session: session, size = 100) {
   return albums;
 }
 
+export interface AlbumV2 {
+  id: string,
+  name: string,
+  date: string,
+  artists: { id: string, name: string, missing: boolean }[],
+  type: string,
+  songs: number,
+  played?: string,
+  plays?: number,
+  created: string,
+  art: string,
+  genres: { id: string, name: string }[],
+  comment?: string,
+  duration: number,
+  starred?: boolean,
+  explicit: boolean,
+  label: string[],
+  size: number
+}
+
+export async function getAlbumV2(session: session, id: string): Promise<AlbumV2> {
+  const res = await requestV2(session, `api/album/${id}`);
+
+  const data = res.data;
+  const artists = data.participants.albumartist || [];
+
+  const art = getCoverArt(session, data.id);
+
+  return {
+    id: data.id,
+    name: data.name,
+    date: data.date,
+    artists,
+    type: data.mbzAlbumType || 'album',
+    songs: data.songCount,
+    played: data.playDate,
+    plays: data.playCount,
+    created: data.createdAt,
+    art,
+    genres: data.genres || [],
+    comment: data.comment,
+    duration: data.duration,
+    starred: data.starred,
+    explicit: data.explicitStatus != '',
+    label: data.tags?.recordlabel || [],
+    size: data.size
+  }
+}
+
 export async function getAlbum(session: session, id: string) {
   const res = await request(session, "getAlbum", { id });
 

@@ -3,14 +3,17 @@
 import { SakuraActions } from '@/app/_components/header/actions';
 import { SakuraBackground, SakuraHeader } from '@/app/_components/header/header';
 import { SakuraImage } from '@/app/_components/image/image';
+import { META_ICON_SIZE, META_ICON_SIZE_BIG, SakuraMeta, SakuraMetaLabel, SakuraMetaList } from '@/app/_components/meta/meta';
 import { SakuraDisc, SakuraSong, SakuraSongList } from '@/app/_components/song/song';
 import { SortableSong } from '@/app/_components/song/sortable_song';
 import { SakuraPage, SakuraSeparator, SakuraSplit } from '@/app/_components/split/split';
 import { ErrorHandler } from '@/app/errorHandler';
-import { useAlbum, useAlbumInfo } from '@/app/hook/album';
+import { useAlbum, useAlbumInfo, useAlbumV2 } from '@/app/hook/album';
 import { useSession } from '@/app/session';
 import { album_full } from '@/app/types/album';
 import { SortableContext } from '@dnd-kit/sortable';
+import { IconCalendarWeekFilled, IconFolder, IconHeadphonesFilled, IconMusic } from '@tabler/icons-react';
+import { DateTime, Duration } from 'luxon';
 import { useParams } from 'next/navigation';
 
 export default function Album() {
@@ -19,16 +22,23 @@ export default function Album() {
 
   const id = params.id as string;
 
+  const { data: dataV2, isLoading: isLoadingV2, error: errorV2 } = useAlbumV2(session, id);
   const { data, isLoading, error } = useAlbum(session, id);
 
-  if (isLoading) return <div>loading</div>;
-  if (error) return <ErrorHandler error={error} />;
+  if (isLoadingV2 || isLoading) return <div>loading</div>;
+  if (errorV2 || !dataV2) return <ErrorHandler error={errorV2 || 'unknown'} />;
+  if (error || !data) return <ErrorHandler error={error || 'unknown'} />;
 
+  console.log('album data V2', dataV2);
   console.log('album data', data);
+
+  const duration = Duration.fromMillis(dataV2.duration * 1000).shiftTo('hours', 'minutes', 'seconds').toObject();
+
+  if (duration.seconds) duration.seconds = Math.round(duration.seconds);
 
   return (
     <>
-      <SakuraBackground data={data as album_full} />
+      <SakuraBackground data={dataV2!} />
       <SakuraPage split>
         <SakuraSplit side="left">
           <h3>Tracklist</h3>
@@ -46,8 +56,32 @@ export default function Album() {
         </SakuraSplit>
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
-          <SakuraHeader data={data as album_full} type="album" />
+          <SakuraHeader data={dataV2!} type="album" />
           <SakuraActions data={data as album_full} type="album" />
+          <SakuraMetaList space>
+            <SakuraMeta name="Release date" small={false}>
+              <IconCalendarWeekFilled size={META_ICON_SIZE_BIG} />
+              <SakuraMetaLabel>Release date</SakuraMetaLabel>
+              {DateTime.fromISO(dataV2.date).toLocaleString(DateTime.DATE_MED)}
+            </SakuraMeta>
+            <SakuraMeta name="Song count" small={false}>
+              <IconMusic size={META_ICON_SIZE_BIG} />
+              <SakuraMetaLabel>Song count</SakuraMetaLabel>
+              {dataV2.songs} song{dataV2.songs > 1 && "s"}, {duration.hours ? `${duration.hours}h ` : ''}{duration.minutes}m
+            </SakuraMeta>
+            {dataV2.played && (
+              <SakuraMeta name="Last listened" small={false}>
+                <IconHeadphonesFilled size={META_ICON_SIZE_BIG} />
+                <SakuraMetaLabel>Last listened</SakuraMetaLabel>
+                {DateTime.fromISO(dataV2.played).toRelative({ style: 'short' })}
+              </SakuraMeta>
+            )}
+            <SakuraMeta name="File size" small={false}>
+              <IconFolder size={META_ICON_SIZE_BIG} />
+              <SakuraMetaLabel>File size</SakuraMetaLabel>
+              {dataV2.size}
+            </SakuraMeta>
+          </SakuraMetaList>
           <h3>About</h3>
           <About />
         </SakuraSplit>
