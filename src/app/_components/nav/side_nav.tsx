@@ -11,9 +11,13 @@ import { SakuraAlbumListSide, SakuraAlbumSide } from '../album/album';
 import { usePlayer } from '@/app/api/player';
 import { usePlaylists } from '@/app/hook/playlist';
 import { SakuraPlaylistListSide, SakuraPlaylistSide } from '../playlist/playlist';
+import { session } from "@/app/api/client";
 
 export function SideNav() {
   const path = usePathname();
+  const { session } = useSession();
+
+  if (!session) return <></>;
 
   return (
     <nav className={styles.nav}>
@@ -44,16 +48,16 @@ export function SideNav() {
             Settings
           </SakuraButton>
         </ul>
-        <SideAlbumList />
-        <SidePlaylistList />
+        <SideAlbumList session={session} />
+        <SidePlaylistList session={session} />
       </div>
     </nav>
   );
 }
 
-export function SideAlbumList() {
-  const { session } = useSession();
-
+export function SideAlbumList({
+  session
+}: { session: session }) {
   const currentSong = usePlayer(s => s.currentSong);
 
   const { data, isLoading, error } = useAlbums(session, 10, currentSong.id);
@@ -72,9 +76,9 @@ export function SideAlbumList() {
   )
 }
 
-export function SidePlaylistList() {
-  const { session } = useSession();
-
+export function SidePlaylistList({
+  session
+}: { session: session }) {
   const { data, isLoading, error } = usePlaylists(session);
 
   if (isLoading) return <div>loading</div>;
