@@ -49,7 +49,6 @@ export default function Artist() {
       <SakuraBackground data={data} />
       <SakuraPage split>
         <SakuraSplit side="left">
-          <SakuraActions data={data} type="artist" />
           <SakuraGroupList>
             {sortedGroups && sortedGroups.map(([group, items]) => (
               <SakuraGroup name={group} key={group}>
@@ -65,6 +64,7 @@ export default function Artist() {
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
           <SakuraHeader data={data} type="artist" />
+          <SakuraActions data={data} type="artist" />
         </SakuraSplit>
       </SakuraPage>
     </>

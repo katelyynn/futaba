@@ -6,7 +6,7 @@
 
   margin-top: var(--pad);
 
-  border: 1px solid var(--separator-base);
+  box-shadow: var(--group-shadow);
   border-radius: var(--item-med-radius);
   overflow: hidden;
 }
@@ -26,7 +26,7 @@
 
 .settingToggle {
   &:hover {
-    background-color: oklch(var(--b4) / 40%);
+    background-color: var(--setting-hover);
     transition: none;
   }
 }

@@ -16,7 +16,7 @@ export async function getAlbumsV2(session: session, start = 0, end = 20, order =
 
   const albums: album[] = [];
   res.data.forEach(album => {
-    const artists = album.participants.artist || [];
+    const artists = album.participants.albumartist || [];
     const art = getCoverArt(session, album.id);
     const date = new Date(album.date);
 

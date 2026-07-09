@@ -31,7 +31,6 @@ export default function Album() {
       <SakuraBackground data={data as album_full} />
       <SakuraPage split>
         <SakuraSplit side="left">
-          <SakuraActions data={data as album_full} type="album" />
           <h3>Tracklist</h3>
           {Object.entries((data as album_full).songs).map(([disc, songs]) => (
             <SakuraDisc number={Number(disc)} key={disc}>
@@ -48,6 +47,7 @@ export default function Album() {
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
           <SakuraHeader data={data as album_full} type="album" />
+          <SakuraActions data={data as album_full} type="album" />
           <h3>About</h3>
           <About />
         </SakuraSplit>
