@@ -20,6 +20,9 @@ export async function getAlbumsV2(session: session, start = 0, end = 20, order =
     const art = getCoverArt(session, album.id);
     const date = new Date(album.date);
 
+    if (sort == 'play_date' && !album.playDate) return;
+    if (sort == 'play_count' && !album.playCount) return;
+
     albums.push({
       id: album.id,
       name: album.name,

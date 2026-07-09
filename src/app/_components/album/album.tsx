@@ -113,7 +113,7 @@ export function SakuraAlbum({
           </SakuraMetaList>
         )}
         <strong className={styles.name}>{album.name}</strong>
-        {showArtist && <span className={styles.artists}>{album.artists.map((artist, i) => <span className={styles.artist} key={i}><span className={styles.artistName}>{artist.name}</span>{i != album.artists.length - 1 && <p>,</p>}</span>)}</span>}
+        {showArtist && <span className={styles.artists}>{album.artists.map((artist, i) => <span className={styles.artist} key={i}><span className={styles.artistName}>{artist.name}</span>{i != album.artists.length - 1 && <span className={styles.comma}>,</span>}</span>)}</span>}
         <SakuraMetaList>
           <SakuraMeta name="Release date">
             <IconCalendarWeekFilled size={META_ICON_SIZE} />

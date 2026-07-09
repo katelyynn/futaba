@@ -163,6 +163,11 @@
 }
 
 .name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+
   transition-property: color;
   transition-duration: var(--trans);
   transition-timing-function: var(--trans-function);
@@ -170,18 +175,20 @@
 
 .artists {
   color: oklch(var(--c2) / 60%);
-
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 
 .artist {
-  display: flex;
-
   & > .artistName {
     color: oklch(var(--c2) / 80%);
   }
+}
+
+.comma {
+  padding-right: 4px;
 }
 
 .meta {
