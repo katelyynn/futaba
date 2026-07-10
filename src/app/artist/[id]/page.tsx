@@ -19,7 +19,7 @@ export default function Artist() {
   const { data, isLoading, error } = useArtist(session, id);
 
   if (isLoading) return <div>loading</div>;
-  if (error) return <ErrorHandler error={error} />
+  if (error || !data) return <ErrorHandler error={error || 'unknown'} />
 
   console.log('artist data', data);
 
@@ -46,7 +46,7 @@ export default function Artist() {
 
   return (
     <>
-      <SakuraBackground data={data} />
+      <SakuraBackground art={data.art} />
       <SakuraPage split>
         <SakuraSplit side="left">
           <SakuraGroupList>
@@ -63,8 +63,7 @@ export default function Artist() {
         </SakuraSplit>
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
-          <SakuraHeader data={data} type="artist" />
-          <SakuraActions data={data} type="artist" />
+          <SakuraHeader art={data.art} name={data.name} type="artist" />
         </SakuraSplit>
       </SakuraPage>
     </>

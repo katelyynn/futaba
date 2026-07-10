@@ -1,15 +1,17 @@
 "use client";
 
 import { album } from '../types/album';
+import { playlist } from '../types/playlist';
 import { song } from '../types/song';
 import { request, session } from './client';
 import { getCoverArt } from './cover';
 import { createStreamURL } from './player';
 
-export async function getPlaylists(session: session) {
+export async function getPlaylists(session: session): Promise<playlist[]> {
   const res = await request(session, "getPlaylists");
 
-  const playlists = [];
+  const playlists: playlist[] = [];
+  /* @ts-expect-error guh */
   res.playlists.playlist.forEach(playlist => {
     const art = getCoverArt(session, playlist.coverArt);
 
@@ -38,18 +40,24 @@ export async function getPlaylist(session: session, id: string) {
   const art = getCoverArt(session, playlist.coverArt);
 
   const songs: song[] = [];
+  /* @ts-expect-error guh */
   playlist.entry?.forEach((song, index) => {
     const songArt = getCoverArt(session, song.coverArt);
 
+    /* @ts-expect-error guh */
     const artists = [];
+    /* @ts-expect-error guh */
     const unrelated = [];
 
+    /* @ts-expect-error guh */
     song.contributors.forEach(contrib => {
       unrelated.push(contrib.artist.id);
     });
 
+    /* @ts-expect-error guh */
     song.artists.forEach(artist => {
       //if (artist.name == composer || display.includes(artist.name)) return;
+      /* @ts-expect-error guh */
       if (unrelated.includes(artist.id)) return;
 
       artists.push(artist);
@@ -58,6 +66,7 @@ export async function getPlaylist(session: session, id: string) {
     songs.push({
       id: song.id,
       name: song.title,
+      /* @ts-expect-error guh */
       artists: artists,
       duration: song.duration,
       played: song.played,
@@ -69,7 +78,7 @@ export async function getPlaylist(session: session, id: string) {
       bitRate: song.bitRate,
       bpm: song.bpm,
       channelCount: song.channelCount,
-      explicit: song.explicitStatus,
+      explicit: song.explicitStatus != '',
       genres: song.genres,
       index: index + 1,
       suffix: song.suffix,

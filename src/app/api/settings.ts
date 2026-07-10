@@ -2,7 +2,37 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { DEFAULT_VOLUME } from './player';
 
-export const useSettings = create(persist(
+interface settingsState {
+  volume: number,
+  theme: "light" | "dark" | "darker" | "oled",
+  scrobble: boolean,
+  waveform: boolean,
+  asideView: string,
+  showAsideView: boolean,
+  loop: true | "once" | false,
+  shuffle: boolean,
+  fullscreen: boolean,
+  colourFromNowPlaying: boolean,
+  hue: number,
+  sat: number,
+  lit: number,
+
+  setVolume: (volume: number) => void,
+  setTheme: (theme: "light" | "dark" | "darker" | "oled") => void,
+  setScrobble: (scrobble: boolean) => void,
+  setWaveform: (waveform: boolean) => void,
+  setAsideView: (asideView: string) => void,
+  setShowAsideView: (showAsideView: boolean) => void,
+  setLoop: (loop: true | "once" | false) => void,
+  setShuffle: (shuffle: boolean) => void,
+  setFullscreen: (fullscreen: boolean) => void,
+  setColourFromNowPlaying: (colourFromNowPlaying: boolean) => void,
+  setHue: (hue: number) => void,
+  setSat: (sat: number) => void,
+  setLit: (lit: number) => void
+}
+
+export const useSettings = create<settingsState>()(persist(
   (set) => ({
     volume: DEFAULT_VOLUME,
     theme: "darker",

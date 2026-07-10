@@ -23,7 +23,7 @@ export function AlbumsList({
   const { data, isLoading, error } = useAlbumsV2(session, 0, 20, order, sort);
 
   if (isLoading) return <div>loading</div>;
-  if (error) return <ErrorHandler error={error} />;
+  if (error || !data) return <ErrorHandler error={error || 'unknown'} />;
 
   return (
     <SakuraAlbumList single>

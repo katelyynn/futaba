@@ -137,7 +137,7 @@ export function SakuraSong({
             <SakuraComment text={song.comment} />
           </strong>
           <div className={styles.artists}>
-            {song.explicit == "explicit" && <span className={styles.explicit}>E</span>}
+            {song.explicit && <span className={styles.explicit}>E</span>}
             {song.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>)}
           </div>
         </div>

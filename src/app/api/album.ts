@@ -1,6 +1,6 @@
 "use client";
 
-import { album } from '../types/album';
+import { album, album_full } from '../types/album';
 import { song } from '../types/song';
 import { request, requestV2, session } from './client';
 import { getCoverArt } from './cover';
@@ -15,6 +15,7 @@ export async function getAlbumsV2(session: session, start = 0, end = 20, order =
   });
 
   const albums: album[] = [];
+  /* @ts-expect-error guhh */
   res.data.forEach(album => {
     const artists = album.participants.albumartist || [];
     const art = getCoverArt(session, album.id);
@@ -43,13 +44,14 @@ export async function getAlbumsV2(session: session, start = 0, end = 20, order =
   return albums;
 }
 
-export async function getAlbums(session: session, size = 100) {
+export async function getAlbums(session: session, size = 100): Promise<album[]> {
   console.log('getAlbums');
   const res = await request(session, "getAlbumList", { type: "recent", size });
 
   console.info('res', res);
 
-  const albums = [];
+  const albums: album[] = [];
+  /* @ts-expect-error guhh */
   res.albumList.album.forEach(album => {
     const art = getCoverArt(session, album.id);
 
@@ -64,8 +66,9 @@ export async function getAlbums(session: session, size = 100) {
       created: album.created,
       art: art,
       year: album.year,
-      explicit: album.explicitStatus,
-      starred: album.starred
+      explicit: album.explicitStatus != '',
+      starred: album.starred,
+      type: ''
     });
   });
 
@@ -123,7 +126,7 @@ export async function getAlbumV2(session: session, id: string): Promise<AlbumV2>
   }
 }
 
-export async function getAlbum(session: session, id: string) {
+export async function getAlbum(session: session, id: string): Promise<album_full> {
   const res = await request(session, "getAlbum", { id });
 
   const album = res.album;
@@ -134,18 +137,23 @@ export async function getAlbum(session: session, id: string) {
 
   const songs: Record<string, song[]> = {};
   const songsList: song[] = [];
+  /* @ts-expect-error guhh */
   album.song.forEach(song => {
     const songArt = getCoverArt(session, song.coverArt);
 
     let artists = [];
+    /* @ts-expect-error guhh */
     const unrelated = [];
 
+    /* @ts-expect-error guhh */
     song.contributors?.forEach(contrib => {
       unrelated.push(contrib.artist.id);
     });
 
+    /* @ts-expect-error guhh */
     song.artists.forEach(artist => {
       //if (artist.name == composer || display.includes(artist.name)) return;
+      /* @ts-expect-error guhh */
       if (unrelated.includes(artist.id)) return;
 
       artists.push(artist);
@@ -173,7 +181,7 @@ export async function getAlbum(session: session, id: string) {
       bitRate: song.bitRate,
       bpm: song.bpm,
       channelCount: song.channelCount,
-      explicit: song.explicitStatus,
+      explicit: song.explicitStatus != '',
       genres: song.genres,
       index: song.track,
       suffix: song.suffix,
@@ -205,7 +213,8 @@ export async function getAlbum(session: session, id: string) {
     duration: album.duration,
     discTitles: album.discTitles,
     year: album.year,
-    explicit: album.explicitStatus
+    explicit: album.explicitStatus != '',
+    created: ''
   };
 }
 

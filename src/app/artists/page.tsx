@@ -11,7 +11,7 @@ export default function Artists() {
   const { session } = useSession();
 
   const { data, isLoading, error } = useArtistsV2(session, 0, 100, 'DESC', 'play_date');
-  if (isLoading) return (
+  if (isLoading || error || !data) return (
     <>
       <BrowseTabs />
     </>

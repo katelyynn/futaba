@@ -7,8 +7,8 @@ export interface album {
   artists: album_artist[],
   duration: number,
   songs: number,
-  played: string,
-  plays: number,
+  played?: string,
+  plays?: number,
   type: string,
   created: string,
   art: string,
@@ -25,13 +25,17 @@ export interface album_full {
   duration: number,
   songs: Record<string, song[]>,
   songsList: song[],
-  played: string,
-  plays: number,
+  songCount: number,
+  played?: string,
+  plays?: number,
   type: string,
   created: string,
   art: string,
   explicit: boolean,
-  starred?: string
+  starred?: string,
+  genres: string[],
+  discTitles: string[],
+  year: number
 }
 
 interface album_artist {

@@ -7,7 +7,7 @@ import { SakuraSerif } from '@/app/_components/serif/serif';
 import { authenticateV2, createAuth, request } from '@/app/api/client';
 import { useSession } from '@/app/session';
 import { IconChevronRight } from '@tabler/icons-react';
-import { useState } from 'react';
+import { SubmitEventHandler, useState } from 'react';
 
 export default function Login() {
   const { setSession } = useSession();
@@ -17,7 +17,7 @@ export default function Login() {
   const [ password, setPassword ] = useState("");
   const [ error, setError ] = useState<string | null>(null);
 
-  async function handleLogin(e) {
+  const handleLogin: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setError(null);
 

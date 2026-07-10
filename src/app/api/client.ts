@@ -90,6 +90,7 @@ export async function requestV2(session: session, endpoint: string, params = {})
   const baseURL = normaliseURL(session.server);
   const url = new URL(`/${endpoint}`, baseURL);
 
+  /* @ts-expect-error guhh */
   url.search = new URLSearchParams({
     ...params
   });
@@ -126,6 +127,7 @@ export async function request(session: session, endpoint: string, params = {}) {
 
   const url = new URL(`/rest/${endpoint}.view`, auth.baseURL);
 
+  /* @ts-expect-error guhh */
   url.search = new URLSearchParams({
     ...auth.params,
     ...params

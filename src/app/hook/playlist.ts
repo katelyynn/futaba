@@ -2,7 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { session } from '../api/client';
-import { getAlbum, getAlbumInfo, getAlbums } from '../api/album';
 import { getPlaylist, getPlaylists } from '../api/playlist';
 
 export function usePlaylists(session: session | null) {

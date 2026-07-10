@@ -2,7 +2,7 @@
 
 import { sanitiseReleaseType } from '../tools/type';
 import { album } from '../types/album';
-import { ArtistListV2 } from '../types/artist';
+import { artist, artistFull, ArtistListV2 } from '../types/artist';
 import { AlbumV2 } from './album';
 import { request, requestV2, session } from './client';
 import { getCoverArt } from './cover';
@@ -18,6 +18,7 @@ export async function getArtistsV2(session: session, start = 0, end = 20, order 
   console.info('artistv2', res);
 
   const artists: ArtistListV2[] = [];
+  /* @ts-expect-error guhh */
   res.data.forEach(artist => {
     const art = getCoverArt(session, artist.id);
 
@@ -49,6 +50,7 @@ export async function getArtistAlbumsV2(session: session, id: string, start = 0,
   });
 
   const albums: album[] = [];
+  /* @ts-expect-error guhh */
   res.data.forEach(album => {
     const artists = album.participants.albumartist || [];
     const art = getCoverArt(session, album.id);
@@ -74,32 +76,34 @@ export async function getArtistAlbumsV2(session: session, id: string, start = 0,
   return albums;
 }
 
-export async function getArtists(session: session) {
+export async function getArtists(session: session): Promise<artist[]> {
   console.log('getArtists');
   const res = await request(session, "getArtists");
 
   console.info('res', res);
 
+  /* @ts-expect-error guhh */
   return res.artists.index.flatMap(group =>
+    /* @ts-expect-error guhh */
     group.artist.map(artist => ({
       id: artist.id,
       art: artist.artistImageUrl,
       name: artist.name,
-      albums: artist.albumCount,
-      roles: artist.roles
+      albums: artist.albumCount
     }))
   );
 }
 
-export async function getArtist(session: session, id: string) {
+export async function getArtist(session: session, id: string): Promise<artistFull> {
   const res = await request(session, "getArtist", { id });
 
   const artist = res.artist;
   console.info('artist req', artist);
 
-  const albums = {};
+  const albums: Record<string, album[]> = {};
 
   if (artist.album) {
+    /* @ts-expect-error guhh */
     artist.album.forEach(album => {
       const art = getCoverArt(session, album.id);
       const type = album.isCompilation ? 'compilation' : album.releaseTypes[0]?.toLowerCase().trim() || 'album';
@@ -115,11 +119,11 @@ export async function getArtist(session: session, id: string) {
         played: album.played,
         plays: album.plays,
         type,
-        sortedType,
         created: album.created,
         art: art,
         year: album.year,
-        starred: album.starred
+        starred: album.starred,
+        explicit: false
       });
     });
   }

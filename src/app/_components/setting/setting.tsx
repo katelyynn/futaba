@@ -8,20 +8,20 @@ import { SakuraSelect } from '../select/select';
 
 type settingValue = string | number | boolean;
 
-interface SakuraSettingProps {
+interface SakuraSettingProps<T extends settingValue> {
   type?: string,
   name: string,
   body?: string,
   value: settingValue,
   values?: Record<string, string>,
-  onChange: (v: settingValue) => void,
+  onChange: (v: T) => void,
   min?: number,
   max?: number,
   step?: number,
   showSliderTooltipAs?: "raw" | "time" | "percent",
 }
 
-export function SakuraSetting({
+export function SakuraSetting<T extends settingValue>({
   type,
   name,
   body,
@@ -32,7 +32,7 @@ export function SakuraSetting({
   max = 1,
   step,
   showSliderTooltipAs = "raw"
-}: SakuraSettingProps) {
+}: SakuraSettingProps<T>) {
   const settingInfo = (
     <div className={styles.settingInfo}>
       <strong className={styles.name}>{name}</strong>
@@ -44,14 +44,14 @@ export function SakuraSetting({
     return (
       <div className={`${styles.setting} ${styles.settingSelect}`}>
         {settingInfo}
-        <SakuraSelect value={value as string} values={values} onChange={onChange} />
+        <SakuraSelect value={value as string} values={values} onChange={onChange as (v: string) => void} />
       </div>
     )
   }
 
   if (typeof value == "boolean") {
     return (
-      <div className={`${styles.setting} ${styles.settingToggle}`} onClick={() => onChange(!value)}>
+      <div className={`${styles.setting} ${styles.settingToggle}`} onClick={() => (onChange as (v: boolean) => void)(!value)}>
         {settingInfo}
         <div className={`${styles.toggle} ${value && styles.primary}`}>
           <div className={styles.toggleDot} />
@@ -64,7 +64,7 @@ export function SakuraSetting({
     return (
       <div className={`${styles.setting} ${styles.settingSlider}`}>
         {settingInfo}
-        <SakuraSlider className={styles.slider} value={value} min={min} max={max} step={step} onChange={value => onChange(value)} showTooltipAs={showSliderTooltipAs} />
+        <SakuraSlider className={styles.slider} value={value} min={min} max={max} step={step} onChange={value => (onChange as (v: number) => void)(value)} showTooltipAs={showSliderTooltipAs} />
       </div>
     )
   }

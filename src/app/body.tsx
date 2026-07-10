@@ -52,6 +52,8 @@ export function Body({
     let cancelled = false;
 
     const run = async () => {
+      if (!currentSong || !currentSong?.art) return;
+
       const values = await getColour(currentSong.art);
       if (cancelled) return;
 

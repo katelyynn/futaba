@@ -42,11 +42,11 @@ export default function Album() {
 
   if (duration.seconds) duration.seconds = Math.round(duration.seconds);
 
-  const artist = dataV2.artistId;
+  const artist = dataV2.artistId || '';
 
   return (
     <>
-      <SakuraBackground data={dataV2!} />
+      <SakuraBackground art={dataV2.art} />
       <SakuraPage split>
         <SakuraSplit side="left">
           <SakuraGroupList>
@@ -73,8 +73,8 @@ export default function Album() {
         </SakuraSplit>
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
-          <SakuraHeader data={dataV2!} type="album" />
-          <SakuraActions data={data as album_full} type="album" />
+          <SakuraHeader art={dataV2.art} name={dataV2.name} artists={dataV2.artists} type="album" />
+          <SakuraActions songs={data.songsList} count={data.songCount} type="album" />
           <SakuraMetaList space>
             <SakuraMeta name="Release date" small={false}>
               <IconCalendarWeekFilled size={META_ICON_SIZE_BIG} />

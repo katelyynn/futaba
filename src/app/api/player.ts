@@ -17,7 +17,7 @@ interface playerState {
   volume: number,
   loop: true | "once" | false,
   shuffle: boolean,
-  loved: {},
+  loved: Record<string, boolean>,
 
   play: (song: song, session: session, toScrobble: boolean, index?: number) => void,
   playNext: (session: session, toScrobble: boolean) => void,
@@ -71,7 +71,7 @@ function preloadNext(next?: song) {
   nextAudio.onended = () => { };
 
   nextAudio.volume = 0;
-  nextAudio.src = next.url;
+  nextAudio.src = next.url.href;
   nextAudio.preload = "auto";
   nextAudio.play().catch(() => {});
 }
@@ -79,16 +79,7 @@ function preloadNext(next?: song) {
 export const usePlayer = create<playerState>((set, get) => ({
   queue: [],
   currentIndex: -1,
-  currentSong: {
-    id: '',
-    name: '...',
-    artists: [
-      {
-        id: '',
-        name: '...'
-      }
-    ]
-  },
+  currentSong: null,
   nowPlaying: false,
   currentTime: 0,
   duration: 0,
@@ -124,7 +115,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     attachEvents(audio, session);
 
-    audio.src = song.url;
+    audio.src = song.url.href;
     audio.currentTime = 0;
     audio.play().catch(() => {});
 
@@ -268,7 +259,7 @@ export const usePlayer = create<playerState>((set, get) => ({
     toScrobble = value;
   },
 
-  hydrate: (session) => {
+  hydrate: () => {
     const audio = getAudio();
     if (!audio) return;
 
@@ -438,7 +429,7 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
 
       preloadNext();
     } else {
-      if (currentSong != next) newAudio.src = next.url;
+      if (currentSong != next) newAudio.src = next.url.href;
       newAudio.currentTime = 0;
       newAudio.play().catch(() => {});
 
@@ -461,6 +452,7 @@ export function createStreamURL(id: string, session: session) {
     id
   };
 
+  /* @ts-expect-error guhh */
   url.search = new URLSearchParams({
     ...auth.params,
     ...params

@@ -21,14 +21,27 @@ import { session } from '@/app/api/client';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
-    art: null,
+    art: '',
+    id: '',
     name: '...',
     artists: [
       {
         id: '',
         name: '...'
       }
-    ]
+    ],
+    duration: 0,
+    created: '',
+    bitDepth: 0,
+    bitRate: 0,
+    channelCount: 0,
+    explicit: false,
+    genres: [],
+    index: -1,
+    suffix: '',
+    path: '',
+    url: new URL('about:blank'),
+    albumId: ''
   };
   const nowPlaying = usePlayer(s => s.nowPlaying);
   const currentTime = usePlayer(s => s.currentTime);
@@ -226,7 +239,7 @@ export function PlaybackSongPreview({
       <div className={styles.songInfo}>
         <strong className={styles.name}><Link href={`/album/${currentSong.albumId}`}>{currentSong.name}</Link></strong>
         <span className={styles.artists}>
-          {currentSong.explicit == "explicit" && <span className={styles.explicit}>E</span>}
+          {currentSong.explicit && <span className={styles.explicit}>E</span>}
           {currentSong.artists.map((artist, i) => <span className={styles.artist} key={i}><Link href={`/artist/${artist.id}`}>{artist.name}</Link>{i != currentSong.artists.length - 1 && <p>,</p>}</span>)}
         </span>
       </div>

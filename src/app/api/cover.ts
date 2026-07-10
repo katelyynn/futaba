@@ -7,6 +7,7 @@ export function getCoverArt(session: session, id: string) {
 
   const url = new URL(`/rest/getCoverArt.view`, auth.baseURL);
 
+  /* @ts-expect-error guhh */
   url.search = new URLSearchParams({
     ...auth.params,
     id

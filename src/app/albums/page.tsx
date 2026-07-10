@@ -12,7 +12,7 @@ export default function Albums() {
   const { session } = useSession();
 
   const { data, isLoading, error } = useAlbums(session);
-  if (isLoading) return (
+  if (isLoading || error || !data) return (
     <>
       <BrowseTabs />
     </>

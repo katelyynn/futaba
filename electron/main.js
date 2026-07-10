@@ -1,9 +1,24 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, protocol } = require("electron");
 const path = require("path");
+const { createHandler } = require("next-electron-rsc");
 
 let mainWindow;
 
-function createWindow() {
+const dev = !app.isPackaged;
+
+const { createInterceptor, localhostUrl } = createHandler({
+  dir: path.join(
+    app.getAppPath(),
+    ".next",
+    "standalone"
+  ),
+  protocol,
+  debug: true
+});
+
+let stopIntercept;
+
+const createWindow = async () => {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -17,10 +32,23 @@ function createWindow() {
     icon: path.join(__dirname, "icon", "futaba.ico")
   });
 
-  mainWindow.loadURL("http://localhost:3000");
+  stopIntercept = await createInterceptor({ session: mainWindow.webContents.session });
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+    stopIntercept?.();
+  });
+
+  await app.whenReady();
+
+  if (dev) {
+    await mainWindow.loadURL("http://localhost:3000");
+  } else {
+    await mainWindow.loadURL(localhostUrl);
+  }
 }
 
-app.whenReady().then(createWindow);
+app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
   if (process.platform != "darwin") app.quit();

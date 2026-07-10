@@ -160,7 +160,7 @@ export function SakuraAlbumList({
 export function SakuraAlbumSide({ album, showArtist = false }: { album: album, showArtist?: boolean }) {
   const { session } = useSession();
 
-  const currentSong: song = usePlayer(s => s.currentSong);
+  const currentSong: song | null = usePlayer(s => s.currentSong);
   const nowPlaying: boolean = usePlayer(s => s.nowPlaying);
   const path = usePathname();
 
@@ -172,7 +172,7 @@ export function SakuraAlbumSide({ album, showArtist = false }: { album: album, s
         {album.type && <p className={styles.meta}>{releaseType(album.type)}</p>}
         {album.played && <p className={styles.meta}>{DateTime.fromISO(album.played).toRelative()}</p>}
       </div>
-      {(currentSong.albumId == album.id) ? (nowPlaying) ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} /> : <></>}
+      {(currentSong && currentSong.albumId == album.id) ? (nowPlaying) ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} /> : <></>}
     </Link>
   )
 }

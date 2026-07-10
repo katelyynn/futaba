@@ -5,7 +5,7 @@
   "main": "electron/main.js",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && npx electron-builder",
     "start": "next start",
     "lint": "eslint",
     "electron": "electron .",
@@ -23,6 +23,7 @@
     "luxon": "^3.7.2",
     "md5": "^2.3.0",
     "next": "16.2.1",
+    "next-electron-rsc": "^0.3.0",
     "radix-ui": "^1.4.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@types/culori": "^4.0.1",
     "@types/luxon": "^3.7.1",
+    "@types/md5": "^2.3.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -48,5 +50,18 @@
   "trustedDependencies": [
     "sharp",
     "unrs-resolver"
-  ]
+  ],
+  "build": {
+    "appId": "moe.katelyn.futaba",
+    "files": [
+      "electron",
+      ".next/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      ".next/**/*",
+      "public/**/*"
+    ]
+  }
 }

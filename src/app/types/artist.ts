@@ -1,3 +1,5 @@
+import { album } from "./album"
+
 export interface ArtistListV2 {
   id: string,
   art: string,
@@ -15,6 +17,15 @@ export interface artist {
   art: string,
   name: string,
   albums: number,
-  roles: string[],
-  starred?: string
+  songs: number,
+  starred?: string,
+  created: string
+}
+
+export interface artistFull {
+  id: string,
+  art: string,
+  name: string,
+  albums: Record<string, album[]>,
+  albumCount: number
 }

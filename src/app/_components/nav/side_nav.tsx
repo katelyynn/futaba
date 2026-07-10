@@ -12,6 +12,7 @@ import { usePlayer } from '@/app/api/player';
 import { usePlaylists } from '@/app/hook/playlist';
 import { SakuraPlaylistListSide, SakuraPlaylistSide } from '../playlist/playlist';
 import { session } from "@/app/api/client";
+import { playlist } from "@/app/types/playlist";
 
 export function SideNav() {
   const path = usePathname();
@@ -48,10 +49,10 @@ export function SideAlbumList({
 }: { session: session }) {
   const currentSong = usePlayer(s => s.currentSong);
 
-  const { data, isLoading, error } = useAlbums(session, 10, currentSong.id);
+  const { data, isLoading, error } = useAlbums(session, 10, currentSong?.id || '');
 
   if (isLoading) return <div>loading</div>;
-  if (error) return <ErrorHandler error={error} />;
+  if (error || !data) return <ErrorHandler error={error || 'unknown'} />;
 
   console.log('album data', data);
 
@@ -70,11 +71,11 @@ export function SidePlaylistList({
   const { data, isLoading, error } = usePlaylists(session);
 
   if (isLoading) return <div>loading</div>;
-  if (error) return <ErrorHandler error={error} />;
+  if (error || !data) return <ErrorHandler error={error || 'unknown'} />;
 
   return (
     <SakuraPlaylistListSide>
-      {data.map(playlist => (
+      {data.map((playlist: playlist) => (
         <SakuraPlaylistSide playlist={playlist} key={playlist.id} />
       ))}
     </SakuraPlaylistListSide>

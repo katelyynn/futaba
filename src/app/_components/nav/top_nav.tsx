@@ -12,6 +12,16 @@ import { useRouter } from 'next/navigation';
 import { SakuraMenu } from '../menu/menu';
 import { Futaba } from '../logo/logo';
 
+declare global {
+  interface Window {
+    windowControls: {
+      minimise: () => void,
+      maximise: () => void,
+      close: () => void
+    }
+  }
+}
+
 export function TopNav() {
   const { session } = useSession();
   const router = useRouter();
