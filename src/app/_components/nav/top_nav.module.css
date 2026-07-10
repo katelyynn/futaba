@@ -26,12 +26,12 @@
 }
 
 .windowControl {
-  --bg: transparent;
-  --bg-hov: oklch(var(--b4) / 60%);
-  --bg-atv: oklch(var(--b4) / 80%);
-  --shadow: none;
-  --button-sides: var(--button-verts);
-  --button-verts: 9px;
+  --bg: transparent !important;
+  --bg-hov: oklch(var(--b4) / 60%) !important;
+  --bg-atv: oklch(var(--b4) / 80%) !important;
+  --shadow: none !important;
+  --button-sides: var(--button-verts) !important;
+  --button-verts: 9px !important;
 
   min-width: 34px;
   height: 34px;

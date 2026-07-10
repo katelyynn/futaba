@@ -82,16 +82,16 @@
   --button-verts: var(--button-sides);
   --button-sides: 7px;
 
-  --bg: transparent;
-  --bg-hov: oklch(var(--b4) / 60%);
-  --bg-atv: oklch(var(--b4) / 80%);
-  --shadow: none;
+  --bg: transparent !important;
+  --bg-hov: oklch(var(--b4) / 60%) !important;
+  --bg-atv: oklch(var(--b4) / 80%) !important;
+  --shadow: none !important;
 
   &.actionActive {
-    --bg: oklch(var(--h4) / 10%);
-    --bg-hov: oklch(var(--h4) / 15%);
-    --bg-atv: oklch(var(--h4) / 20%);
-    --col: oklch(var(--l3-c));
+    --bg: oklch(var(--h4) / 10%) !important;
+    --bg-hov: oklch(var(--h4) / 15%) !important;
+    --bg-atv: oklch(var(--h4) / 20%) !important;
+    --col: oklch(var(--l3-c)) !important;
   }
 }
 
@@ -141,15 +141,15 @@
 
 
 .play {
-  --button-sides: var(--button-verts);
-  --button-verts: 11px;
+  --button-sides: var(--button-verts) !important;
+  --button-verts: 11px !important;
 
   /*--bg: oklch(var(--c2));
   --bg-hov: oklch(var(--c2) / 90%);
   --bg-atv: oklch(var(--c2) / 80%);
   --col: oklch(var(--b6));
   --shadow: none;*/
-  border-radius: 50px;
+  border-radius: 50px !important;
 }
 
 .explicit {

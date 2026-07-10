@@ -5,7 +5,7 @@
   "main": "electron/main.js",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npx electron-builder",
+    "build": "next build && bash -c \"cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/\" && npx electron-builder",
     "start": "next start",
     "lint": "eslint",
     "electron": "electron .",
