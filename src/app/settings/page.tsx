@@ -17,6 +17,13 @@ export default function SettingsPage() {
   const colourFromNowPlaying = useSettings(s => s.colourFromNowPlaying);
   const setColourFromNowPlaying = useSettings(s => s.setColourFromNowPlaying);
 
+  const hue = useSettings(s => s.hue);
+  const setHue = useSettings(s => s.setHue);
+  const sat = useSettings(s => s.sat);
+  const setSat = useSettings(s => s.setSat);
+  const lit = useSettings(s => s.lit);
+  const setLit = useSettings(s => s.setLit);
+
   return (
     <>
       <h2>Settings</h2>
@@ -28,6 +35,9 @@ export default function SettingsPage() {
           "oled": "Void"
         }} onChange={setTheme} type="select" />
         <SakuraSetting name={"Change accent colour based on now playing"} body={"Picks a primary colour from your now playing album cover"} value={colourFromNowPlaying} onChange={setColourFromNowPlaying} />
+        <SakuraSetting name={"Accent colour"} value={hue} onChange={setHue} max={360} showSliderTooltipAs="raw" />
+        <SakuraSetting name={"Vibrancy"} value={sat} onChange={setSat} max={3} showSliderTooltipAs="raw" />
+        <SakuraSetting name={"Lightness"} value={lit} onChange={setLit} max={2} showSliderTooltipAs="raw" />
       </SakuraSettingGroup>
       <SakuraSettingGroup>
         <SakuraSetting name={"Scrobble to server"} body={"Must be configured in your Navidrome server"} value={scrobble} onChange={setScrobble} />

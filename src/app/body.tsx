@@ -17,6 +17,10 @@ export function Body({
   const currentSong = usePlayer(s => s.currentSong);
   const colourFromNowPlaying = useSettings(s => s.colourFromNowPlaying);
 
+  const hue = useSettings(s => s.hue);
+  const sat = useSettings(s => s.sat);
+  const lit = useSettings(s => s.lit);
+
   useEffect(() => {
     if (!currentSong || !currentSong?.art) return;
 
@@ -64,7 +68,14 @@ export function Body({
     return () => {
       cancelled = true;
     }
-  }, [ currentSong, colourFromNowPlaying ]);
+  }, [currentSong, colourFromNowPlaying]);
+
+  useEffect(() => {
+    const host = document.body;
+    host.style.setProperty('--hue-user', hue.toString());
+    host.style.setProperty('--sat-user', sat.toString());
+    host.style.setProperty('--lit-user', lit.toString());
+  }, [hue, sat, lit]);
 
   return (
     <body data-futaba--theme={theme}>

@@ -14,6 +14,9 @@ export const useSettings = create(persist(
     shuffle: false,
     fullscreen: false,
     colourFromNowPlaying: false,
+    hue: 38,
+    sat: 1.87,
+    lit: 0.9,
 
     setVolume: (volume: number) => set({ volume }),
     setTheme: (theme: "light" | "dark" | "darker" | "oled") => set({ theme }),
@@ -24,7 +27,10 @@ export const useSettings = create(persist(
     setLoop: (loop: true | "once" | false) => set({ loop }),
     setShuffle: (shuffle: boolean) => set({ shuffle }),
     setFullscreen: (fullscreen: boolean) => set({ fullscreen }),
-    setColourFromNowPlaying: (colourFromNowPlaying: boolean) => set({ colourFromNowPlaying })
+    setColourFromNowPlaying: (colourFromNowPlaying: boolean) => set({ colourFromNowPlaying }),
+    setHue: (hue: number) => set({ hue }),
+    setSat: (sat: number) => set({ sat }),
+    setLit: (lit: number) => set({ lit })
   }),
   {
     name: "settings"
