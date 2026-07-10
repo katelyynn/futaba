@@ -94,7 +94,8 @@ export interface AlbumV2 {
   starred?: boolean,
   explicit: boolean,
   label: string[],
-  size: number
+  size: number,
+  imported: string
 }
 
 export async function getAlbumV2(session: session, id: string): Promise<AlbumV2> {
@@ -123,7 +124,8 @@ export async function getAlbumV2(session: session, id: string): Promise<AlbumV2>
     starred: data.starred,
     explicit: data.explicitStatus != '',
     label: data.tags?.recordlabel || [],
-    size: data.size
+    size: data.size,
+    imported: data.importedAt
   }
 }
 

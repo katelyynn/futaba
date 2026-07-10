@@ -16,7 +16,7 @@ import { useSession } from '@/app/session';
 import { bytes } from '@/app/tools/size';
 import { album_full } from '@/app/types/album';
 import { SortableContext } from '@dnd-kit/sortable';
-import { IconCalendarWeekFilled, IconFolder, IconHeadphonesFilled, IconMusic, IconPlayerPlayFilled } from '@tabler/icons-react';
+import { IconCalendarWeekFilled, IconFolder, IconHeadphonesFilled, IconMusic, IconPlayerPlayFilled, IconProgressDown } from '@tabler/icons-react';
 import { DateTime, Duration } from 'luxon';
 import { useParams } from 'next/navigation';
 
@@ -79,8 +79,20 @@ export default function Album() {
             <SakuraMeta name="Release date" small={false}>
               <IconCalendarWeekFilled size={META_ICON_SIZE_BIG} />
               <SakuraMetaLabel>Release date</SakuraMetaLabel>
-              {DateTime.fromISO(dataV2.date).toLocaleString(DateTime.DATE_MED)}
+              {dataV2.date ? DateTime.fromISO(dataV2.date).toLocaleString(DateTime.DATE_MED) : 'No date found'}
             </SakuraMeta>
+            <SakuraMeta name="Import date" small={false}>
+              <IconProgressDown size={META_ICON_SIZE_BIG} />
+              <SakuraMetaLabel>Import date</SakuraMetaLabel>
+              {DateTime.fromISO(dataV2.imported).toRelative({ style: 'short' })}
+            </SakuraMeta>
+            <SakuraMeta name="File size" small={false}>
+              <IconFolder size={META_ICON_SIZE_BIG} />
+              <SakuraMetaLabel>File size</SakuraMetaLabel>
+              {bytes(dataV2.size)}
+            </SakuraMeta>
+          </SakuraMetaList>
+          <SakuraMetaList space>
             <SakuraMeta name="Song count" small={false}>
               <IconMusic size={META_ICON_SIZE_BIG} />
               <SakuraMetaLabel>Song count</SakuraMetaLabel>
@@ -100,11 +112,6 @@ export default function Album() {
                 </SakuraMeta>
               </>
             )}
-            <SakuraMeta name="File size" small={false}>
-              <IconFolder size={META_ICON_SIZE_BIG} />
-              <SakuraMetaLabel>File size</SakuraMetaLabel>
-              {bytes(dataV2.size)}
-            </SakuraMeta>
           </SakuraMetaList>
           <h3>About</h3>
           <About />
