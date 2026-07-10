@@ -84,3 +84,7 @@
   transition-duration: var(--trans);
   transition-timing-function: var(--trans-function);
 }
+
+.slider {
+  width: 400px;
+}

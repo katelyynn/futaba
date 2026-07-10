@@ -64,8 +64,16 @@ function preloadNext(next?: song) {
 
   if (!nextAudio || !next) return;
 
+  nextAudio.ontimeupdate = () => { };
+  nextAudio.onloadedmetadata = () => { };
+  nextAudio.onplay = () => { };
+  nextAudio.onpause = () => { };
+  nextAudio.onended = () => { };
+
+  nextAudio.volume = 0;
   nextAudio.src = next.url;
   nextAudio.preload = "auto";
+  nextAudio.play().catch(() => {});
 }
 
 export const usePlayer = create<playerState>((set, get) => ({
@@ -297,7 +305,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
   setVolume: (value) => {
     if (currentAudio) currentAudio.volume = value;
-    if (nextAudio) nextAudio.volume = value;
+    if (nextAudio) nextAudio.volume = 0;
 
     set({
       volume: value
@@ -417,10 +425,11 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
       attachEvents(newAudio, session);
 
       newAudio.currentTime = 0;
-      newAudio.play().catch(() => {});
       newAudio.volume = volume;
+      newAudio.play().catch(() => {});
 
       usePlayer.setState({
+        nowPlaying: true,
         currentSong: next,
         currentIndex: index,
         currentTime: 0,

@@ -64,7 +64,7 @@ export function SakuraSetting({
     return (
       <div className={`${styles.setting} ${styles.settingSlider}`}>
         {settingInfo}
-        <SakuraSlider value={value} min={min} max={max} step={step} onChange={value => onChange(value)} showTooltipAs={showSliderTooltipAs} />
+        <SakuraSlider className={styles.slider} value={value} min={min} max={max} step={step} onChange={value => onChange(value)} showTooltipAs={showSliderTooltipAs} />
       </div>
     )
   }
