@@ -7,6 +7,7 @@ import { SakuraSerif } from '../serif/serif';
 
 export function SakuraAside() {
   const asideView = useSettings(s => s.asideView);
+  const showAsideView = useSettings(s => s.showAsideView);
 
   let view = (<></>);
 
@@ -27,7 +28,7 @@ export function SakuraAside() {
   }
 
   return (
-    <div className={styles.aside}>
+    <div className={`${styles.aside} ${!showAsideView ? styles.hide : ''}`}>
       {view}
     </div>
   )

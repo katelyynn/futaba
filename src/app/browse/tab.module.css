@@ -1,9 +1,7 @@
 .nav {
   display: flex;
   justify-content: center;
-  padding-bottom: var(--pad);
-  margin-bottom: var(--pad);
-  border-bottom: 1px solid var(--separator-base);
+  margin-bottom: calc(2 * var(--pad));
 }
 
 .list {

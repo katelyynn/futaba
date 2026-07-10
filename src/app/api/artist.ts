@@ -1,7 +1,9 @@
 "use client";
 
 import { sanitiseReleaseType } from '../tools/type';
+import { album } from '../types/album';
 import { ArtistListV2 } from '../types/artist';
+import { AlbumV2 } from './album';
 import { request, requestV2, session } from './client';
 import { getCoverArt } from './cover';
 
@@ -37,6 +39,40 @@ export async function getArtistsV2(session: session, start = 0, end = 20, order 
 
   return artists;
 }
+export async function getArtistAlbumsV2(session: session, id: string, start = 0, end = 20, order = 'DESC', sort = 'recently_added') {
+  const res = await requestV2(session, 'api/album', {
+    _start: start,
+    _end: end,
+    _order: order,
+    _sort: sort,
+    artist_id: id
+  });
+
+  const albums: album[] = [];
+  res.data.forEach(album => {
+    const artists = album.participants.albumartist || [];
+    const art = getCoverArt(session, album.id);
+
+    albums.push({
+      id: album.id,
+      name: album.name,
+      artists,
+      duration: album.duration,
+      songs: album.songCount,
+      played: album.playDate,
+      plays: album.playCount,
+      type: album.mbzAlbumType || 'album',
+      created: album.createdAt,
+      art,
+      explicit: album.explicitStatus != '',
+      date: album.date,
+      year: album.maxYear,
+      starred: album.starred
+    });
+  });
+
+  return albums;
+}
 
 export async function getArtists(session: session) {
   console.log('getArtists');
@@ -64,26 +100,26 @@ export async function getArtist(session: session, id: string) {
   const albums = {};
 
   if (artist.album) {
-    artist.artist.forEach(album => {
-      const art = getCoverArt(session, artist.id);
-      const type = artist.isCompilation ? 'compilation' : artist.releaseTypes[0]?.toLowerCase().trim() || 'album';
+    artist.album.forEach(album => {
+      const art = getCoverArt(session, album.id);
+      const type = album.isCompilation ? 'compilation' : album.releaseTypes[0]?.toLowerCase().trim() || 'album';
       const sortedType = sanitiseReleaseType(type);
 
       if (!albums[sortedType]) albums[sortedType] = [];
       albums[sortedType].push({
-        id: artist.id,
-        name: artist.name,
-        artists: artist.artists,
-        duration: artist.duration,
-        songs: artist.songCount,
-        played: artist.played,
-        plays: artist.plays,
+        id: album.id,
+        name: album.name,
+        artists: album.artists,
+        duration: album.duration,
+        songs: album.songCount,
+        played: album.played,
+        plays: album.plays,
         type,
         sortedType,
-        created: artist.created,
+        created: album.created,
         art: art,
-        year: artist.year,
-        starred: artist.starred
+        year: album.year,
+        starred: album.starred
       });
     });
   }

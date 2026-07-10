@@ -58,6 +58,9 @@ export function Player() {
   const asideView = useSettings(s => s.asideView);
   const setAsideView = useSettings(s => s.setAsideView);
 
+  const showAsideView = useSettings(s => s.showAsideView);
+  const setShowAsideView = useSettings(s => s.setShowAsideView);
+
   const loop = useSettings(s => s.loop);
   const setLoop = useSettings(s => s.setLoop);
   const setPlayerLoop = usePlayer(s => s.setLoop);
@@ -150,14 +153,32 @@ export function Player() {
       </div>
       <div className={styles.right}>
         <SakuraTooltip content="Lyrics">
-          <SakuraButton elem="button" identify={`${styles.action} ${asideView == "lyrics" && styles.actionActive}`} onClick={() => {
+          <SakuraButton elem="button" identify={`${styles.action} ${(asideView == "lyrics" && showAsideView) && styles.actionActive}`} onClick={() => {
+            if (showAsideView) {
+              if (asideView == 'lyrics') {
+                setShowAsideView(false);
+                return;
+              }
+            } else {
+              setShowAsideView(true);
+            }
+
             setAsideView("lyrics");
           }}>
             <IconMicrophone2 size={16} />
           </SakuraButton>
         </SakuraTooltip>
         <SakuraTooltip content="Queue">
-          <SakuraButton elem="button" identify={`${styles.action} ${asideView == "queue" && styles.actionActive}`} onClick={() => {
+          <SakuraButton elem="button" identify={`${styles.action} ${(asideView == "queue" && showAsideView) && styles.actionActive}`} onClick={() => {
+            if (showAsideView) {
+              if (asideView == 'queue') {
+                setShowAsideView(false);
+                return;
+              }
+            } else {
+              setShowAsideView(true);
+            }
+
             setAsideView("queue");
           }}>
             <IconArticleFilled size={16} />

@@ -74,6 +74,7 @@ export async function getAlbums(session: session, size = 100) {
 
 export interface AlbumV2 {
   id: string,
+  artistId?: string,
   name: string,
   date: string,
   artists: { id: string, name: string, missing: boolean }[],
@@ -102,6 +103,7 @@ export async function getAlbumV2(session: session, id: string): Promise<AlbumV2>
 
   return {
     id: data.id,
+    artistId: data.albumArtistId,
     name: data.name,
     date: data.date,
     artists,

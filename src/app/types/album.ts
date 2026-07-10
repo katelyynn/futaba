@@ -2,6 +2,7 @@ import { song } from './song'
 
 export interface album {
   id: string,
+  artistId?: string,
   name: string,
   artists: album_artist[],
   duration: number,

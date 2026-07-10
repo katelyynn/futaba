@@ -1,5 +1,7 @@
 "use client";
 
+import { SakuraAlbum, SakuraAlbumList } from '@/app/_components/album/album';
+import { SakuraGroup, SakuraGroupList } from '@/app/_components/group/group';
 import { SakuraActions } from '@/app/_components/header/actions';
 import { SakuraBackground, SakuraHeader } from '@/app/_components/header/header';
 import { SakuraImage } from '@/app/_components/image/image';
@@ -9,6 +11,7 @@ import { SortableSong } from '@/app/_components/song/sortable_song';
 import { SakuraPage, SakuraSeparator, SakuraSplit } from '@/app/_components/split/split';
 import { ErrorHandler } from '@/app/errorHandler';
 import { useAlbum, useAlbumInfo, useAlbumV2 } from '@/app/hook/album';
+import { useArtistAlbumsV2 } from '@/app/hook/artist';
 import { useSession } from '@/app/session';
 import { bytes } from '@/app/tools/size';
 import { album_full } from '@/app/types/album';
@@ -16,6 +19,8 @@ import { SortableContext } from '@dnd-kit/sortable';
 import { IconCalendarWeekFilled, IconFolder, IconHeadphonesFilled, IconMusic, IconPlayerPlayFilled } from '@tabler/icons-react';
 import { DateTime, Duration } from 'luxon';
 import { useParams } from 'next/navigation';
+
+import styles from './page.module.css';
 
 export default function Album() {
   const { session } = useSession();
@@ -37,23 +42,34 @@ export default function Album() {
 
   if (duration.seconds) duration.seconds = Math.round(duration.seconds);
 
+  const artist = dataV2.artistId;
+
   return (
     <>
       <SakuraBackground data={dataV2!} />
       <SakuraPage split>
         <SakuraSplit side="left">
-          <h3>Tracklist</h3>
-          {Object.entries((data as album_full).songs).map(([disc, songs]) => (
-            <SakuraDisc number={Number(disc)} key={disc}>
-              <SortableContext items={songs.map(s => s.id)}>
-                <SakuraSongList>
-                    {songs.map(song => (
-                      <SortableSong song={song} key={song.id} container="album" songsList={(data as album_full).songsList} />
-                    ))}
-                </SakuraSongList>
-              </SortableContext>
-            </SakuraDisc>
-          ))}
+          <SakuraGroupList>
+            <SakuraGroup name="Tracklist">
+              {Object.entries((data as album_full).songs).map(([disc, songs]) => (
+                <SakuraDisc number={Number(disc)} key={disc}>
+                  <SortableContext items={songs.map(s => s.id)}>
+                    <SakuraSongList>
+                        {songs.map(song => (
+                          <SortableSong song={song} key={song.id} container="album" songsList={(data as album_full).songsList} />
+                        ))}
+                    </SakuraSongList>
+                  </SortableContext>
+                </SakuraDisc>
+              ))}
+              {dataV2.label != '' && (
+                <label className={styles.license}>© {dataV2.label}</label>
+              )}
+            </SakuraGroup>
+            <SakuraGroup name="More from this artist">
+              <OtherAlbumsByArtist />
+            </SakuraGroup>
+          </SakuraGroupList>
         </SakuraSplit>
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
@@ -126,5 +142,20 @@ export default function Album() {
         {data.notes}
       </div>
     )*/
+  }
+
+  function OtherAlbumsByArtist() {
+    const { data, isLoading, error } = useArtistAlbumsV2(session, artist, 0, 20, 'DESC', 'date');
+
+    if (isLoading) return <div>loading</div>;
+    if (error || !data) return <ErrorHandler error={error || 'unknown'} />;
+
+    return (
+      <SakuraAlbumList single>
+        {data.map((album, i) => (
+          <SakuraAlbum album={album} key={album.id} index={i} />
+        ))}
+      </SakuraAlbumList>
+    );
   }
 }
