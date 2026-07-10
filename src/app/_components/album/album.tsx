@@ -11,10 +11,12 @@ import { useSession } from '@/app/session';
 import { usePlayer } from '@/app/api/player';
 import { usePathname } from 'next/navigation';
 import { song } from '@/app/types/song';
-import { IconCalendar, IconCalendarWeekFilled, IconDisc, IconHeadphonesFilled, IconHeartFilled, IconMusic, IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
+import { IconCalendar, IconCalendarWeekFilled, IconChevronLeft, IconChevronRight, IconDisc, IconHeadphonesFilled, IconHeartFilled, IconMusic, IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
 import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '../meta/meta';
 import { FastAverageColor } from 'fast-average-color';
 import { convertColour } from '@/app/tools/colour';
+import { SakuraButton } from "../button/button";
+import { SakuraTooltip } from "../tooltip/tooltip";
 
 interface SakuraAlbumProps {
   album: album,
@@ -150,9 +152,91 @@ export function SakuraAlbumList({
   single = false,
   children
 }: SakuraAlbumListProps) {
+  if (single) {
+    return (
+      <SakuraAlbumListScroller>
+        <div className={`${styles.list} ${styles.single}`}>
+          {children}
+        </div>
+      </SakuraAlbumListScroller>
+    )
+  }
+
   return (
-    <div className={`${styles.list} ${single ? styles.single : ''}`}>
+    <div className={`${styles.list}`}>
       {children}
+    </div>
+  )
+}
+
+export function SakuraAlbumListScroller({
+  children
+}: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
+
+  const update = () => {
+    const el = ref.current;
+    if (!el) return;
+
+    const max = el.scrollWidth - el.clientWidth;
+
+    setCanLeft(el.scrollLeft > 0);
+    setCanRight(el.scrollLeft < max);
+  };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    update();
+
+    el.addEventListener('scroll', update, { passive: true });
+
+    const resize = new ResizeObserver(() => update());
+    resize.observe(el);
+    return () => {
+      el.removeEventListener('scroll', update);
+      resize.disconnect();
+    };
+  }, []);
+
+  return (
+    <div className={`${styles.scrollerOverlay} ${canLeft ? styles.leftOverlay : ''} ${canRight ? styles.rightOverlay : ''}`}>
+      <div className={styles.scroller} ref={ref}>
+        {children}
+      </div>
+      <SakuraTooltip content="Left">
+        <SakuraButton identify={`${styles.scrollerButton} ${styles.scrollerButtonLeft}`} disabled={!canLeft} elem="button" onClick={() => {
+          const el = ref.current;
+          if (!el) return;
+
+          el.scrollBy({
+            left: -1000,
+            top: 0,
+            behavior: "smooth"
+          });
+        }}>
+          <IconChevronLeft className={styles.scrollerIcon} />
+          Left
+        </SakuraButton>
+      </SakuraTooltip>
+      <SakuraTooltip content="Right">
+        <SakuraButton identify={`${styles.scrollerButton} ${styles.scrollerButtonRight}`} disabled={!canRight} elem="button" onClick={() => {
+          const el = ref.current;
+          if (!el) return;
+
+          el.scrollBy({
+            left: 1000,
+            top: 0,
+            behavior: "smooth"
+          });
+        }}>
+          <IconChevronRight className={styles.scrollerIcon} />
+          Right
+        </SakuraButton>
+      </SakuraTooltip>
     </div>
   )
 }

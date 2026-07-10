@@ -1,7 +1,6 @@
 .group {
   display: flex;
   flex-direction: column;
-  overflow-x: auto;
 
   padding: 0 var(--pad);
   margin: 0 calc(-1 * var(--pad));

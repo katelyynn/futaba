@@ -1,6 +1,6 @@
 "use client";
 
-import { SakuraAlbum, SakuraAlbumList } from '@/app/_components/album/album';
+import { SakuraAlbum, SakuraAlbumList, SakuraAlbumListScroller } from '@/app/_components/album/album';
 import { SakuraGroup, SakuraGroupList } from '@/app/_components/group/group';
 import { SakuraActions } from '@/app/_components/header/actions';
 import { SakuraBackground, SakuraHeader } from '@/app/_components/header/header';
