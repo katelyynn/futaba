@@ -66,6 +66,7 @@
 .art {
   --w: auto !important;
   border-radius: var(--item-small-radius) !important;
+  box-shadow: var(--item-glow), var(--standout-shadow);
 
   outline: 2px solid transparent;
 

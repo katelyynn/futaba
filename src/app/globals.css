@@ -605,6 +605,8 @@ body {
     0 24px 20px oklch(var(--h4) / 10%)
   );
 
+  --item-glow: 0 20px 40px oklch(var(--k4) / 35%);
+
   --opposite-text: var(--b6);
 
   --avatar-generic-background: oklch(var(--b4));

@@ -62,8 +62,8 @@ export default function Album() {
                   </SortableContext>
                 </SakuraDisc>
               ))}
-              {dataV2.label != '' && (
-                <label className={styles.license}>© {dataV2.label}</label>
+              {dataV2.label.length > 0 && (
+                <label className={styles.license}>© {dataV2.label.join(',')}</label>
               )}
             </SakuraGroup>
             <SakuraGroup name="More from this artist">
@@ -84,7 +84,7 @@ export default function Album() {
             <SakuraMeta name="Song count" small={false}>
               <IconMusic size={META_ICON_SIZE_BIG} />
               <SakuraMetaLabel>Song count</SakuraMetaLabel>
-              {dataV2.songs} song{dataV2.songs > 1 && "s"}, {duration.hours ? `${duration.hours}h ` : ''}{duration.minutes}m
+              {dataV2.songs} song{dataV2.songs > 1 && "s"}, {duration.hours ? `${duration.hours}h ` : ''}{duration.minutes}m {duration.seconds}s
             </SakuraMeta>
             {dataV2.played && dataV2.plays && (
               <>

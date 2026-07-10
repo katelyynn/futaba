@@ -24,7 +24,7 @@
   .art {
     --w: auto !important;
     border-radius: var(--item-small-radius) !important;
-    box-shadow: 0 8px 40px oklch(var(--h4) / 20%), var(--standout-shadow);
+    box-shadow: var(--item-glow), var(--standout-shadow);
 
     outline: 2px solid transparent;
 
