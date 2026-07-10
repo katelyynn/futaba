@@ -32,14 +32,18 @@ const createWindow = async () => {
     icon: path.join(__dirname, "icon", "futaba.ico")
   });
 
-  stopIntercept = await createInterceptor({ session: mainWindow.webContents.session });
+  //stopIntercept = await createInterceptor({ session: mainWindow.webContents.session });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
-    stopIntercept?.();
+    //stopIntercept?.();
   });
 
   await app.whenReady();
+
+  await mainWindow.loadURL("http://localhost:3000");
+
+  return;
 
   if (dev) {
     await mainWindow.loadURL("http://localhost:3000");
