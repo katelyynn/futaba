@@ -37,7 +37,8 @@ export async function getAlbumsV2(session: session, start = 0, end = 20, order =
       explicit: album.explicitStatus != '',
       date: album.date,
       year: album.maxYear,
-      starred: album.starred
+      starred: album.starred,
+      imported: album.importedAt
     });
   });
 

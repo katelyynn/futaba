@@ -28,7 +28,7 @@ export function AlbumsList({
   return (
     <SakuraAlbumList single>
       {data.map((album, i) => (
-        <SakuraAlbum album={album} key={i} index={i} showArtist />
+        <SakuraAlbum album={album} key={i} index={i} showArtist sort={sort} />
       ))}
     </SakuraAlbumList>
   )

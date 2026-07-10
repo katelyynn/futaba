@@ -13,7 +13,7 @@ export default function Home() {
           <AlbumsList order="DESC" sort="date" />
         </SakuraGroup>
         <SakuraGroup name="Recently added">
-          <AlbumsList order="DESC" sort="recently_added" />
+          <AlbumsList order="DESC" sort="importedAt" />
         </SakuraGroup>
         <SakuraGroup name="Explore your library">
           <AlbumsList order="ASC" sort="random" />

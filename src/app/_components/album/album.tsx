@@ -21,13 +21,15 @@ import { SakuraTooltip } from "../tooltip/tooltip";
 interface SakuraAlbumProps {
   album: album,
   showArtist?: boolean,
-  index?: number
+  index?: number,
+  sort?: string
 }
 
 export function SakuraAlbum({
   album,
   showArtist = false,
-  index = 0
+  index = 0,
+  sort
 }: SakuraAlbumProps) {
   const artworkRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLDivElement>(null);
@@ -129,7 +131,7 @@ export function SakuraAlbum({
         <SakuraMetaList>
           <SakuraMeta name="Release date">
             <IconCalendarWeekFilled size={META_ICON_SIZE} />
-            {album.date ? DateTime.fromISO(album.date).toLocaleString(DateTime.DATE_MED) : album.year || "????"}
+            {(sort == 'recently_added' || sort == 'importedAt') && album.imported ? DateTime.fromISO(album.imported).toRelative() : album.date ? DateTime.fromISO(album.date).toLocaleString(DateTime.DATE_MED) : album.year || "????"}
           </SakuraMeta>
           {!album.date ? (
             <SakuraMeta name="Song count">

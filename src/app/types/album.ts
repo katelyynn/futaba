@@ -15,7 +15,8 @@ export interface album {
   explicit: boolean,
   date?: string,
   year?: number,
-  starred?: string
+  starred?: string,
+  imported?: string
 }
 
 export interface album_full {
