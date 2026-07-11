@@ -31,7 +31,10 @@
     "app": {
       "name": "futaba",
       "identifier": "moe.katelyn.futaba",
-      "deepLinks": ["futaba"]
+      "deepLinks": ["futaba"],
+      "icons": {
+        "windows": "./public/favicon.ico"
+      }
     },
     "output": {
       "macos": "./dist/futaba.app",
