@@ -9,16 +9,6 @@ import { SakuraMenu } from '@/components/menu/menu.tsx';
 import { Futaba } from '@/components/logo/logo.tsx';
 import { useNavigate } from "react-router-dom";
 
-declare global {
-  interface Window {
-    windowControls: {
-      minimise: () => void,
-      maximise: () => void,
-      close: () => void
-    }
-  }
-}
-
 export function TopNav() {
   const { session } = useSession();
   const navigate = useNavigate();
@@ -58,13 +48,13 @@ export function TopNav() {
             <IconSettingsFilled size={iconSize} />
           </SakuraButton>
         </SakuraTooltip>
-        <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.minimise}`} onClick={() => window.windowControls.minimise()}>
+        <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.minimise}`}>
           <IconMinus size={14} />
         </SakuraButton>
-        <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.maximise}`} onClick={() => window.windowControls.maximise()}>
+        <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.maximise}`}>
           <IconSquare size={12} />
         </SakuraButton>
-        <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.close}`} onClick={() => window.windowControls.close()}>
+        <SakuraButton elem="button" identify={`${styles.windowControl} ${styles.close}`}>
           <IconX size={16} />
         </SakuraButton>
       </div>
@@ -73,7 +63,7 @@ export function TopNav() {
 }
 
 export function AuthStatus() {
-  const { session, setSession } = useSession();
+  const { session } = useSession();
 
   if (!session) {
     return (

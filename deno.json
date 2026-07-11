@@ -8,8 +8,9 @@
       "dev": "deno run -A npm:vite & deno run server:start",
       "build": "deno run -A npm:vite build",
       "server:start": "deno run -A --watch ./api/main.ts",
-      "serve": "deno run build && deno run server:start",
-      "app": "deno task build && deno desktop ."
+      "serve": "deno task build && deno task preview",
+      "preview": "deno run -A npm:vite preview",
+      "app": "deno desktop ."
   },
   "nodeModulesDir": "auto",
   "compilerOptions": {
@@ -34,9 +35,9 @@
     },
     "output": {
       "macos": "./dist/futaba.app",
-      "windows": "./dist/futaba.msi",
+      "windows": "./dist/futaba/",
       "linux": "./dist/futaba.AppImage"
     },
-    "backend": "webview"
+    "backend": "cef"
   }
 }

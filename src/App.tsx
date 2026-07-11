@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "@/pages/Home.tsx";
-import { SessionProvider } from "@/session.tsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { TopNav } from "@/components/nav/top_nav.tsx";
 import { Draggable } from "@/components/drag/drag.tsx";
 import { SideNav } from "@/components/nav/side_nav.tsx";
@@ -97,31 +95,29 @@ function App() {
   }, [ theme ]);
 
   return (
-    <Provider>
-      <BrowserRouter>
-        <TopNav />
-        <Draggable>
-          <div className="middle">
-            <SideNav />
-            <main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/albums" element={<Albums />} />
-                <Route path="/album/:id" element={<Album />} />
-                <Route path="/artists" element={<Artists />} />
-                <Route path="/artist/:id" element={<Artist />} />
-                <Route path="/settings/" element={<Appearance />} />
-                <Route path="/settings/playback" element={<Playback />} />
-                <Route path="/playlist/:id" element={<Playlist />} />
-                <Route path="/search" element={<Search />} />
-              </Routes>
-            </main>
-            <SakuraAside />
-          </div>
-        </Draggable>
-        <Player />
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <TopNav />
+      <Draggable>
+        <div className="middle">
+          <SideNav />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/albums" element={<Albums />} />
+              <Route path="/album/:id" element={<Album />} />
+              <Route path="/artists" element={<Artists />} />
+              <Route path="/artist/:id" element={<Artist />} />
+              <Route path="/settings/" element={<Appearance />} />
+              <Route path="/settings/playback" element={<Playback />} />
+              <Route path="/playlist/:id" element={<Playlist />} />
+              <Route path="/search" element={<Search />} />
+            </Routes>
+          </main>
+          <SakuraAside />
+        </div>
+      </Draggable>
+      <Player />
+    </BrowserRouter>
   )
 }
 

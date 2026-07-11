@@ -5,30 +5,6 @@ import routeStaticFiles from "./util/static.ts";
 export const app = new Application();
 const router = new Router();
 
-router.get("/api/dinosaurs", (context) => {
-  context.response.body = [
-    {
-      name: 'a',
-      description: 'a'
-    },
-    {
-      name: 'b',
-      description: 'b'
-    }
-  ];
-});
-
-router.get("/api/dinosaurs/:dinosaur", (context) => {
-  if (!context?.params?.dinosaur) {
-    context.response.body = "No dinosaur name provided.";
-  }
-
-  context.response.body = {
-    name: context.params.dinosaur,
-    b:
-  };
-});
-
 app.use(oakCors());
 app.use(router.routes());
 app.use(router.allowedMethods());
