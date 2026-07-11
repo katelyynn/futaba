@@ -1,7 +1,8 @@
 .logo {
-  font-family: 'Gamja Flower', var(--font);
+  font-family: var(--font-head);
   font-size: 20px;
   line-height: 24px;
+  font-style: italic;
   font-weight: 400;
   color: oklch(var(--l3-c));
 }

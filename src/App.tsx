@@ -19,6 +19,7 @@ import Playlist from "@/pages/playlists/Playlist.tsx";
 import { Playback } from "@/pages/settings/Playback.tsx";
 import Search from "@/pages/search/Search.tsx";
 import Provider from "@/provide.tsx";
+import Login from "@/pages/auth/Login.tsx";
 
 function App() {
   const theme = useSettings(s => s.theme);
@@ -111,6 +112,7 @@ function App() {
               <Route path="/settings/playback" element={<Playback />} />
               <Route path="/playlist/:id" element={<Playlist />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/auth/login" element={<Login />} />
             </Routes>
           </main>
           <SakuraAside />
