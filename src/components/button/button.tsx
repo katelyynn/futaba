@@ -1,8 +1,6 @@
-"use client";
-
 import React, { ComponentPropsWithoutRef, forwardRef } from 'react';
 import styles from "./button.module.css";
-import Link from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 type SakuraButtonProps = {
   elem: 'button' | 'link' | 'a',
@@ -37,7 +35,7 @@ export const SakuraButton = forwardRef<
 
   if (elem == 'link') {
     return (
-      <Link className={classes} href={href as string} ref={ref as React.Ref<HTMLAnchorElement>} {...props}>
+      <Link className={classes} to={href as string} ref={ref as React.Ref<HTMLAnchorElement>} {...props}>
         {children}
       </Link>
     )

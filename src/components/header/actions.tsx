@@ -1,12 +1,11 @@
-import React from 'react';
 import styles from "./header.module.css";
-import { SakuraButton } from '../button/button';
-import { usePlayer } from '@/api/player';
+import { SakuraButton } from '@/components/button/button.tsx';
+import { usePlayer } from '@/api/player.ts';
 import { IconPlayerPlayFilled, IconPlaylistAdd, IconShare } from '@tabler/icons-react';
-import { useSession } from '@/session';
-import { useSettings } from '@/api/settings';
-import { copy } from '@/tools/clipboard';
-import { song } from '@/types/song';
+import { useSession } from '@/session.tsx';
+import { useSettings } from '@/api/settings.ts';
+import { copy } from '@/tools/clipboard.ts';
+import type { song } from '@/types/song.ts';
 
 interface SakuraActionsProps {
   songs: song[],

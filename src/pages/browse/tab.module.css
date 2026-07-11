@@ -1,0 +1,11 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: calc(2 * var(--pad));
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}

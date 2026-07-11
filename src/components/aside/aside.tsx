@@ -1,9 +1,7 @@
-"use client";
-
-import { useSettings } from '@/api/settings';
+import { useSettings } from '@/api/settings.ts';
 import styles from "./aside.module.css";
-import { SakuraQueue } from '../player/queue';
-import { SakuraSerif } from '../serif/serif';
+import { SakuraQueue } from '@/components/player/queue.tsx';
+import { SakuraSerif } from '@/components/serif/serif.tsx';
 
 export function SakuraAside() {
   const asideView = useSettings(s => s.asideView);

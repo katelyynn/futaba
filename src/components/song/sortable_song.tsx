@@ -1,8 +1,6 @@
-"use client";
-
-import { song } from '@/types/song';
+import type { song } from '@/types/song.ts';
 import { useSortable } from '@dnd-kit/sortable';
-import { SakuraSong } from './song';
+import { SakuraSong } from './song.tsx';
 import { CSS } from '@dnd-kit/utilities';
 
 export function SortableSong({

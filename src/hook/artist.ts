@@ -1,0 +1,34 @@
+import { useQuery } from '@tanstack/react-query';
+import type { session } from '@/api/client.ts';
+import { getArtist, getArtistAlbumsV2, getArtists, getArtistsV2 } from '@/api/artist.ts';
+
+export function useArtistsV2(session: session | null, start = 0, end = 20, order = 'DESC', sort = 'recently_added') {
+  return useQuery({
+    queryKey: ["artistsV2", session, start, end, order, sort],
+    queryFn: () => getArtistsV2(session!, start, end, order, sort)
+  });
+}
+export function useArtistAlbumsV2(session: session | null, id: string, start = 0, end = 20, order = 'DESC', sort = 'recently_added') {
+  return useQuery({
+    queryKey: ["artistAlbumsV2", session, id, start, end, order, sort],
+    queryFn: () => getArtistAlbumsV2(session!, id, start, end, order, sort)
+  });
+}
+
+export function useArtists(session: session | null) {
+  console.log('useArtists', session);
+
+  return useQuery({
+    queryKey: ["artists", session],
+    queryFn: () => getArtists(session!)
+  });
+}
+
+export function useArtist(session: session | null, id: string | null) {
+  console.log('useArtist', session);
+
+  return useQuery({
+    queryKey: ["artist", id, session],
+    queryFn: () => getArtist(session!, id!)
+  });
+}

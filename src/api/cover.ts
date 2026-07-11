@@ -1,4 +1,5 @@
-import { createAuth, session } from './client.ts';
+import { createAuth } from './client.ts';
+import type { session } from './client.ts';
 
 export function getCoverArt(session: session, id: string) {
   const auth = createAuth(session);

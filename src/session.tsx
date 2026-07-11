@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { session, validateSessionV2 } from '../api/client.ts';
+import { validateSessionV2 } from '@/api/client.ts';
+import type { session } from '@/api/client.ts';
 
 interface sessionContext {
   session: session | null,

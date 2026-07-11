@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import styles from "./image.module.css";
-import { SakuraDialog } from '../dialog/dialog';
+import { SakuraDialog } from '@/components/dialog/dialog.tsx';
 
 interface SakuraImageProps {
   url?: string,

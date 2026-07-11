@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "./menu.module.css";
-import { SakuraPopover } from '../popover/popover';
+import { SakuraPopover } from '@/components/popover/popover.tsx';
 import { ContextMenu } from 'radix-ui';
 
 interface SakuraMenuProps {

@@ -1,12 +1,10 @@
-"use client";
-
-import { useSettings } from '@/api/settings';
-import { SakuraButton } from '../button/button';
-import { SakuraTooltip } from '../tooltip/tooltip';
+import { useSettings } from '@/api/settings.ts';
+import { SakuraButton } from '@/components/button/button.tsx';
+import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
 import styles from "./fullscreen.module.css";
 import { IconMinimize } from '@tabler/icons-react';
-import { TopNav } from '../nav/top_nav';
-import { usePlayer } from '@/api/player';
+import { TopNav } from '@/components/nav/top_nav.tsx';
+import { usePlayer } from '@/api/player.ts';
 
 export function SakuraFullscreenView() {
   const setFullscreen = useSettings(s => s.setFullscreen);

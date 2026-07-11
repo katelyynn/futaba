@@ -122,10 +122,9 @@ strong {
   color: oklch(var(--l3-c));
 }
 
-body {
+#root {
   --pad: 15px;
   padding: var(--pad) !important;
-
   display: flex;
   flex-direction: column;
   gap: var(--pad);

@@ -1,16 +1,13 @@
-"use client";
-
-import Link from 'react-router-dom';
 import styles from "./top_nav.module.css";
-import { SakuraButton } from '../button/button';
+import { SakuraButton } from '@/components/button/button.tsx';
 import { IconChevronLeft, IconChevronRight, IconFolderSearch, IconLogout, IconMinus, IconSettingsFilled, IconSquare, IconUser, IconUserQuestion, IconX } from '@tabler/icons-react';
-import { SakuraTooltip } from '../tooltip/tooltip';
-import { useSession } from '@/session';
-import { startScan } from '@/api/scan';
-import { SakuraInput } from '../input/input';
-import { useRouter } from 'next/navigation';
-import { SakuraMenu } from '../menu/menu';
-import { Futaba } from '../logo/logo';
+import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
+import { useSession } from '@/session.tsx';
+import { startScan } from '@/api/scan.ts';
+import { SakuraInput } from '@/components/input/input.tsx';
+import { SakuraMenu } from '@/components/menu/menu.tsx';
+import { Futaba } from '@/components/logo/logo.tsx';
+import { useNavigate } from "react-router-dom";
 
 declare global {
   interface Window {
@@ -24,7 +21,7 @@ declare global {
 
 export function TopNav() {
   const { session } = useSession();
-  const router = useRouter();
+  const navigate = useNavigate();
   const iconSize = 16;
 
   return (
@@ -46,7 +43,7 @@ export function TopNav() {
       </div>
       <div className={styles.searchHolder}>
         <SakuraInput className={styles.search} placeholder="Search" onEnter={(val: string) => {
-          router.push(`/search?query=${encodeURIComponent(val)}`);
+          navigate(`/search?query=${encodeURIComponent(val)}`);
         }} />
       </div>
       <div className={`${styles.controls} ${styles.windowControls}`}>

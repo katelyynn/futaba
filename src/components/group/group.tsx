@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from "./group.module.css";
-import { releaseType } from '@/tools/type';
-import { SakuraSerif } from '../serif/serif';
+import { releaseType } from '@/tools/type.ts';
 
 interface SakuraGroupProps {
   name: string,

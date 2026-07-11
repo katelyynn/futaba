@@ -1,0 +1,24 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+
+  padding: 20px;
+}
+
+.face {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: var(--font-weight-medium);
+  color: oklch(var(--c3));
+}
+
+.text {
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  font-weight: var(--font-weight);
+  color: oklch(var(--c2));
+}

@@ -1,21 +1,19 @@
-"use client";
-
 import styles from "./side_nav.module.css";
-import { SakuraButton } from '../button/button';
-import { usePathname } from 'next/navigation';
-import { IconCarambola, IconDisc, IconHeart, IconListSearch, IconMusic, IconSettingsFilled, IconSmartHome } from '@tabler/icons-react';
-import { useSession } from '@/session';
-import { useAlbums } from '@/hook/album';
-import { ErrorHandler } from '@/errorHandler';
-import { SakuraAlbumListSide, SakuraAlbumSide } from '../album/album';
-import { usePlayer } from '@/api/player';
-import { usePlaylists } from '@/hook/playlist';
-import { SakuraPlaylistListSide, SakuraPlaylistSide } from '../playlist/playlist';
-import { session } from "@/api/client";
-import { playlist } from "@/types/playlist";
+import { SakuraButton } from '@/components/button/button.tsx';
+import { IconHeart, IconListSearch, IconSmartHome } from '@tabler/icons-react';
+import { useSession } from '@/session.tsx';
+import { useAlbums } from '@/hook/album.ts';
+import { ErrorHandler } from '@/errorHandler.tsx';
+import { SakuraAlbumListSide, SakuraAlbumSide } from '@/components/album/album.tsx';
+import { usePlayer } from '@/api/player.ts';
+import { usePlaylists } from '@/hook/playlist.ts';
+import { SakuraPlaylistListSide, SakuraPlaylistSide } from '@/components/playlist/playlist.tsx';
+import type { session } from "@/api/client.ts";
+import type { playlist } from "@/types/playlist.ts";
+import { useLocation } from "react-router-dom";
 
 export function SideNav() {
-  const path = usePathname();
+  const path = useLocation().pathname;
   const { session } = useSession();
 
   if (!session) return <></>;

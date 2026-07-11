@@ -1,20 +1,13 @@
-"use client";
-
 import styles from "./playlist.module.css";
-import { SakuraImage } from '../image/image';
-import Link from 'react-router-dom';
-import { playlist } from '@/types/playlist';
+import { SakuraImage } from '@/components/image/image.tsx';
+import { Link, useLocation } from 'react-router-dom';
+import type { playlist } from '@/types/playlist.ts';
 import React, { useEffect, useRef, useState } from 'react';
-import { releaseType } from '@/tools/type';
 import { DateTime } from "luxon";
-import { useSession } from '@/session';
-import { usePlayer } from '@/api/player';
-import { usePathname } from 'next/navigation';
-import { song } from '@/types/song';
-import { IconCalendar, IconCalendarWeekFilled, IconDisc, IconHeadphonesFilled, IconHeartFilled, IconMusic, IconPencilFilled, IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
-import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '../meta/meta';
+import { IconMusic, IconPencilFilled } from '@tabler/icons-react';
+import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '@/components/meta/meta.tsx';
 import { FastAverageColor } from 'fast-average-color';
-import { convertColour } from '@/tools/colour';
+import { convertColour } from '@/tools/colour.ts';
 
 const fac = new FastAverageColor();
 
@@ -113,7 +106,7 @@ export function SakuraPlaylistList({ children }: { children: React.ReactNode }) 
 }
 
 export function SakuraPlaylistSide({ playlist }: { playlist: playlist }) {
-  const path = usePathname();
+  const path = useLocation().pathname;
 
   return (
     <Link to={`/playlist/${playlist.id}`} className={`${styles.playlistSide} ${path.startsWith(`/playlist/${playlist.id}`) && styles.primary}`}>

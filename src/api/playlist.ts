@@ -1,6 +1,7 @@
-import { playlist } from '@/types/playlist.ts';
-import { song } from '@/types/song.ts';
-import { request, session } from './client.ts';
+import type { playlist } from '@/types/playlist.ts';
+import type { song } from '@/types/song.ts';
+import { request } from './client.ts';
+import type { session } from './client.ts';
 import { getCoverArt } from './cover.ts';
 import { createStreamURL } from './player.ts';
 

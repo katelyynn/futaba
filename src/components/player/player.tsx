@@ -1,23 +1,18 @@
-"use client";
-
-import { getAudio, MAX_VOLUME, usePlayer } from '@/api/player';
+import { MAX_VOLUME, usePlayer } from '@/api/player.ts';
 import styles from "./player.module.css";
-import { song } from '@/types/song';
-import { SakuraButton } from '../button/button';
-import Link from 'react-router-dom';
-import { SakuraImage } from '../image/image';
-import { Slider } from 'radix-ui';
+import type { song } from '@/types/song.ts';
+import { SakuraButton } from '@/components/button/button.tsx';
+import { Link } from 'react-router-dom';
+import { SakuraImage } from '@/components/image/image.tsx';
 import React, { useEffect } from 'react';
-import { parseDuration } from '@/tools/duration';
+import { parseDuration } from '@/tools/duration.ts';
 import { IconArrowsShuffle2, IconArticleFilled, IconHeart, IconHeartFilled, IconMaximize, IconMicrophone2, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerTrackNextFilled, IconPlayerTrackPrevFilled, IconRepeat, IconRepeatOff, IconRepeatOnce, IconVolume, IconVolume3 } from '@tabler/icons-react';
-import { useSettings } from '@/api/settings';
-import { useSession } from '@/session';
-import { SakuraTooltip } from '../tooltip/tooltip';
-import { SakuraSlider } from '../slider/slider';
-import { SakuraPopover } from '../popover/popover';
-import { SakuraQueue } from './queue';
-import { setLove } from '@/api/love';
-import { session } from '@/api/client';
+import { useSettings } from '@/api/settings.ts';
+import { useSession } from '@/session.tsx';
+import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
+import { SakuraSlider } from '@/components/slider/slider.tsx';
+import { setLove } from '@/api/love.ts';
+import type { session } from '@/api/client.ts';
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {

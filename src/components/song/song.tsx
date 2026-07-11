@@ -1,19 +1,17 @@
-"use client";
-
 import styles from "./song.module.css";
-import Link from 'react-router-dom';
-import { song } from '@/types/song';
-import React, { useEffect, useState } from 'react';
-import { parseDuration } from '@/tools/duration';
-import { usePlayer } from '@/api/player';
-import { SakuraButton } from '../button/button';
-import { IconDots, IconExplicit, IconHeart, IconHeartFilled, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerRecordFilled, IconPlaylistAdd } from '@tabler/icons-react';
-import { useSession } from '@/session';
-import { useSettings } from '@/api/settings';
-import { SakuraImage } from '../image/image';
-import { SakuraContextMenu, SakuraMenu } from '../menu/menu';
-import { SakuraTooltip } from '../tooltip/tooltip';
-import { setLove } from '@/api/love';
+import { Link } from 'react-router-dom';
+import type { song } from '@/types/song.ts';
+import React from 'react';
+import { parseDuration } from '@/tools/duration.ts';
+import { usePlayer } from '@/api/player.ts';
+import { SakuraButton } from '@/components/button/button.tsx';
+import { IconDots, IconHeart, IconHeartFilled, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlaylistAdd } from '@tabler/icons-react';
+import { useSession } from '@/session.tsx';
+import { useSettings } from '@/api/settings.ts';
+import { SakuraImage } from '@/components/image/image.tsx';
+import { SakuraContextMenu, SakuraMenu } from '@/components/menu/menu.tsx';
+import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
+import { setLove } from '@/api/love.ts';
 
 export function SakuraSongList({ children }: { children: React.ReactNode }) {
   return (
@@ -138,7 +136,9 @@ export function SakuraSong({
           </strong>
           <div className={styles.artists}>
             {song.explicit && <span className={styles.explicit}>E</span>}
-            {song.artists.map((artist, i) => <span className={styles.artist} key={i}><Link to={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>)}
+            {song.artists.map((artist, i) => (
+              <span className={styles.artist} key={i}><Link to={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>
+            ))}
           </div>
         </div>
         {(!inQueue && song.plays) && (

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "./meta.module.css";
-import { SakuraTooltip } from '../tooltip/tooltip';
+import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
 
 export const META_ICON_SIZE = 12;
 export const META_ICON_SIZE_BIG = 16;

@@ -1,8 +1,8 @@
 import { sanitiseReleaseType } from '@/tools/type.ts';
-import { album } from '@/types/album.ts';
-import { artist, artistFull, ArtistListV2 } from '@/types/artist.ts';
-import { AlbumV2 } from './album.ts';
-import { request, requestV2, session } from './client.ts';
+import type { album } from '@/types/album.ts';
+import type { artist, artistFull, ArtistListV2 } from '@/types/artist.ts';
+import { request, requestV2 } from './client.ts';
+import type { session } from './client.ts';
 import { getCoverArt } from './cover.ts';
 
 export async function getArtistsV2(session: session, start = 0, end = 20, order = 'DESC', sort = 'recently_added') {

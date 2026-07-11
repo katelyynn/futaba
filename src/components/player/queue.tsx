@@ -1,13 +1,11 @@
-"use client";
-
 import styles from "./queue.module.css";
 
-import { usePlayer } from '@/api/player';
-import { SakuraSong, SakuraSongList } from '../song/song';
-import { song } from '@/types/song';
+import { usePlayer } from '@/api/player.ts';
+import { SakuraSongList } from '@/components/song/song.tsx';
+import type { song } from '@/types/song.ts';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { SortableSong } from '../song/sortable_song';
+import { SortableSong } from '@/components/song/sortable_song.tsx';
 
 export function SakuraQueue() {
   const queue: song[] = usePlayer(s => s.queue);

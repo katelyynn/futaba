@@ -1,9 +1,6 @@
-"use client";
-
 import { Select } from 'radix-ui';
 import styles from "./select.module.css";
 import { IconCheck, IconChevronDown } from '@tabler/icons-react';
-import React from 'react';
 
 interface SakuraSelectProps {
   value: string,

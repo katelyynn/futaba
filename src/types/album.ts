@@ -1,4 +1,4 @@
-import { song } from './song.ts'
+import type { song } from './song.ts'
 
 export interface album {
   id: string,

@@ -1,10 +1,9 @@
-"use client";
-
-import { usePlayer } from '@/api/player';
-import { song } from '@/types/song';
-import { closestCenter, DndContext, DragEndEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { usePlayer } from '@/api/player.ts';
+import type { song } from '@/types/song.ts';
+import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import type { DragEndEvent } from "@dnd-kit/core";
 import React, { useState } from 'react';
-import { SakuraSong } from '../song/song';
+import { SakuraSong } from '@/components/song/song.tsx';
 
 export function Draggable({
   children

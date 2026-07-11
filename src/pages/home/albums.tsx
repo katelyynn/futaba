@@ -1,13 +1,7 @@
-"use client";
-
-import { SakuraAlbum, SakuraAlbumList } from '@/_components/album/album';
-import { SakuraGroup, SakuraGroupList } from '@/_components/group/group';
-import { SakuraActions } from '@/_components/header/actions';
-import { SakuraBackground, SakuraHeader } from '@/_components/header/header';
-import { SakuraPage, SakuraSeparator, SakuraSplit } from '@/_components/split/split';
-import { ErrorHandler } from '@/errorHandler';
-import { useSession } from '@/session';
-import { useAlbumsV2 } from '../hook/album';
+import { SakuraAlbum, SakuraAlbumList } from '@/components/album/album.tsx';
+import { ErrorHandler } from '@/errorHandler.tsx';
+import { useSession } from '@/session.tsx';
+import { useAlbumsV2 } from '@/hook/album.ts';
 
 interface AlbumsListProps {
   order: string,

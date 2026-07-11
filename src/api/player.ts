@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { song } from '@/types/song.ts';
-import { useSession } from '@/session.tsx';
-import { createAuth, session } from './client.ts';
+import type { song } from '@/types/song.ts';
+import { createAuth } from './client.ts';
+import type { session } from './client.ts';
 import { sendNowPlaying, scrobble } from './scrobble.ts';
 
 export const DEFAULT_VOLUME = 0.3;

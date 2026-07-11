@@ -1,8 +1,7 @@
-import React from 'react';
 import styles from "./header.module.css";
-import { SakuraImage } from '../image/image';
-import Link from 'react-router-dom';
-import { releaseType } from '@/tools/type';
+import { SakuraImage } from '@/components/image/image.tsx';
+import { Link } from 'react-router-dom';
+import { releaseType } from '@/tools/type.ts';
 
 interface SakuraBackgroundProps {
   art: string

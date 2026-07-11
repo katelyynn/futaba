@@ -1,10 +1,7 @@
-"use client";
-
 import React from 'react';
 import styles from "./setting.module.css";
-import { Slider } from 'radix-ui';
-import { SakuraSlider } from '../slider/slider';
-import { SakuraSelect } from '../select/select';
+import { SakuraSlider } from '@/components/slider/slider.tsx';
+import { SakuraSelect } from '@/components/select/select.tsx';
 
 type settingValue = string | number | boolean;
 

@@ -1,16 +1,14 @@
-"use client";
-
 import styles from "./album.module.css";
 import { SakuraImage } from '../image/image.tsx';
-import { album } from '@/types/album.ts';
+import type { album } from '@/types/album.ts';
 import React, { useEffect, useRef, useState } from 'react';
 import { releaseType } from '@/tools/type.ts';
 import { DateTime } from "luxon";
 import { useSession } from '@/session.tsx';
 import { usePlayer } from '@/api/player.ts';
 import { Link, useLocation } from 'react-router-dom';
-import { song } from '@/types/song.ts';
-import { IconCalendarWeekFilled, IconChevronLeft, IconChevronRight, IconDisc, IconHeadphonesFilled, IconHeartFilled, IconMusic, IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
+import type { song } from '@/types/song.ts';
+import { IconCalendarWeekFilled, IconChevronLeft, IconChevronRight, IconHeadphonesFilled, IconHeartFilled, IconMusic, IconPlayerPauseFilled, IconPlayerPlayFilled } from '@tabler/icons-react';
 import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '@/components/meta/meta.tsx';
 import { FastAverageColor } from 'fast-average-color';
 import { convertColour } from '@/tools/colour.ts';
@@ -243,11 +241,9 @@ export function SakuraAlbumListScroller({
 }
 
 export function SakuraAlbumSide({ album, showArtist = false }: { album: album, showArtist?: boolean }) {
-  const { session } = useSession();
-
   const currentSong: song | null = usePlayer(s => s.currentSong);
   const nowPlaying: boolean = usePlayer(s => s.nowPlaying);
-  const path = useLocation();
+  const path = useLocation().pathname;
 
   return (
     <Link to={`/album/${album.id}`} className={`${styles.albumSide} ${path.startsWith(`/album/${album.id}`) && styles.primary}`}>

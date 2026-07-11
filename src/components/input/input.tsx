@@ -1,5 +1,3 @@
-"use client";
-
 import React, { ComponentPropsWithoutRef, forwardRef } from 'react';
 import styles from "./input.module.css";
 

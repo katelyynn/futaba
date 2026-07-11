@@ -1,6 +1,7 @@
-import { album, album_full } from '@/types/album.ts';
-import { song } from '@/types/song.ts';
-import { request, requestV2, session } from './client.ts';
+import type { album, album_full } from '@/types/album.ts';
+import type { song } from '@/types/song.ts';
+import { request, requestV2 } from './client.ts';
+import type { session } from './client.ts';
 import { getCoverArt } from './cover.ts';
 import { createStreamURL } from './player.ts';
 

@@ -1,7 +1,7 @@
 import { Slider } from 'radix-ui';
 import styles from "./slider.module.css";
-import { SakuraTooltip } from '../tooltip/tooltip';
-import { parseDuration } from '@/tools/duration';
+import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
+import { parseDuration } from '@/tools/duration.ts';
 
 interface SakuraSliderProps {
   className?: string,

@@ -1,12 +1,12 @@
-import { artist, ArtistListV2 } from '@/types/artist';
+import type { ArtistListV2 } from '@/types/artist.ts';
 import styles from "./artist.module.css";
-import { SakuraImage } from '../image/image';
-import Link from 'react-router-dom';
-import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '../meta/meta';
+import { SakuraImage } from '@/components/image/image.tsx';
+import { Link } from 'react-router-dom';
+import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '@/components/meta/meta.tsx';
 import { DateTime } from 'luxon';
 import { IconDiscFilled, IconHeadphonesFilled } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
-import { convertColour } from '@/tools/colour';
+import { convertColour } from '@/tools/colour.ts';
 import { FastAverageColor } from 'fast-average-color';
 
 interface SakuraArtistProps {
