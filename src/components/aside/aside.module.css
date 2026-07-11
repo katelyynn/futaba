@@ -1,0 +1,21 @@
+.aside {
+  --aside-width: 400px;
+
+  width: var(--aside-width);
+  padding: var(--pad);
+  box-shadow: inset 0 0 0 1px var(--card-border-base);
+  border-radius: var(--card-radius);
+
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+
+  transition-property: margin-right, opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: var(--trans-function);
+}
+
+.hide {
+  margin-right: calc(-1 * (var(--aside-width) + var(--pad)));
+  opacity: 0;
+}

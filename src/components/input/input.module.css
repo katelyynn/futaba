@@ -1,0 +1,40 @@
+.input {
+  --bg: oklch(var(--b6) / 20%);
+  --bg-hov: oklch(var(--b6) / 40%);
+  --bg-atv: oklch(var(--b6) / 60%);
+  --shadow: var(--input-shadow);
+  --col: oklch(var(--c2));
+
+  appearance: none;
+  border: none;
+  background-color: var(--bg);
+  color: var(--col);
+  padding: var(--button-verts) var(--button-sides);
+  box-shadow: var(--shadow);
+  border-radius: var(--button-radius);
+  outline: none !important;
+
+  font-family: var(--font);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+
+  &::placeholder {
+    color: oklch(var(--c3));
+    opacity: unset !important;
+  }
+
+  &:hover {
+    background-color: var(--bg-hov);
+    transition: none;
+  }
+
+  &:active {
+    background-color: var(--bg-atv);
+  }
+
+  &:focus-visible {
+    --shadow: var(--focused-input-shadow);
+  }
+
+  app-region: no-drag;
+}

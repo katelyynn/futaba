@@ -1,0 +1,160 @@
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px 12px;
+}
+
+.playlist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  color: oklch(var(--c2)) !important;
+  text-decoration: none !important;
+
+  .art {
+    --w: auto !important;
+    border-radius: var(--item-small-radius) !important;
+    box-shadow: 0 8px 40px oklch(var(--h4) / 40%), var(--standout-shadow);
+
+    transition-property: box-shadow;
+    transition-duration: 0.4s;
+    transition-timing-function: var(--trans-function-ani);
+  }
+
+  .meta {
+    margin-top: 4px;
+  }
+
+  transition-property: opacity, background-color, scale;
+  transition-duration: var(--trans);
+  transition-timing-function: var(--trans-function);
+
+  &:active {
+    background-color: var(--bg-atv);
+    scale: 0.98;
+  }
+
+  &:not(.visible) {
+    opacity: 0;
+  }
+}
+
+.playlistSide {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg);
+  color: oklch(var(--col)) !important;
+  text-decoration: none !important;
+  padding: var(--button-verts) var(--button-sides);
+  border-radius: var(--button-radius);
+  box-shadow: var(--shadow);
+
+  font-family: var(--font);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+
+  transition-property: background-color, scale;
+  transition-duration: var(--trans);
+  transition-timing-function: var(--trans-function);
+
+  &:hover {
+    background-color: var(--bg-hov);
+
+    transition-property: scale;
+    transition-duration: var(--trans);
+    transition-timing-function: var(--trans-function);
+  }
+
+  &:active {
+    background-color: var(--bg-atv);
+    scale: 0.98;
+  }
+
+  & > :global(.tabler-icon) {
+    opacity: 0.8;
+  }
+
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+
+  --button-verts: 8px;
+  --button-sides: 12px;
+  gap: 10px;
+
+  --bg: transparent;
+  --bg-hov: oklch(var(--b4) / 60%);
+  --bg-atv: oklch(var(--b4) / 80%);
+  --col: var(--c2);
+  --shadow: none;
+
+  &.primary {
+    --bg: oklch(var(--h4) / 20%);
+    --bg-hov: oklch(var(--h4) / 25%);
+    --bg-atv: oklch(var(--h4) / 30%);
+    --col: var(--l3-c);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .art {
+    --w: 36px;
+    border-radius: var(--item-small-radius) !important;
+  }
+
+  .name {
+    font-weight: inherit;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+  }
+
+  .info {
+    flex: 1;
+  }
+
+  .activeIndicator {
+    flex-shrink: 0;
+  }
+
+  .meta {
+    color: oklch(var(--col) / 80%);
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.artists {
+  color: oklch(var(--c2) / 60%);
+
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.artist {
+  display: flex;
+
+  & > .artistName {
+    color: oklch(var(--c2) / 80%);
+  }
+}
+
+.meta {
+  font-size: 13px;
+  color: oklch(var(--c3));
+}
+
+.listSide {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.loved {
+  color: oklch(var(--l3-c));
+}

@@ -1,0 +1,4 @@
+.queue {
+  min-height: 150px;
+  overflow-y: auto;
+}

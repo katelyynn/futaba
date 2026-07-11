@@ -1,0 +1,35 @@
+.pageSplit {
+  display: flex;
+  align-items: stretch;
+  gap: var(--pad);
+}
+
+.split {
+  overflow: hidden;
+  padding: 0 var(--pad);
+  margin: 0 calc(-1 * var(--pad));
+
+  &.left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &.right {
+    width: 380px;
+  }
+}
+
+.separator {
+  display: block;
+  background: var(--separator);
+  opacity: 0.6;
+
+  &.horizontal {
+    width: 100%;
+    height: 1px;
+  }
+  &.vertical {
+    width: 1px;
+  }
+}

@@ -11,14 +11,22 @@
   },
   "dependencies": {
     "@deno/vite-plugin": "^2.0.2",
+    "@tabler/icons-react": "^3.44.0",
+    "@tanstack/react-query": "^5.101.2",
+    "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@vitejs/plugin-react": "^6.0.3",
+    "culori": "^4.0.2",
+    "fast-average-color": "^9.5.2",
+    "luxon": "^3.7.2",
+    "md5": "^2.3.0",
+    "radix-ui": "^1.6.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-router-dom": "^7.18.1"
+    "react-router-dom": "^7.18.1",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
-    "@types/node": "^24.13.3",
     "@types/react-dom": "^19.2.3",
     "oxlint": "^1.73.0",
     "typescript": "~6.0.3",

@@ -25,7 +25,7 @@ router.get("/api/dinosaurs/:dinosaur", (context) => {
 
   context.response.body = {
     name: context.params.dinosaur,
-    b: context.params.dinosaur
+    b:
   };
 });
 

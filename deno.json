@@ -1,7 +1,8 @@
 {
   "imports": {
     "@oak/oak": "jsr:@oak/oak@^17.2.0",
-    "@tajpouria/cors": "jsr:@tajpouria/cors@^1.2.1"
+    "@tajpouria/cors": "jsr:@tajpouria/cors@^1.2.1",
+    "@/": "./src/"
   },
   "tasks": {
       "dev": "deno run -A npm:vite & deno run server:start",

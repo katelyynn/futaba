@@ -1,0 +1,50 @@
+.nav {
+  -webkit-app-region: drag;
+  padding: var(--pad);
+  margin: calc(-1 * var(--pad));
+
+  display: flex;
+  align-items: center;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex: 1;
+}
+
+.controls {
+  display: flex;
+  gap: 4px;
+}
+
+.windowControls {
+  flex: 1;
+  justify-content: end;
+}
+
+.windowControl {
+  --bg: transparent !important;
+  --bg-hov: oklch(var(--b4) / 60%) !important;
+  --bg-atv: oklch(var(--b4) / 80%) !important;
+  --shadow: none !important;
+  --button-sides: var(--button-verts) !important;
+  --button-verts: 9px !important;
+
+  min-width: 34px;
+  height: 34px;
+
+  justify-content: center;
+}
+
+.searchHolder {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.search {
+  width: 400px;
+}
