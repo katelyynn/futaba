@@ -1,6 +1,0 @@
-.menu {
-  background-color: oklch(var(--b8));
-  padding: 4px !important;
-  border-radius: calc(var(--button-radius) + 4px) !important;
-  box-shadow: var(--menu-shadow);
-}
