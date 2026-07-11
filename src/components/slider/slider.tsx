@@ -36,8 +36,20 @@ export function SakuraSlider({
   if (!showTooltip) return slider;
 
   return (
-    <SakuraTooltip content={showTooltipAs == "percent" ? `${Math.round(((value - min) / (max - min)) * 100)}%` : showTooltipAs == "time" ? parseDuration(value) : value}>
+    <SakuraTooltip content={showTooltipAsHelper(showTooltipAs, value, min, max)}>
       {slider}
     </SakuraTooltip>
   )
+}
+
+export function showTooltipAsHelper(as: "raw" | "time" | "percent", value: number, min: number, max: number) {
+  if (as == "percent") {
+    return `${Math.round(((value - min) / (max - min)) * 100)}%`;
+  }
+
+  if (as == "time") {
+    return parseDuration(value);
+  }
+
+  return value;
 }

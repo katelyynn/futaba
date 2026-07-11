@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "./setting.module.css";
-import { SakuraSlider } from '@/components/slider/slider.tsx';
+import { SakuraSlider, showTooltipAsHelper } from '@/components/slider/slider.tsx';
 import { SakuraSelect } from '@/components/select/select.tsx';
 
 type settingValue = string | number | boolean;
@@ -16,6 +16,7 @@ interface SakuraSettingProps<T extends settingValue> {
   max?: number,
   step?: number,
   showSliderTooltipAs?: "raw" | "time" | "percent",
+  round?: boolean
 }
 
 export function SakuraSetting<T extends settingValue>({
@@ -28,7 +29,8 @@ export function SakuraSetting<T extends settingValue>({
   min = 0,
   max = 1,
   step,
-  showSliderTooltipAs = "raw"
+  showSliderTooltipAs = "raw",
+  round = false
 }: SakuraSettingProps<T>) {
   const settingInfo = (
     <div className={styles.settingInfo}>
@@ -61,7 +63,10 @@ export function SakuraSetting<T extends settingValue>({
     return (
       <div className={`${styles.setting} ${styles.settingSlider}`}>
         {settingInfo}
-        <SakuraSlider className={styles.slider} value={value} min={min} max={max} step={step} onChange={value => (onChange as (v: number) => void)(value)} showTooltipAs={showSliderTooltipAs} />
+        <SakuraSlider className={styles.slider} value={value} min={min} max={max} step={step} onChange={value => (onChange as (v: number) => void)(round ? Math.round(value) : value)} showTooltipAs={showSliderTooltipAs} />
+        <div className={styles.sliderValue}>
+          {showTooltipAsHelper(showSliderTooltipAs, value, min, max)}
+        </div>
       </div>
     )
   }

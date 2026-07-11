@@ -1,5 +1,5 @@
-import { album } from '../types/album.ts';
-import { artist } from '../types/artist.ts';
+import type { album } from '@/types/album.ts';
+import type { artist } from '@/types/artist.ts';
 import type { song } from '../types/song.ts';
 import { request } from './client.ts';
 import type { session } from './client.ts';

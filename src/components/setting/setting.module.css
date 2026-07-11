@@ -88,3 +88,10 @@
 .slider {
   width: 400px;
 }
+
+
+.sliderValue {
+  width: 30px;
+  text-align: right;
+  color: oklch(var(--c3));
+}

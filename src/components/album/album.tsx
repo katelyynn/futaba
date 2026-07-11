@@ -4,7 +4,6 @@ import type { album } from '@/types/album.ts';
 import React, { useEffect, useRef, useState } from 'react';
 import { releaseType } from '@/tools/type.ts';
 import { DateTime } from "luxon";
-import { useSession } from '@/session.tsx';
 import { usePlayer } from '@/api/player.ts';
 import { Link, useLocation } from 'react-router-dom';
 import type { song } from '@/types/song.ts';
