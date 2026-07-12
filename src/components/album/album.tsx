@@ -130,7 +130,7 @@ export function SakuraAlbum({
             <IconCalendarWeekFilled size={META_ICON_SIZE} />
             {(sort == 'recently_added' || sort == 'importedAt') && album.imported ? DateTime.fromISO(album.imported).toRelative() : album.date ? DateTime.fromISO(album.date).toLocaleString(DateTime.DATE_MED) : album.year || "????"}
           </SakuraMeta>
-          {!album.date ? (
+          {!album.date && !(sort == 'recently_added' || sort == 'importedAt') ? (
             <SakuraMeta name="Song count">
               <IconMusic size={META_ICON_SIZE} />
               {album.songs} song{album.songs > 1 && "s"}
