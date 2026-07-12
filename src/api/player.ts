@@ -38,19 +38,16 @@ interface playerState {
   hydrate: (session: session) => void
 }
 
-let currentAudio: HTMLAudioElement | null = null;
-let nextAudio: HTMLAudioElement | null = null;
+const audio = new Audio();
+audio.crossOrigin = "anonymous";
+const ctx = new AudioContext();
+const bind = ctx.createMediaElementSource(audio);
 
-export function getAudio() {
-  if (typeof window == "undefined") return null;
+const gain = ctx.createGain();
 
-  if (!currentAudio) {
-    currentAudio = new Audio();
-    nextAudio = new Audio();
-  }
-
-  return currentAudio;
-}
+bind
+  .connect(gain)
+  .connect(ctx.destination);
 
 let toScrobble = false;
 let scrobbled = false;
@@ -61,19 +58,6 @@ function preloadNext(next?: song) {
     const { queue, currentIndex } = usePlayer.getState();
     next = queue[currentIndex + 1];
   }
-
-  if (!nextAudio || !next) return;
-
-  nextAudio.ontimeupdate = () => { };
-  nextAudio.onloadedmetadata = () => { };
-  nextAudio.onplay = () => { };
-  nextAudio.onpause = () => { };
-  nextAudio.onended = () => { };
-
-  nextAudio.volume = 0;
-  nextAudio.src = next.url.href;
-  nextAudio.preload = "auto";
-  nextAudio.play().catch(() => {});
 }
 
 export const usePlayer = create<playerState>((set, get) => ({
@@ -89,8 +73,16 @@ export const usePlayer = create<playerState>((set, get) => ({
   loved: {},
 
   play: (song, session, toScrobble, index) => {
-    const audio = getAudio();
-    if (!audio) return;
+    if (ctx.state != "running") {
+      ctx.resume();
+    }
+
+    console.info("audio information", {
+      audio,
+      ctx,
+      bind,
+      gain
+    });
 
     const { queue } = get();
     const newQueue = [...queue];
@@ -169,9 +161,6 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   removeFromQueue: (index) => {
-    const audio = getAudio();
-    if (!audio) return;
-
     set(state => {
       const newQueue = [...state.queue];
       newQueue.splice(index, 1);
@@ -219,9 +208,6 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   clearQueue: () => {
-    const audio = getAudio();
-    if (!audio) return;
-
     audio.pause();
     audio.src = "";
     audio.currentTime = 0;
@@ -234,23 +220,18 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   pause: () => {
-    const audio = getAudio();
-    if (!audio) return;
-
     audio?.pause();
   },
 
   resume: () => {
-    const audio = getAudio();
-    if (!audio) return;
-
     audio?.play().catch(() => {});
+
+    if (ctx.state != "running") {
+      ctx.resume();
+    }
   },
 
   seek: (time) => {
-    const audio = getAudio();
-    if (!audio) return;
-
     audio.currentTime = time;
     set({ currentTime: time });
   },
@@ -260,9 +241,6 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   hydrate: () => {
-    const audio = getAudio();
-    if (!audio) return;
-
     const savedPlayer = localStorage.getItem("player");
 
     if (savedPlayer) {
@@ -295,8 +273,7 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   setVolume: (value) => {
-    if (currentAudio) currentAudio.volume = value;
-    if (nextAudio) nextAudio.volume = 0;
+    gain.gain.value = value;
 
     set({
       volume: value
@@ -317,13 +294,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 }));
 
 function attachEvents(audio: HTMLAudioElement, session: session) {
-  const { volume } = usePlayer.getState();
-
-  audio.volume = volume;
-
   audio.ontimeupdate = () => {
-    if (audio != currentAudio) return;
-
     const time = audio.currentTime;
 
     usePlayer.setState({currentTime: audio.currentTime});
@@ -345,28 +316,20 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
   };
 
   audio.onloadedmetadata = () => {
-    if (audio != currentAudio) return;
-
     usePlayer.setState({ duration: audio.duration });
   };
 
   audio.onplay = () => {
-    if (audio != currentAudio) return;
-
     usePlayer.setState({ nowPlaying: true });
   }
   audio.onpause = () => {
-    if (audio != currentAudio) return;
-
     usePlayer.setState({ nowPlaying: false });
   }
 
-  audio.onended = () => {
-    if (audio != currentAudio) return;
-
-    const { queue, currentSong, currentIndex, volume, loop } = usePlayer.getState();
+  audio.onended = async () => {
+    console.time("song ended");
+    const { queue, currentSong, currentIndex, loop } = usePlayer.getState();
     let index;
-    let swapAudio = false;
 
     console.log("queue length", queue.length, "loop is", loop, loop == true, loop === true);
 
@@ -380,12 +343,12 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
       if (index > queue.length - 1) {
         index = 0;
       } else {
-        swapAudio = true;
+        //swapAudio = true;
       }
     } else if (queue.length > 1) {
       console.log("length over 1");
       index = currentIndex + 1;
-      swapAudio = true;
+      //swapAudio = true;
     } else {
       usePlayer.setState({ nowPlaying: false });
       return;
@@ -393,7 +356,7 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
 
     const next = queue[index];
 
-    if (!nextAudio || !next) {
+    if (!audio || !next) {
       usePlayer.setState({ nowPlaying: false });
       return;
     }
@@ -403,43 +366,18 @@ function attachEvents(audio: HTMLAudioElement, session: session) {
     scrobbled = false;
     trackStartTime = Date.now();
 
-    // swap
-    let newAudio = currentAudio;
+    if (currentSong != next) audio.src = next.url.href;
+    console.timeLog("song ended", "set src");
+    audio.currentTime = 0;
+    await audio.play().catch(() => {});
 
-    if (swapAudio) {
-      const previousAudio = currentAudio;
-      currentAudio = nextAudio;
-      nextAudio = previousAudio;
-
-      newAudio = currentAudio;
-
-      attachEvents(newAudio, session);
-
-      newAudio.currentTime = 0;
-      newAudio.volume = volume;
-      newAudio.play().catch(() => {});
-
-      usePlayer.setState({
-        nowPlaying: true,
-        currentSong: next,
-        currentIndex: index,
-        currentTime: 0,
-        duration: newAudio.duration || 0
-      });
-
-      preloadNext();
-    } else {
-      if (currentSong != next) newAudio.src = next.url.href;
-      newAudio.currentTime = 0;
-      newAudio.play().catch(() => {});
-
-      usePlayer.setState({
-        currentSong: next,
-        currentIndex: index,
-        currentTime: 0,
-        duration: newAudio.duration || 0
-      });
-    }
+    usePlayer.setState({
+      currentSong: next,
+      currentIndex: index,
+      currentTime: 0,
+      duration: audio.duration || 0
+    });
+    console.timeEnd("song ended");
   };
 }
 
