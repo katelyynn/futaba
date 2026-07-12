@@ -1,13 +1,5 @@
 import type { song } from "@/types/song.ts";
 
-interface TransportEvents {
-  play: () => void,
-  pause: () => void,
-  stop: () => void,
-  ended: () => void,
-  seek: (time: number) => void,
-}
-
 export class Transport {
   private ctx: AudioContext;
 
@@ -20,8 +12,6 @@ export class Transport {
   private started: number;
   private paused: number;
   private playing: boolean;
-
-  private events: { [K in keyof TransportEvents]?: TransportEvents[K][] };
 
   constructor() {
     this.ctx = new AudioContext();
@@ -36,23 +26,6 @@ export class Transport {
     this.gain.connect(this.ctx.destination);
 
     this.events = {};
-  }
-
-  on<K extends keyof TransportEvents>(
-    event: K,
-    listener: TransportEvents[K]
-  ) {
-    this.events[event] ??= [];
-    this.events[event]!.push(listener);
-  }
-
-  private emit<K extends keyof TransportEvents>(
-    event: K,
-    ...args: Parameters<TransportEvents[K]>
-  ) {
-    for (const listener of this.events[event] ?? []) {
-      listener(...args);
-    }
   }
 
   async decode(song: song): Promise<AudioBuffer> {
@@ -86,23 +59,16 @@ export class Transport {
     source.onended = () => {
       this.playing = false;
       this.source = null;
-
-      this.emit("ended");
     }
-
-    this.emit("play");
   }
 
   pause() {
     if (!this.source) return;
 
     this.paused = this.time();
-    this.source.onended = null;
     this.source.stop();
     this.source = null;
     this.playing = false;
-
-    this.emit("pause");
   }
 
   resume() {
@@ -130,6 +96,5 @@ export class Transport {
     }
 
     this.playing = false;
-    this.emit("stop");
   }
 }

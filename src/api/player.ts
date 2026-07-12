@@ -3,6 +3,7 @@ import type { song } from '@/types/song.ts';
 import { createAuth } from './client.ts';
 import type { session } from './client.ts';
 import { sendNowPlaying, scrobble } from './scrobble.ts';
+import { Player } from "@/api/playback/index.ts";
 
 export const DEFAULT_VOLUME = 0.3;
 export const MAX_VOLUME = 0.6;
@@ -38,17 +39,6 @@ interface playerState {
   hydrate: (session: session) => void
 }
 
-const audio = new Audio();
-audio.crossOrigin = "anonymous";
-const ctx = new AudioContext();
-const bind = ctx.createMediaElementSource(audio);
-
-const gain = ctx.createGain();
-
-bind
-  .connect(gain)
-  .connect(ctx.destination);
-
 let toScrobble = false;
 let scrobbled = false;
 let trackStartTime = 0;
@@ -73,17 +63,6 @@ export const usePlayer = create<playerState>((set, get) => ({
   loved: {},
 
   play: (song, session, toScrobble, index) => {
-    if (ctx.state != "running") {
-      ctx.resume();
-    }
-
-    console.info("audio information", {
-      audio,
-      ctx,
-      bind,
-      gain
-    });
-
     const { queue } = get();
     const newQueue = [...queue];
 
@@ -103,13 +82,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     set({ queue: newQueue });
 
-    audio.pause();
-
-    attachEvents(audio, session);
-
-    audio.src = song.url.href;
-    audio.currentTime = 0;
-    audio.play().catch(() => {});
+    Player.play(song);
 
     set({ currentIndex: songIndex });
     preloadNext();
@@ -208,9 +181,7 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   clearQueue: () => {
-    audio.pause();
-    audio.src = "";
-    audio.currentTime = 0;
+    Player.stop();
 
     set({
       queue: [],
@@ -220,19 +191,15 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   pause: () => {
-    audio?.pause();
+    Player.pause();
   },
 
   resume: () => {
-    audio?.play().catch(() => {});
-
-    if (ctx.state != "running") {
-      ctx.resume();
-    }
+    Player.resume();
   },
 
   seek: (time) => {
-    audio.currentTime = time;
+    Player.seek(time);
     set({ currentTime: time });
   },
 
@@ -247,8 +214,8 @@ export const usePlayer = create<playerState>((set, get) => ({
       try {
         const { song, time, queue, currentIndex } = JSON.parse(savedPlayer);
 
-        audio.src = song.url;
-        audio.currentTime = time;
+        Player.play(song);
+        Player.seek(time);
 
         set({
           currentSong: song,
