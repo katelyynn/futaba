@@ -83,8 +83,8 @@
   gap: 10px;
 
   --bg: transparent;
-  --bg-hov: oklch(var(--b4) / 60%);
-  --bg-atv: oklch(var(--b4) / 80%);
+  --bg-hov: oklch(var(--b2) / 40%);
+  --bg-atv: oklch(var(--b2) / 60%);
   --col: var(--c2);
   --shadow: none;
 

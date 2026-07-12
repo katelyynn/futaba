@@ -38,7 +38,7 @@
     },
     "output": {
       "macos": "./dist/futaba.app",
-      "windows": "./dist/futaba.msi",
+      "windows": "./dist/futaba/",
       "linux": "./dist/futaba.AppImage"
     },
     "backend": "cef"

@@ -60,7 +60,7 @@
   top: calc(-1 * var(--pad));
   left: calc(-1 * var(--pad));
   right: calc(-1 * var(--pad));
-  height: 400px;
+  height: 100px;
 
   background-size: cover;
   background-position: center;
@@ -71,15 +71,14 @@
 
   opacity: 0.1;
 
-  filter: blur(10px);
-  scale: 1.1;
-
   pointer-events: none;
+
+  display: none;
 }
 
 .art {
   z-index: 1;
-  box-shadow: var(--standout-shadow);
+  box-shadow: var(--item-big-glow), var(--standout-shadow);
   width: 100%;
   height: unset;
   aspect-ratio: 1 / 1;

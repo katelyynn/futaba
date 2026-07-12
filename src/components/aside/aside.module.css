@@ -19,3 +19,27 @@
   margin-right: calc(-1 * (var(--aside-width) + var(--pad)));
   opacity: 0;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--pad);
+}
+
+.iconbg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  border-radius: var(--item-small-radius);
+  background: oklch(var(--h4) / 20%);
+  color: oklch(var(--l3-c));
+}
+
+.label {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: var(--font-weight-medium);
+  color: oklch(var(--c1));
+}

@@ -397,14 +397,14 @@ body,
 
   &[data-futaba--theme="darker"] {
     /* any additional highlights */
-    --b2: 0.41 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
-    --b3: 0.31 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
+    --b2: 0.31 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
+    --b3: 0.29 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
 
     /* card border */
-    --b4: 0.28 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
+    --b4: 0.25 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
 
     /* card */
-    --b5: 0.21 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
+    --b5: 0.19 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue);
 
     /* root */
     --b6: 0.18 calc(var(--sat) * 0.02 * var(--sat-bg, 1)) var(--hue);
@@ -432,14 +432,14 @@ body,
   }
   &[data-futaba--theme="oled"] {
     /* any additional highlights */
-    --b2: 0.3 calc(var(--sat) * 0.02 * var(--sat-bg, 1)) var(--hue);
-    --b3: 0.25 calc(var(--sat) * 0.02 * var(--sat-bg, 1)) var(--hue);
+    --b2: 0.29 calc(var(--sat) * 0.02 * var(--sat-bg, 1)) var(--hue);
+    --b3: 0.23 calc(var(--sat) * 0.02 * var(--sat-bg, 1)) var(--hue);
 
     /* card border */
-    --b4: 0.16 calc(var(--sat) * 0.01 * var(--sat-bg, 1)) var(--hue);
+    --b4: 0.14 calc(var(--sat) * 0.01 * var(--sat-bg, 1)) var(--hue);
 
     /* card */
-    --b5: 0.04 calc(var(--sat) * 0.01 * var(--sat-bg, 1)) var(--hue);
+    --b5: 0.08 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
 
     /* root */
     --b6: 0 0 0;
@@ -497,8 +497,8 @@ body,
   }
   &[data-futaba--theme="light"] {
     /* any additional highlights */
-    --b2: 0.82 0 0;
-    --b3: 0.94 0 0;
+    --b2: 0.82 calc(var(--sat) * 0.05 * var(--sat-bg, 1)) var(--hue);
+    --b3: 0.94 calc(var(--sat) * 0.05 * var(--sat-bg, 1)) var(--hue);
 
     /* card border */
     --b4: 0.91 0 0;
@@ -507,7 +507,7 @@ body,
     --b5: 1 0 0;
 
     /* root */
-    --b6: 0.96 calc(var(--sat) * 0.02 * var(--sat-bg, 1)) var(--hue);
+    --b6: 0.97 calc(var(--sat) * 0.05 * var(--sat-bg, 1)) var(--hue);
     --b8: 1 0 0;
     --b7: 0 0 0;
     --b9: 1 0 0;
@@ -620,7 +620,8 @@ body {
     0 24px 20px oklch(var(--h4) / 10%)
   );
 
-  --item-glow: 0 20px 40px oklch(var(--k4) / 35%);
+  --item-glow: 0 15px 30px oklch(var(--k4) / 35%);
+  --item-big-glow: 0 40px 100px oklch(var(--k4) / 55%);
 
   --opposite-text: var(--b6);
 
@@ -925,7 +926,7 @@ body {
       --solarium-compensate: brightness(110%);
 
       --card-shadow: oklch(0 0 0 / 0.05) 0 2px 4px 0;
-      --card-shadow: 0 1.5px 4px 0 oklch(0 0 0 / 0.05);
+      --card-shadow: 0 8px 30px 0 oklch(0 0 0 / 0.08);
 
       --card-border: inset 0 0 0 1px oklch(var(--b4) / 0.7) !important;
       --overlay-shadow: var(--menu-shadow);

@@ -5,7 +5,7 @@
   padding: 8px 10px;
 
   --bg: transparent;
-  --bg-hov: oklch(var(--b4) / 30%);
+  --bg-hov: var(--tracklist-hover);
   --col: var(--c2);
   color: oklch(var(--col)) !important;
   background-color: var(--bg);
