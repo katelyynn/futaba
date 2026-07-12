@@ -19,7 +19,7 @@
 }
 
 .sliderTrack {
-  background-color: oklch(var(--b4));
+  background-color: oklch(var(--b2) / 50%);
   position: relative;
   flex-grow: 1;
   border-radius: 50px;

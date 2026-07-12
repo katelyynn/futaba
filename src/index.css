@@ -169,8 +169,8 @@ main {
   flex: 1;
   overflow: hidden;
 
-  padding: 100px 0;
-  margin: -100px 0;
+  padding: 100px var(--pad);
+  margin: -100px calc(-1 * var(--pad));
 
   pointer-events: none;
 }
@@ -678,6 +678,9 @@ body {
         --grid-colour-shadow-override,
         0 24px 20px oklch(var(--h4) / 16%)
     );
+
+    --item-glow: 0 15px 30px oklch(var(--k4) / 30%);
+    --item-big-glow: 0 40px 100px oklch(var(--k4) / 50%);
   }
   &[data-futaba--theme="light"],
   body[data-futaba--theme="light"] &:not(.theme-preview) {

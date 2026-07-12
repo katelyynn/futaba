@@ -1,5 +1,5 @@
 .aside {
-  --aside-width: 400px;
+  --aside-width: 380px;
 
   width: var(--aside-width);
   padding: var(--pad);
@@ -33,7 +33,7 @@
   align-items: center;
   padding: 6px;
   border-radius: var(--item-small-radius);
-  background: oklch(var(--h4) / 20%);
+  background: oklch(var(--h4) / 10%);
   color: oklch(var(--l3-c));
 }
 

@@ -39,6 +39,11 @@
   text-decoration: none !important;
 }
 
+.artists {
+  display: flex;
+  gap: 4px;
+}
+
 .art {
   --w: 60px !important;
   box-shadow: 0 0 100px 2px oklch(var(--h4) / 60%), var(--standout-shadow);
