@@ -23,6 +23,14 @@ export class Engine {
     this.loop = false;
   }
 
+  get volume() {
+    return this.transport.volume;
+  }
+
+  setVolume(volume: number) {
+    this.transport.setVolume(volume);
+  }
+
   async play(song: song) {
     const buffer = await this.transport.decode(song);
 

@@ -63,7 +63,9 @@ export const usePlayer = create<playerState>((set, get) => ({
   loved: {},
 
   play: (song, session, toScrobble, index) => {
-    const { queue } = get();
+    Player.stop();
+
+    const { queue, volume } = get();
     const newQueue = [...queue];
 
     let songIndex: number;
@@ -82,6 +84,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     set({ queue: newQueue });
 
+    Player.setVolume(volume);
     Player.play(song);
 
     set({ currentIndex: songIndex });
@@ -94,7 +97,8 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     set({
       currentSong: song,
-      currentTime: 0
+      currentTime: 0,
+      nowPlaying: true
     });
   },
 
@@ -186,16 +190,25 @@ export const usePlayer = create<playerState>((set, get) => ({
     set({
       queue: [],
       currentIndex: -1,
-      currentSong: null
+      currentSong: null,
+      nowPlaying: false
     });
   },
 
   pause: () => {
     Player.pause();
+
+    set({
+      nowPlaying: false
+    });
   },
 
   resume: () => {
     Player.resume();
+
+    set({
+      nowPlaying: true
+    });
   },
 
   seek: (time) => {
@@ -209,6 +222,10 @@ export const usePlayer = create<playerState>((set, get) => ({
 
   hydrate: () => {
     const savedPlayer = localStorage.getItem("player");
+
+    set({
+      nowPlaying: false
+    });
 
     if (savedPlayer) {
       try {
@@ -240,7 +257,7 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   setVolume: (value) => {
-    gain.gain.value = value;
+    Player.setVolume(value);
 
     set({
       volume: value

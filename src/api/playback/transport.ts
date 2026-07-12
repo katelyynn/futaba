@@ -24,11 +24,19 @@ export class Transport {
     this.playing = false;
 
     this.gain.connect(this.ctx.destination);
+  }
 
-    this.events = {};
+  get volume() {
+    return this.gain.gain.value;
+  }
+
+  setVolume(volume: number) {
+    this.gain.gain.value = volume;
+    console.log("Audio: set volume to", volume);
   }
 
   async decode(song: song): Promise<AudioBuffer> {
+    console.log("Audio: decoding", song.id);
     const res = await fetch(song.url.href);
     if (!res.ok) {
       throw new Error(`failed to fetch song: ${res.status}`);
@@ -36,6 +44,7 @@ export class Transport {
 
     const bytes = await res.arrayBuffer();
 
+    console.log("Audio: finished decoding", song.id);
     return await this.ctx.decodeAudioData(bytes);
   }
 
@@ -43,6 +52,8 @@ export class Transport {
     this.stop();
 
     this.ctx.resume();
+
+    console.log("Audio: attempting playback");
 
     const source = this.ctx.createBufferSource();
     source.buffer = buffer;
@@ -60,6 +71,8 @@ export class Transport {
       this.playing = false;
       this.source = null;
     }
+
+    console.log("Audio: playback has begun!");
   }
 
   pause() {
