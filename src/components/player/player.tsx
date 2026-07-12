@@ -13,6 +13,7 @@ import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
 import { SakuraSlider } from '@/components/slider/slider.tsx';
 import { setLove } from '@/api/love.ts';
 import type { session } from '@/api/client.ts';
+import { SakuraArtists } from "@/components/artists/artists.tsx";
 
 export function Player() {
   const currentSong: song = usePlayer(s => s.currentSong) || {
@@ -232,10 +233,10 @@ export function PlaybackSongPreview({
     <div className={styles.song}>
       <SakuraImage url={currentSong.art} identify={styles.art} />
       <div className={styles.songInfo}>
-        <strong className={styles.name}><Link to={`/album/${currentSong.albumId}`}>{currentSong.name}</Link></strong>
+        <Link to={`/album/${currentSong.albumId}`} className={styles.name}>{currentSong.name}</Link>
         <span className={styles.artists}>
           {currentSong.explicit && <span className={styles.explicit}>E</span>}
-          {currentSong.artists.map((artist, i) => <span className={styles.artist} key={i}><Link to={`/artist/${artist.id}`}>{artist.name}</Link>{i != currentSong.artists.length - 1 && <p>,</p>}</span>)}
+          <SakuraArtists artists={currentSong.artists} />
         </span>
       </div>
       <div className={styles.songActions}>

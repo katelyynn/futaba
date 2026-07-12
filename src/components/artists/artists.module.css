@@ -1,0 +1,19 @@
+.artists {
+  color: oklch(var(--c2) / 60%);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.artistName {
+  color: oklch(var(--c2) / 80%);
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.comma {
+  padding-right: 3px;
+}

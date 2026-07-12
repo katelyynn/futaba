@@ -36,25 +36,7 @@
 
 .name {
   color: oklch(var(--c2));
-
-  & > a:not(:hover) {
-    color: inherit;
-  }
-}
-
-.artists {
-  color: oklch(var(--c2) / 60%);
-
-  display: flex;
-  gap: 4px;
-}
-
-.artist {
-  display: flex;
-
-  & > a:not(:hover) {
-    color: oklch(var(--c2) / 80%);
-  }
+  text-decoration: none !important;
 }
 
 .art {

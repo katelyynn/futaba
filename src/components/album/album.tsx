@@ -13,6 +13,7 @@ import { FastAverageColor } from 'fast-average-color';
 import { convertColour } from '@/tools/colour.ts';
 import { SakuraButton } from "@/components/button/button.tsx";
 import { SakuraTooltip } from "@/components/tooltip/tooltip.tsx";
+import { SakuraArtists } from "@/components/artists/artists.tsx";
 
 interface SakuraAlbumProps {
   album: album,
@@ -123,7 +124,7 @@ export function SakuraAlbum({
           </SakuraMetaList>
         )}
         <strong className={`${styles.name} colourful`} ref={nameRef}>{album.name}</strong>
-        {showArtist && <span className={styles.artists}>{album.artists.map((artist, i) => <span className={styles.artist} key={i}><span className={styles.artistName}>{artist.name}</span>{i != album.artists.length - 1 && <span className={styles.comma}>,</span>}</span>)}</span>}
+        {showArtist && <SakuraArtists artists={album.artists} artistClass={styles.artistName} />}
         <SakuraMetaList>
           <SakuraMeta name="Release date">
             <IconCalendarWeekFilled size={META_ICON_SIZE} />

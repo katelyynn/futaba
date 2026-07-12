@@ -12,6 +12,7 @@ import { SakuraImage } from '@/components/image/image.tsx';
 import { SakuraContextMenu, SakuraMenu } from '@/components/menu/menu.tsx';
 import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
 import { setLove } from '@/api/love.ts';
+import { SakuraArtists } from "@/components/artists/artists.tsx";
 
 export function SakuraSongList({ children }: { children: React.ReactNode }) {
   return (
@@ -136,9 +137,7 @@ export function SakuraSong({
           </strong>
           <div className={styles.artists}>
             {song.explicit && <span className={styles.explicit}>E</span>}
-            {song.artists.map((artist, i) => (
-              <span className={styles.artist} key={i}><Link to={`/artist/${artist.id}`}>{artist.name}</Link>{i != song.artists.length - 1 && <p>,</p>}</span>
-            ))}
+            <SakuraArtists artists={song.artists} />
           </div>
         </div>
         {(!inQueue && song.plays) && (
