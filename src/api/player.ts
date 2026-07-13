@@ -200,6 +200,8 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     const index = currentIndex + 1;
 
+    Player.stop();
+
     get().play(queue[index], session, toScrobble, index);
   },
 
@@ -208,6 +210,8 @@ export const usePlayer = create<playerState>((set, get) => ({
     if (currentIndex <= 0) return;
 
     const index = currentIndex - 1;
+
+    Player.stop();
 
     get().play(queue[index], session, toScrobble, index);
   },
