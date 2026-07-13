@@ -12,16 +12,22 @@ export type TransportEventMap = {
 
 export type EventCallback<T extends any[] = any[]> = (...args: T) => void;
 
+interface QueuedBuffer {
+  song: song,
+  buffer: AudioBuffer,
+  source: AudioBufferSourceNode | null
+}
+
 export class Transport {
   private ctx: AudioContext;
-
   private gain: GainNode;
 
-  private source: AudioBufferSourceNode | null;
+  private queue: QueuedBuffer[];
+  private queueTime: number;
+  private queueDuration: number;
 
-  private buffer: AudioBuffer | null;
+  private offset: number;
 
-  private started: number;
   private paused: number;
   private playing: boolean;
 
@@ -34,10 +40,11 @@ export class Transport {
   constructor() {
     this.ctx = new AudioContext();
     this.gain = this.ctx.createGain();
-    this.source = null;
-    this.buffer = null;
 
-    this.started = 0;
+    this.queue = [];
+    this.queueTime = 0;
+    this.queueDuration = 0;
+
     this.paused = 0;
     this.playing = false;
 
@@ -46,6 +53,8 @@ export class Transport {
     this.userStopped = false;
 
     this.gain.connect(this.ctx.destination);
+
+    this.offset = 0;
   }
 
   on<K extends keyof TransportEventMap>(
@@ -117,9 +126,9 @@ export class Transport {
   }
 
   get duration() {
-    if (!this.buffer) return 0;
+    if (this.queue.length == 0) return 0;
 
-    return this.buffer.duration;
+    return this.queue[0].buffer.duration;
   }
 
   async decode(song: song): Promise<AudioBuffer> {
@@ -135,90 +144,162 @@ export class Transport {
     return await this.ctx.decodeAudioData(bytes);
   }
 
+  schedule(song: song, buffer: AudioBuffer) {
+    const source = this.ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(this.gain);
+
+    const item: QueuedBuffer = { song, buffer, source };
+    this.queue.push(item);
+
+    if (this.queue.length == 1) {
+      this.queueTime = this.ctx.currentTime;
+      source.start(0, this.paused);
+    } else {
+      const previous = this.queueTime + this.queueDuration;
+      source.start(previous, 0);
+    }
+
+    this.queueDuration += buffer.duration;
+    this.logic(item);
+  }
+
+  private logic(item: QueuedBuffer) {
+    item.source!.onended = () => {
+      if (this.userStopped) return;
+
+      if (this.queue[0] == item) {
+        const finished = this.queue[0].buffer.duration;
+
+        this.queue.shift();
+        this.queueTime += finished;
+        this.queueDuration -= finished;
+        this.offset += finished;
+      }
+
+      if (this.queue.length > 0) {
+        if (this.queue[0].song) {
+          this.emit("next", this.queue[0].song);
+        }
+      } else {
+        this.playing = false;
+        this.paused = 0;
+        this.stopTimer();
+        this.emit("ended");
+      }
+    }
+  }
+
   play(buffer: AudioBuffer, offset = 0) {
-    this.stop(false);
+    this.exit();
 
     this.ctx.resume();
-
-    console.log("Audio: attempting playback", offset, "/", this.duration);
+    this.userStopped = false;
+    this.playing = true;
+    this.paused = offset;
+    this.offset = 0;
 
     const source = this.ctx.createBufferSource();
     source.buffer = buffer;
     source.connect(this.gain);
 
-    this.userStopped = false;
+    const item: QueuedBuffer = { song: null!, buffer, source };
+    this.queue.push(item);
 
+    this.queueTime = this.ctx.currentTime;
     source.start(0, offset);
 
-    source.onended = () => {
-      if (this.userStopped || this.time() < this.duration) return;
-
-      this.playing = false;
-      this.source = null;
-
-      this.stopTimer();
-      this.emit("ended");
-    }
-
-    this.buffer = buffer;
-    this.source = source;
-
-    this.started = this.ctx.currentTime - offset;
-    this.playing = true;
+    this.queueDuration += buffer.duration;
+    this.logic(item);
 
     this.startTimer();
     this.emit("duration", this.duration);
     this.emit("play");
     this.emit("time", offset);
-
-    console.log("Audio: playback has begun!", offset, "/", this.duration);
   }
 
   pause() {
-    if (!this.source) return;
-    console.log("Audio: pausing");
-
+    if (!this.playing) return;
     this.paused = this.time();
-    this.userStopped = true;
-    this.source.stop();
-    this.source = null;
-    this.playing = false;
 
+    this.exit();
+    this.playing = false;
     this.stopTimer();
+
     this.emit("pause");
     this.emit("time", this.paused);
   }
 
   resume() {
-    if (!this.buffer) return;
-    console.log("Audio: resuming");
-    this.play(this.buffer, this.paused);
+    if (this.queue.length == 0) return;
+
+    const queue = [...this.queue];
+    this.queue = [];
+    this.queueDuration = 0;
+    this.playing = true;
+    this.userStopped = false;
+
+    queue.forEach(item => {
+      this.schedule(item.song, item.buffer)
+    });
+
+    this.startTimer();
+    this.emit("play");
   }
 
   time() {
     if (!this.playing) return this.paused;
 
-    return this.ctx.currentTime - this.started;
+    const raw = (this.ctx.currentTime - this.queueTime) + this.paused;
+
+    return raw - this.offset;
   }
 
   seek(time: number) {
-    if (!this.buffer) return;
+    if (this.queue.length == 0) return;
 
-    console.info("Audio: seeking to", time);
+    if (this.queue[0].source) {
+      this.queue[0].source.onended = null;
+      try { this.queue[0].source.stop(); } catch {}
+      this.queue[0].source.disconnect();
+    }
+
+    const queue = [...this.queue];
+    this.queue = [];
+    this.queueDuration = 0;
+    this.userStopped = false;
+    this.playing = true;
+
+    this.paused = time;
+
+    queue.forEach(item => {
+      this.schedule(item.song, item.buffer);
+    });
+
+    this.startTimer();
+    this.emit("time", time);
+  }
+
+  private exit() {
     this.userStopped = true;
-    this.play(this.buffer, time);
+    this.queue.forEach(item => {
+      if (item.source) {
+        item.source.onended = null;
+        try {
+          item.source.stop();
+        } catch {}
+        item.source.disconnect();
+      }
+    });
+
+    this.queue = [];
+    this.queueDuration = 0;
   }
 
   stop(emit = true) {
-    if (this.source) {
-      this.userStopped = true;
-      this.source.stop();
-      this.source = null;
-    }
-
-    console.log("Audio: stopped, by user:", this.userStopped, "source is now", this.source, "emitting:", emit);
-
+    this.exit();
     this.playing = false;
+    this.paused = 0;
     this.stopTimer();
 
     if (emit) this.emit("stop");

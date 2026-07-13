@@ -110,66 +110,26 @@ function setupEvents() {
 
   Player.on("ended", () => {
     usePlayer.setState({ nowPlaying: false });
-
-    if (!currentSession) return;
-    console.warn("Audio: fired 'ended' event");
-
-    console.time("song ended");
-    const { queue, currentIndex, loop } = usePlayer.getState();
-    let index;
-
-    console.log("queue length", queue.length, "loop is", loop, loop == true, loop === true);
-
-    if ((queue.length == 1 && loop) || loop == "once") {
-      console.log("length is 1 and loop enabled");
-      index = currentIndex;
-    } else if (queue.length > 1 && loop === true) {
-      console.log("length over 1 and loop is true");
-      index = currentIndex + 1;
-
-      if (index > queue.length - 1) {
-        index = 0;
-      } else {
-        //swapAudio = true;
-      }
-    } else if (queue.length > 1) {
-      console.log("length over 1");
-      index = currentIndex + 1;
-      //swapAudio = true;
-    } else {
-      usePlayer.setState({ nowPlaying: false });
-      return;
-    }
-
-    const next = queue[index];
-
-    if (!next) {
-      usePlayer.setState({ nowPlaying: false });
-      return;
-    }
-
-    if (toScrobble) sendNowPlaying(currentSession, next.id);
-
-    scrobbled = false;
-    trackStartTime = Date.now();
-
-    console.timeLog("song ended", "playing next");
-    usePlayer.getState().play(next, currentSession, toScrobble, index);
-    console.timeEnd("song ended");
   });
 
   Player.on("next", (song: song) => {
     if (!currentSession) return;
     console.warn("Audio: fired 'next' event");
 
-    const { currentIndex } = usePlayer.getState();
+    const { currentIndex, queue, loop } = usePlayer.getState();
+
+    let index = currentIndex + 1;
+    if (index >= queue.length) {
+      if (loop == true) index = 0;
+      else return;
+    }
+    if (loop == "once") index = currentIndex;
 
     if (toScrobble) sendNowPlaying(currentSession, song.id);
+
     usePlayer.setState({
       currentSong: song,
-      currentIndex: currentIndex + 1,
-      currentTime: 0,
-      duration: Player.duration,
+      currentIndex: index,
       nowPlaying: true
     });
 
@@ -354,30 +314,9 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   hydrate: () => {
-    const savedPlayer = localStorage.getItem("player");
-
     set({
       nowPlaying: false
     });
-
-    if (savedPlayer) {
-      try {
-        const { song, time, queue, currentIndex } = JSON.parse(savedPlayer);
-
-        Player.play(song);
-        Player.seek(time);
-
-        set({
-          currentSong: song,
-          duration: 0,
-          currentTime: time,
-          queue: queue || [],
-          currentIndex: currentIndex || -1
-        });
-      } catch {
-        localStorage.removeItem("player");
-      }
-    }
   },
 
   setLoved: (id, value) => {

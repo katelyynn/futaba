@@ -40,11 +40,7 @@ export class Engine {
 
     try {
       const buffer = await this.transport.decode(song);
-
-      this.next = {
-        song,
-        buffer
-      }
+      this.transport.schedule(song, buffer);
     } catch (e) {
       console.error("Audio: issue prevented preload", e);
     } finally {
@@ -65,22 +61,8 @@ export class Engine {
     forward("duration");
     forward("time");
     forward("stop");
-
-    this.transport.on("ended", () => {
-      if (!this.next) {
-        this.emit("ended");
-        return;
-      }
-
-      console.warn("Audio: swapping current to next, compare:", this.current?.song.id, this.next?.song.id);
-      this.current = { song: this.next.song, buffer: this.next.buffer };
-      this.next = null;
-      console.warn("Audio: swapped current to next, compare:", this.current?.song.id);
-
-      this.transport.play(this.current.buffer);
-
-      this.emit("next", this.current.song);
-    });
+    forward("next");
+    forward("ended");
   }
 
   on<K extends keyof TransportEventMap>(
@@ -127,7 +109,8 @@ export class Engine {
   }
 
   async play(song: song) {
-    this.next = null;
+    this.transport.stop();
+    this.preloading = false;
     const buffer = await this.transport.decode(song);
 
     this.current = {
