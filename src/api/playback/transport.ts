@@ -23,6 +23,7 @@ export class Transport {
   private ctx: AudioContext;
   private gain: GainNode;
 
+  private pausedQueue: QueuedBuffer[];
   private queue: QueuedBuffer[];
 
   private paused: number;
@@ -41,6 +42,7 @@ export class Transport {
     this.ctx = new AudioContext();
     this.gain = this.ctx.createGain();
 
+    this.pausedQueue = [];
     this.queue = [];
 
     this.paused = 0;
@@ -259,6 +261,8 @@ export class Transport {
     if (!this.playing) return;
     this.paused = this.time();
 
+    this.pausedQueue = [...this.queue];
+
     this.exit();
     this.playing = false;
     this.stopTimer();
@@ -268,15 +272,19 @@ export class Transport {
   }
 
   resume() {
-    if (this.queue.length == 0) return;
+    if (this.pausedQueue.length == 0) return;
 
-    const queue = [...this.queue];
+    const queue = [...this.pausedQueue];
+    this.pausedQueue = [];
     this.queue = [];
     this.playing = true;
     this.userStopped = false;
 
+    this.anchor = this.ctx.currentTime;
+    this.virtual = 0;
+
     queue.forEach(item => {
-      this.schedule(item.song, item.buffer)
+      this.schedule(item.song, item.buffer, true);
     });
 
     this.startTimer();
