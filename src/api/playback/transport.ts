@@ -161,8 +161,13 @@ export class Transport {
 
     const currentSource = this.queue[0]?.source;
     if (currentSource) {
-      const remaining = this.queue[0].buffer.duration - this.time();
+      let time = this.time();
+      //if (time > this.queue[0].buffer.duration) time = 0;
+
+      const remaining = this.queue[0].buffer.duration - time;
       const start = this.ctx.currentTime + remaining;
+
+      console.warn("Audio: attempting scheduling, duration is", this.queue[0].buffer.duration, "time is", time, "start is", start, "current time is", this.ctx.currentTime);
 
       source.start(start, 0);
       item.start = start;
@@ -185,19 +190,18 @@ export class Transport {
     item.source!.onended = () => {
       if (this.userStopped) return;
 
-      if (this.queue[0] == item) {
-        if (item.start != undefined) {
-          this.virtual = item.start - this.anchor;
-        } else {
-          this.virtual += this.queue[0].buffer.duration;
-        }
+      this.anchor = this.ctx.currentTime;
+      this.virtual = 0;
+      this.paused = 0;
 
+      if (this.queue[0] == item) {
         this.queue.shift();
       }
 
       if (this.queue.length > 0) {
         if (this.queue[0].song) {
           this.emit("next", this.queue[0].song);
+          this.emit("duration", this.queue[0].buffer.duration);
         }
       } else {
         this.playing = false;
