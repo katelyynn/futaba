@@ -35,6 +35,12 @@ export class Transport {
     console.log("Audio: set volume to", volume);
   }
 
+  get duration() {
+    if (!this.buffer) return 0;
+
+    return this.buffer.duration;
+  }
+
   async decode(song: song): Promise<AudioBuffer> {
     console.log("Audio: decoding", song.id);
     const res = await fetch(song.url.href);

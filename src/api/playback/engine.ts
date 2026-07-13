@@ -31,6 +31,14 @@ export class Engine {
     this.transport.setVolume(volume);
   }
 
+  get duration() {
+    return this.transport.duration;
+  }
+
+  get time() {
+    return this.transport.time;
+  }
+
   async play(song: song) {
     const buffer = await this.transport.decode(song);
 
