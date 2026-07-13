@@ -109,7 +109,6 @@ export class Engine {
   }
 
   async play(song: song) {
-    this.transport.stop();
     this.preloading = false;
     const buffer = await this.transport.decode(song);
 

@@ -143,26 +143,40 @@ export class Transport {
     return await this.ctx.decodeAudioData(bytes);
   }
 
-  schedule(song: song, buffer: AudioBuffer) {
+  schedule(song: song, buffer: AudioBuffer, override = false) {
+    if (this.queue.length == 0 && !override) {
+      setTimeout(() => this.schedule(song, buffer), 50);
+      return;
+    }
+
+    this.scrap();
+
+    console.warn("Audio: (schedule) before queue is now", this.queue.length, this.queue);
+
     const source = this.ctx.createBufferSource();
     source.buffer = buffer;
     source.connect(this.gain);
 
     const item: QueuedBuffer = { song, buffer, source };
-    this.queue.push(item);
 
-    if (this.queue.length == 1) {
-      source.start(0, this.paused);
+    const currentSource = this.queue[0]?.source;
+    if (currentSource) {
+      const remaining = this.queue[0].buffer.duration - this.time();
+      const start = this.ctx.currentTime + remaining;
+
+      source.start(start, 0);
+      item.start = start;
+      console.warn("Audio: scheduled", song?.id, "at", start, "as there is", remaining, "remaining");
     } else {
-      const currentSource = this.queue[0].source;
-      if (currentSource) {
-        const remaining = this.queue[0].buffer.duration - this.time();
-        const start = this.ctx.currentTime + remaining;
+      const start = this.ctx.currentTime;
 
-        source.start(start, 0);
-        item.start = start;
-      }
+      source.start(start, this.paused);
+      item.start = start;
+      console.warn("Audio: scheduled to play now");
     }
+
+    this.queue.push(item);
+    console.warn("Audio: (schedule) queue is now", this.queue.length, this.queue);
 
     this.logic(item);
   }
@@ -194,8 +208,22 @@ export class Transport {
     }
   }
 
+  private scrap() {
+    const future = this.queue.splice(1);
+
+    future.forEach(item => {
+      if (item.source) {
+        item.source.onended = null;
+        try { item.source.stop(); } catch (e) { console.error("Audio: error scrapping", e); }
+        item.source.disconnect();
+      }
+    });
+
+    console.warn("Audio: scrapped, queue is now", this.queue.length, this.queue);
+  }
+
   play(buffer: AudioBuffer, offset = 0) {
-    this.exit();
+    this.scrap();
 
     this.ctx.resume();
     this.userStopped = false;
@@ -211,6 +239,7 @@ export class Transport {
 
     const item: QueuedBuffer = { song: null!, buffer, source };
     this.queue.push(item);
+    console.warn("Audio: (play) queue is now", this.queue.length, this.queue);
 
     source.start(0, offset);
 
@@ -259,16 +288,13 @@ export class Transport {
   }
 
   seek(time: number) {
+    console.warn("Audio: seeking to", time, "with queue length", this.queue.length);
     if (this.queue.length == 0) return;
 
-    if (this.queue[0].source) {
-      this.queue[0].source.onended = null;
-      try { this.queue[0].source.stop(); } catch {}
-      this.queue[0].source.disconnect();
-    }
-
     const queue = [...this.queue];
-    this.queue = [];
+
+    this.exit();
+
     this.userStopped = false;
     this.playing = true;
 
@@ -277,7 +303,7 @@ export class Transport {
     this.paused = time;
 
     queue.forEach(item => {
-      this.schedule(item.song, item.buffer);
+      this.schedule(item.song, item.buffer, true);
     });
 
     this.startTimer();
@@ -285,7 +311,6 @@ export class Transport {
   }
 
   private exit() {
-    this.userStopped = true;
     this.queue.forEach(item => {
       if (item.source) {
         item.source.onended = null;

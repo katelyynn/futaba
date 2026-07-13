@@ -153,7 +153,6 @@ export const usePlayer = create<playerState>((set, get) => ({
 
   play: (song, session, toScrobble, index) => {
     currentSession = session;
-    Player.stop();
 
     const { queue, volume } = get();
     const newQueue = [...queue];
