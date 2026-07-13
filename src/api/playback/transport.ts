@@ -6,7 +6,8 @@ export type TransportEventMap = {
   stop: [],
   ended: [],
   time: [time: number],
-  duration: [duration: number]
+  duration: [duration: number],
+  next: [song: song]
 }
 
 export type EventCallback<T extends any[] = any[]> = (...args: T) => void;
