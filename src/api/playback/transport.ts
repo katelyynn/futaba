@@ -15,7 +15,8 @@ export type EventCallback<T extends any[] = any[]> = (...args: T) => void;
 interface QueuedBuffer {
   song: song,
   buffer: AudioBuffer,
-  source: AudioBufferSourceNode | null
+  source: AudioBufferSourceNode | null,
+  start?: number
 }
 
 export class Transport {
@@ -23,10 +24,6 @@ export class Transport {
   private gain: GainNode;
 
   private queue: QueuedBuffer[];
-  private queueTime: number;
-  private queueDuration: number;
-
-  private offset: number;
 
   private paused: number;
   private playing: boolean;
@@ -37,13 +34,14 @@ export class Transport {
 
   private userStopped: boolean;
 
+  private anchor: number;
+  private virtual: number;
+
   constructor() {
     this.ctx = new AudioContext();
     this.gain = this.ctx.createGain();
 
     this.queue = [];
-    this.queueTime = 0;
-    this.queueDuration = 0;
 
     this.paused = 0;
     this.playing = false;
@@ -54,7 +52,8 @@ export class Transport {
 
     this.gain.connect(this.ctx.destination);
 
-    this.offset = 0;
+    this.anchor = 0;
+    this.virtual = 0;
   }
 
   on<K extends keyof TransportEventMap>(
@@ -153,14 +152,18 @@ export class Transport {
     this.queue.push(item);
 
     if (this.queue.length == 1) {
-      this.queueTime = this.ctx.currentTime;
       source.start(0, this.paused);
     } else {
-      const previous = this.queueTime + this.queueDuration;
-      source.start(previous, 0);
+      const currentSource = this.queue[0].source;
+      if (currentSource) {
+        const remaining = this.queue[0].buffer.duration - this.time();
+        const start = this.ctx.currentTime + remaining;
+
+        source.start(start, 0);
+        item.start = start;
+      }
     }
 
-    this.queueDuration += buffer.duration;
     this.logic(item);
   }
 
@@ -169,12 +172,13 @@ export class Transport {
       if (this.userStopped) return;
 
       if (this.queue[0] == item) {
-        const finished = this.queue[0].buffer.duration;
+        if (item.start != undefined) {
+          this.virtual = item.start - this.anchor;
+        } else {
+          this.virtual += this.queue[0].buffer.duration;
+        }
 
         this.queue.shift();
-        this.queueTime += finished;
-        this.queueDuration -= finished;
-        this.offset += finished;
       }
 
       if (this.queue.length > 0) {
@@ -196,8 +200,10 @@ export class Transport {
     this.ctx.resume();
     this.userStopped = false;
     this.playing = true;
+
+    this.anchor = this.ctx.currentTime;
+    this.virtual = 0;
     this.paused = offset;
-    this.offset = 0;
 
     const source = this.ctx.createBufferSource();
     source.buffer = buffer;
@@ -206,10 +212,8 @@ export class Transport {
     const item: QueuedBuffer = { song: null!, buffer, source };
     this.queue.push(item);
 
-    this.queueTime = this.ctx.currentTime;
     source.start(0, offset);
 
-    this.queueDuration += buffer.duration;
     this.logic(item);
 
     this.startTimer();
@@ -235,7 +239,6 @@ export class Transport {
 
     const queue = [...this.queue];
     this.queue = [];
-    this.queueDuration = 0;
     this.playing = true;
     this.userStopped = false;
 
@@ -250,9 +253,9 @@ export class Transport {
   time() {
     if (!this.playing) return this.paused;
 
-    const raw = (this.ctx.currentTime - this.queueTime) + this.paused;
+    const elapsed = this.ctx.currentTime - this.anchor;
 
-    return raw - this.offset;
+    return (elapsed + this.paused) - this.virtual;
   }
 
   seek(time: number) {
@@ -266,10 +269,11 @@ export class Transport {
 
     const queue = [...this.queue];
     this.queue = [];
-    this.queueDuration = 0;
     this.userStopped = false;
     this.playing = true;
 
+    this.anchor = this.ctx.currentTime;
+    this.virtual = 0;
     this.paused = time;
 
     queue.forEach(item => {
@@ -293,14 +297,16 @@ export class Transport {
     });
 
     this.queue = [];
-    this.queueDuration = 0;
   }
 
   stop(emit = true) {
     this.exit();
     this.playing = false;
-    this.paused = 0;
     this.stopTimer();
+
+    this.anchor = 0;
+    this.virtual = 0;
+    this.paused = 0;
 
     if (emit) this.emit("stop");
   }
