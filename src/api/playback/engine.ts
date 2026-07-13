@@ -1,4 +1,4 @@
-import { Transport } from "@/api/playback/transport.ts";
+import { EventCallback, Transport, TransportEventMap } from "@/api/playback/transport.ts";
 import type { song } from "@/types/song.ts";
 
 export class Engine {
@@ -14,6 +14,8 @@ export class Engine {
 
   loop: true | "once" | false;
 
+  private listeners: Map<string, Set<EventCallback>>;
+
   constructor() {
     this.transport = new Transport();
     this.queue = [];
@@ -21,6 +23,51 @@ export class Engine {
     this.current = null;
     this.shuffle = false;
     this.loop = false;
+    this.listeners = new Map();
+
+    this.listen();
+  }
+
+  private listen() {
+    const forward = <K extends keyof TransportEventMap>(event: K) => {
+      this.transport.on(event, ((...args: TransportEventMap[K]) => {
+        this.emit(event, ...args);
+      }) as EventCallback);
+    };
+
+    forward("play");
+    forward("pause");
+    forward("duration");
+    forward("time");
+    forward("stop");
+    forward("ended");
+  }
+
+  on<K extends keyof TransportEventMap>(
+    event: K,
+    callback: (...args: TransportEventMap[K]) => void
+  ): () => void {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, new Set());
+    }
+
+    this.listeners.get(event)!.add(callback as EventCallback);
+
+    return () => this.off(event, callback);
+  }
+
+  off<K extends keyof TransportEventMap>(
+    event: K,
+    callback: (...args: TransportEventMap[K]) => void
+  ): void {
+    this.listeners.get(event)?.delete(callback as EventCallback);
+  }
+
+  private emit<K extends keyof TransportEventMap>(
+    event: K,
+    ...args: TransportEventMap[K]
+  ): void {
+    this.listeners.get(event)?.forEach((callback) => callback(...args));
   }
 
   get volume() {

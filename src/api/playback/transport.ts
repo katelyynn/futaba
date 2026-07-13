@@ -9,7 +9,7 @@ export type TransportEventMap = {
   duration: [duration: number]
 }
 
-type EventCallback<T extends any[] = any[]> = (...args: T) => void;
+export type EventCallback<T extends any[] = any[]> = (...args: T) => void;
 
 export class Transport {
   private ctx: AudioContext;
@@ -82,6 +82,7 @@ export class Transport {
 
     const tick = () => {
       if (!this.playing) {
+        // timing info sent manually
         this.frame = null;
         return;
       }
@@ -144,6 +145,18 @@ export class Transport {
     source.buffer = buffer;
     source.connect(this.gain);
 
+    this.userStopped = false;
+
+    source.onended = () => {
+      if (this.userStopped) return;
+
+      this.playing = false;
+      this.source = null;
+
+      this.stopTimer();
+      this.emit("ended");
+    }
+
     source.start(0, offset);
 
     this.buffer = buffer;
@@ -152,10 +165,10 @@ export class Transport {
     this.started = this.ctx.currentTime - offset;
     this.playing = true;
 
-    source.onended = () => {
-      this.playing = false;
-      this.source = null;
-    }
+    this.startTimer();
+    this.emit("duration", this.duration);
+    this.emit("play");
+    this.emit("time", offset);
 
     console.log("Audio: playback has begun!");
   }
@@ -164,9 +177,14 @@ export class Transport {
     if (!this.source) return;
 
     this.paused = this.time();
+    this.userStopped = true;
     this.source.stop();
     this.source = null;
     this.playing = false;
+
+    this.stopTimer();
+    this.emit("pause");
+    this.emit("time", this.paused);
   }
 
   resume() {
@@ -188,11 +206,14 @@ export class Transport {
 
   stop() {
     if (this.source) {
-      this.source.onended = null;
+      this.userStopped = true;
       this.source.stop();
       this.source = null;
     }
 
     this.playing = false;
+    this.stopTimer();
+
+    this.emit("stop");
   }
 }
