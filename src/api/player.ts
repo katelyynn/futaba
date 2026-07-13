@@ -42,6 +42,7 @@ interface playerState {
 let toScrobble = false;
 let scrobbled = false;
 let trackStartTime = 0;
+let currentSession: session | null = null;
 
 function preloadNext(next?: song) {
   if (!next) {
@@ -49,6 +50,96 @@ function preloadNext(next?: song) {
     next = queue[currentIndex + 1];
   }
 }
+
+function setupEvents() {
+  Player.on("time", (time: number) => {
+    usePlayer.setState({ currentTime: time });
+
+    if (!currentSession) return;
+
+    const { currentSong, nowPlaying, queue, currentIndex } = usePlayer.getState();
+
+    if (currentSong) {
+      localStorage.setItem("player", JSON.stringify({ song: currentSong, time, queue, currentIndex }));
+
+      if (nowPlaying && toScrobble && !scrobbled) {
+        const validScrobble = time > 240 || (currentSong.duration && time > currentSong.duration * 0.5);
+
+        if (validScrobble) {
+          scrobbled = true;
+          scrobble(currentSession, currentSong.id, trackStartTime);
+        }
+      }
+    }
+  });
+
+  Player.on("duration", (duration: number) => {
+    usePlayer.setState({ duration });
+  });
+
+  Player.on("play", () => {
+    usePlayer.setState({ nowPlaying: true });
+  });
+
+  Player.on("pause", () => {
+    usePlayer.setState({ nowPlaying: false });
+  });
+
+  Player.on("stop", () => {
+    usePlayer.setState({ nowPlaying: false });
+  });
+
+  Player.on("ended", () => {
+    usePlayer.setState({ nowPlaying: false });
+
+    if (!currentSession) return;
+
+    console.time("song ended");
+    const { queue, currentIndex, loop } = usePlayer.getState();
+    let index;
+
+    console.log("queue length", queue.length, "loop is", loop, loop == true, loop === true);
+
+    if ((queue.length == 1 && loop) || loop == "once") {
+      console.log("length is 1 and loop enabled");
+      index = currentIndex;
+    } else if (queue.length > 1 && loop === true) {
+      console.log("length over 1 and loop is true");
+      index = currentIndex + 1;
+
+      if (index > queue.length - 1) {
+        index = 0;
+      } else {
+        //swapAudio = true;
+      }
+    } else if (queue.length > 1) {
+      console.log("length over 1");
+      index = currentIndex + 1;
+      //swapAudio = true;
+    } else {
+      usePlayer.setState({ nowPlaying: false });
+      return;
+    }
+
+    const next = queue[index];
+
+    if (!next) {
+      usePlayer.setState({ nowPlaying: false });
+      return;
+    }
+
+    if (toScrobble) sendNowPlaying(currentSession, next.id);
+
+    scrobbled = false;
+    trackStartTime = Date.now();
+
+    console.timeLog("song ended", "playing next");
+    usePlayer.getState().play(next, currentSession, toScrobble, index);
+    console.timeEnd("song ended");
+  });
+};
+
+setupEvents();
 
 export const usePlayer = create<playerState>((set, get) => ({
   queue: [],
@@ -63,6 +154,7 @@ export const usePlayer = create<playerState>((set, get) => ({
   loved: {},
 
   play: (song, session, toScrobble, index) => {
+    currentSession = session;
     Player.stop();
 
     const { queue, volume } = get();
@@ -213,7 +305,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
   seek: (time) => {
     Player.seek(time);
-    set({ currentTime: time });
+    //set({ currentTime: time });
   },
 
   setToScrobble: (value) => {
@@ -236,7 +328,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
         set({
           currentSong: song,
-          duration: audio.duration || 0,
+          duration: 0,
           currentTime: time,
           queue: queue || [],
           currentIndex: currentIndex || -1
@@ -276,94 +368,6 @@ export const usePlayer = create<playerState>((set, get) => ({
     });
   }
 }));
-
-function attachEvents(audio: HTMLAudioElement, session: session) {
-  audio.ontimeupdate = () => {
-    const time = audio.currentTime;
-
-    usePlayer.setState({currentTime: audio.currentTime});
-
-    const { currentSong, nowPlaying, queue, currentIndex } = usePlayer.getState();
-
-    if (currentSong) {
-      localStorage.setItem("player", JSON.stringify({ song: currentSong, time, queue, currentIndex }));
-
-      if (nowPlaying && toScrobble && !scrobbled) {
-        const validScrobble = audio.currentTime > 240 || (currentSong.duration && audio.currentTime > currentSong.duration * 0.5);
-
-        if (validScrobble) {
-          scrobbled = true;
-          scrobble(session, currentSong.id, trackStartTime);
-        }
-      }
-    }
-  };
-
-  audio.onloadedmetadata = () => {
-    usePlayer.setState({ duration: audio.duration });
-  };
-
-  audio.onplay = () => {
-    usePlayer.setState({ nowPlaying: true });
-  }
-  audio.onpause = () => {
-    usePlayer.setState({ nowPlaying: false });
-  }
-
-  audio.onended = async () => {
-    console.time("song ended");
-    const { queue, currentSong, currentIndex, loop } = usePlayer.getState();
-    let index;
-
-    console.log("queue length", queue.length, "loop is", loop, loop == true, loop === true);
-
-    if ((queue.length == 1 && loop) || loop == "once") {
-      console.log("length is 1 and loop enabled");
-      index = currentIndex;
-    } else if (queue.length > 1 && loop === true) {
-      console.log("length over 1 and loop is true");
-      index = currentIndex + 1;
-
-      if (index > queue.length - 1) {
-        index = 0;
-      } else {
-        //swapAudio = true;
-      }
-    } else if (queue.length > 1) {
-      console.log("length over 1");
-      index = currentIndex + 1;
-      //swapAudio = true;
-    } else {
-      usePlayer.setState({ nowPlaying: false });
-      return;
-    }
-
-    const next = queue[index];
-
-    if (!audio || !next) {
-      usePlayer.setState({ nowPlaying: false });
-      return;
-    }
-
-    if (toScrobble) sendNowPlaying(session, next.id);
-
-    scrobbled = false;
-    trackStartTime = Date.now();
-
-    if (currentSong != next) audio.src = next.url.href;
-    console.timeLog("song ended", "set src");
-    audio.currentTime = 0;
-    await audio.play().catch(() => {});
-
-    usePlayer.setState({
-      currentSong: next,
-      currentIndex: index,
-      currentTime: 0,
-      duration: audio.duration || 0
-    });
-    console.timeEnd("song ended");
-  };
-}
 
 export function createStreamURL(id: string, session: session) {
   const auth = createAuth(session);

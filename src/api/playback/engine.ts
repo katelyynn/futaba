@@ -1,4 +1,5 @@
-import { EventCallback, Transport, TransportEventMap } from "@/api/playback/transport.ts";
+import { Transport } from "@/api/playback/transport.ts";
+import type { EventCallback, TransportEventMap } from "@/api/playback/transport.ts";
 import type { song } from "@/types/song.ts";
 
 export class Engine {

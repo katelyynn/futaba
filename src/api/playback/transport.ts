@@ -135,11 +135,11 @@ export class Transport {
   }
 
   play(buffer: AudioBuffer, offset = 0) {
-    this.stop();
+    this.stop(false);
 
     this.ctx.resume();
 
-    console.log("Audio: attempting playback");
+    console.log("Audio: attempting playback", offset, "/", this.duration);
 
     const source = this.ctx.createBufferSource();
     source.buffer = buffer;
@@ -147,8 +147,10 @@ export class Transport {
 
     this.userStopped = false;
 
+    source.start(0, offset);
+
     source.onended = () => {
-      if (this.userStopped) return;
+      if (this.userStopped || this.time() < this.duration) return;
 
       this.playing = false;
       this.source = null;
@@ -156,8 +158,6 @@ export class Transport {
       this.stopTimer();
       this.emit("ended");
     }
-
-    source.start(0, offset);
 
     this.buffer = buffer;
     this.source = source;
@@ -170,11 +170,12 @@ export class Transport {
     this.emit("play");
     this.emit("time", offset);
 
-    console.log("Audio: playback has begun!");
+    console.log("Audio: playback has begun!", offset, "/", this.duration);
   }
 
   pause() {
     if (!this.source) return;
+    console.log("Audio: pausing");
 
     this.paused = this.time();
     this.userStopped = true;
@@ -189,6 +190,7 @@ export class Transport {
 
   resume() {
     if (!this.buffer) return;
+    console.log("Audio: resuming");
     this.play(this.buffer, this.paused);
   }
 
@@ -201,19 +203,23 @@ export class Transport {
   seek(time: number) {
     if (!this.buffer) return;
 
+    console.info("Audio: seeking to", time);
+    this.userStopped = true;
     this.play(this.buffer, time);
   }
 
-  stop() {
+  stop(emit = true) {
     if (this.source) {
       this.userStopped = true;
       this.source.stop();
       this.source = null;
     }
 
+    console.log("Audio: stopped, by user:", this.userStopped, "source is now", this.source, "emitting:", emit);
+
     this.playing = false;
     this.stopTimer();
 
-    this.emit("stop");
+    if (emit) this.emit("stop");
   }
 }
