@@ -1,5 +1,16 @@
 import type { song } from "@/types/song.ts";
 
+export type TransportEventMap = {
+  play: [],
+  pause: [],
+  stop: [],
+  ended: [],
+  time: [time: number],
+  duration: [duration: number]
+}
+
+type EventCallback<T extends any[] = any[]> = (...args: T) => void;
+
 export class Transport {
   private ctx: AudioContext;
 
@@ -13,6 +24,12 @@ export class Transport {
   private paused: number;
   private playing: boolean;
 
+  // used for sending time updates lol
+  private frame: number | null;
+  private listeners: Map<string, Set<EventCallback>>;
+
+  private userStopped: boolean;
+
   constructor() {
     this.ctx = new AudioContext();
     this.gain = this.ctx.createGain();
@@ -23,7 +40,69 @@ export class Transport {
     this.paused = 0;
     this.playing = false;
 
+    this.frame = null;
+    this.listeners = new Map();
+    this.userStopped = false;
+
     this.gain.connect(this.ctx.destination);
+  }
+
+  on<K extends keyof TransportEventMap>(
+    event: K,
+    callback: (...args: TransportEventMap[K]) => void
+  ): () => void {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, new Set());
+    }
+
+    this.listeners.get(event)!.add(callback as EventCallback);
+
+    return () => this.off(event, callback);
+  }
+
+  off<K extends keyof TransportEventMap>(
+    event: K,
+    callback: (...args: TransportEventMap[K]) => void
+  ): void {
+    this.listeners.get(event)?.delete(callback as EventCallback);
+  }
+
+  private emit<K extends keyof TransportEventMap>(
+    event: K,
+    ...args: TransportEventMap[K]
+  ): void {
+    this.listeners.get(event)?.forEach((callback) => callback(...args));
+  }
+
+  private startTimer() {
+    if (this.frame) return;
+
+    let lastUpdate = 0;
+    const interval = 250; // 0.25s
+
+    const tick = () => {
+      if (!this.playing) {
+        this.frame = null;
+        return;
+      }
+
+      const now = performance.now();
+      if (now - lastUpdate >= interval) {
+        this.emit("time", this.time());
+        lastUpdate = now;
+      }
+
+      this.frame = requestAnimationFrame(tick);
+    }
+
+    this.frame = requestAnimationFrame(tick);
+  }
+
+  private stopTimer() {
+    if (!this.frame) return;
+
+    cancelAnimationFrame(this.frame);
+    this.frame = null;
   }
 
   get volume() {
