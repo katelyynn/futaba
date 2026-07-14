@@ -228,7 +228,7 @@ export class Transport {
     console.warn("Audio: scrapped, queue is now", this.queue.length, this.queue);
   }
 
-  play(buffer: AudioBuffer, offset = 0) {
+  play(buffer: AudioBuffer, song: song, offset = 0) {
     this.ctx.resume();
     this.userStopped = false;
     this.playing = true;
@@ -241,7 +241,7 @@ export class Transport {
     source.buffer = buffer;
     source.connect(this.gain);
 
-    const item: QueuedBuffer = { song: null!, buffer, source };
+    const item: QueuedBuffer = { song, buffer, source };
     this.queue.push(item);
     console.warn("Audio: (play) queue is now", this.queue.length, this.queue);
 
@@ -267,6 +267,7 @@ export class Transport {
 
     this.emit("pause");
     this.emit("time", this.paused);
+    console.warn("Audio: paused");
   }
 
   resume() {
@@ -287,6 +288,7 @@ export class Transport {
 
     this.startTimer();
     this.emit("play");
+    console.warn("Audio: resumed");
   }
 
   time() {
@@ -297,9 +299,18 @@ export class Transport {
     return (elapsed + this.paused) - this.virtual;
   }
 
-  seek(time: number) {
-    console.warn("Audio: seeking to", time, "with queue length", this.queue.length);
-    if (this.queue.length == 0) return;
+  seek(time: number, id?: string) {
+    const current = this.queue[0]?.song?.id;
+    console.warn("Audio: seeking to", time, "with queue length", this.queue.length, current, id);
+    if (this.queue.length == 0 || !this.playing) return;
+
+    // TODO: this current value is wrong, its not being updated fast enough
+    // to have this check kick in.
+    // im trying to stop seeking to the end of a song overwriting going next
+    if (current && id && current != id) {
+      console.error("Audio: denied seek as id mismatch", current, id);
+      return;
+    }
 
     const queue = [...this.queue];
 

@@ -29,10 +29,10 @@ export class Engine {
       const buffer = await this.transport.decode(song);
 
       // ensure this is still the preload candidate
-      if (song.id == this.candidate && this.preloading) {
+      if (song.id == this.candidate) {
         this.transport.schedule(song, buffer);
       } else {
-        console.error("Audio: cancelled preload in the end");
+        console.error("Audio: cancelled preload in the end", song.id, this.candidate, this.preloading);
       }
     } catch (e) {
       console.error("Audio: issue prevented preload", e);
@@ -107,7 +107,7 @@ export class Engine {
     this.preloading = false;
     const buffer = await this.transport.decode(song);
 
-    this.transport.play(buffer);
+    this.transport.play(buffer, song);
   }
 
   pause() {
@@ -118,8 +118,8 @@ export class Engine {
     this.transport.resume();
   }
 
-  seek(time: number) {
-    this.transport.seek(time);
+  seek(time: number, id?: string) {
+    this.transport.seek(time, id);
   }
 
   stop() {

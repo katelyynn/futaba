@@ -324,7 +324,9 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   seek: (time) => {
-    Player.seek(time);
+    const { currentSong } = get();
+
+    Player.seek(time, currentSong?.id);
     //set({ currentTime: time });
   },
 
