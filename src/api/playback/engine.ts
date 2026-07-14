@@ -6,6 +6,7 @@ export class Engine {
   readonly transport: Transport;
 
   preloading: boolean;
+  candidate: string;
 
   private listeners: Map<string, Set<EventCallback>>;
 
@@ -14,6 +15,7 @@ export class Engine {
     this.listeners = new Map();
 
     this.preloading = false;
+    this.candidate = '';
 
     this.listen();
   }
@@ -21,15 +23,13 @@ export class Engine {
   async preload(song: song) {
     if (!song || this.preloading) return;
     this.preloading = true;
+    this.candidate = song.id;
 
     try {
       const buffer = await this.transport.decode(song);
 
-      // TODO: make this more robust in the future
-      // currently, if preloading takes too long it can replace
-      // what was there before, there needs to be some way to check after decoding
-      // if this is still the next song candidate or not
-      if (this.preloading) {
+      // ensure this is still the preload candidate
+      if (song.id == this.candidate && this.preloading) {
         this.transport.schedule(song, buffer);
       } else {
         console.error("Audio: cancelled preload in the end");
