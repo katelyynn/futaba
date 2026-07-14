@@ -184,9 +184,6 @@ export const usePlayer = create<playerState>((set, get) => ({
     Player.setVolume(volume);
     Player.play(song);
 
-    console.warn("Audio: sent request to preload next song due to playback");
-    preloadNext();
-
     if (toScrobble) sendNowPlaying(session, song.id);
 
     scrobbled = false;
@@ -201,6 +198,9 @@ export const usePlayer = create<playerState>((set, get) => ({
     });
 
     console.warn("Audio: playing", song.id);
+
+    console.warn("Audio: sent request to preload next song due to playback");
+    preloadNext();
   },
 
   playNext: (session) => {

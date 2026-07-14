@@ -203,7 +203,7 @@ export class Transport {
       if (this.queue.length > 0) {
         if (this.queue[0].song) {
           this.emit("next", this.queue[0].song);
-          this.emit("duration", this.queue[0].buffer.duration);
+          this.emit("duration", this.queue[0].buffer?.duration);
         }
       } else {
         this.playing = false;
