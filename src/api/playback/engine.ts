@@ -25,6 +25,10 @@ export class Engine {
     try {
       const buffer = await this.transport.decode(song);
 
+      // TODO: make this more robust in the future
+      // currently, if preloading takes too long it can replace
+      // what was there before, there needs to be some way to check after decoding
+      // if this is still the next song candidate or not
       if (this.preloading) {
         this.transport.schedule(song, buffer);
       } else {
