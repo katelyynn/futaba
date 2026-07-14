@@ -229,8 +229,6 @@ export class Transport {
   }
 
   play(buffer: AudioBuffer, offset = 0) {
-    this.scrap();
-
     this.ctx.resume();
     this.userStopped = false;
     this.playing = true;

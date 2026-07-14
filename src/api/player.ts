@@ -246,6 +246,9 @@ export const usePlayer = create<playerState>((set, get) => ({
 
   removeFromQueue: (index) => {
     set(state => {
+      const { currentIndex, nowPlaying } = get();
+      const next = state.queue[currentIndex + 1]?.id;
+
       const newQueue = [...state.queue];
       newQueue.splice(index, 1);
 
@@ -257,7 +260,9 @@ export const usePlayer = create<playerState>((set, get) => ({
         newIndex = -1;
       }
 
-      preloadNext(newQueue[newIndex + 1]);
+      if (newQueue[newIndex + 1]?.id != next && nowPlaying) {
+        preloadNext(newQueue[newIndex + 1]);
+      }
 
       return {
         queue: newQueue,
