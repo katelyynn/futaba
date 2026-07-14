@@ -20,9 +20,9 @@ interface playerState {
   shuffle: boolean,
   loved: Record<string, boolean>,
 
-  play: (song: song, session: session, toScrobble: boolean, index?: number) => void,
-  playNext: (session: session, toScrobble: boolean) => void,
-  playPrev: (session: session, toScrobble: boolean) => void,
+  play: (song: song, session: session, index?: number) => void,
+  playNext: (session: session) => void,
+  playPrev: (session: session) => void,
   addToQueue: (songs: song[], at?: number) => void,
   removeFromQueue: (index: number) => void,
   reorderQueue: (from: number, to: number) => void,
@@ -76,10 +76,10 @@ function setupEvents() {
 
     if (!currentSession) return;
 
-    const { currentSong, nowPlaying, queue, currentIndex } = usePlayer.getState();
+    const { currentSong, nowPlaying } = usePlayer.getState();
 
     if (currentSong) {
-      localStorage.setItem("player", JSON.stringify({ song: currentSong, time, queue, currentIndex }));
+      //localStorage.setItem("player", JSON.stringify({ song: currentSong, time, queue, currentIndex }));
 
       if (nowPlaying && toScrobble && !scrobbled) {
         const validScrobble = time > 240 || (currentSong.duration && time > currentSong.duration * 0.5);
@@ -154,7 +154,7 @@ export const usePlayer = create<playerState>((set, get) => ({
   shuffle: false,
   loved: {},
 
-  play: (song, session, toScrobble, index) => {
+  play: (song, session, index) => {
     currentSession = session;
 
     const { queue, volume } = get();
@@ -174,12 +174,9 @@ export const usePlayer = create<playerState>((set, get) => ({
       }
     }
 
-    set({ queue: newQueue });
-
     Player.setVolume(volume);
     Player.play(song);
 
-    set({ currentIndex: songIndex });
     console.warn("Audio: sent request to preload next song due to playback");
     preloadNext();
 
@@ -190,6 +187,8 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     set({
       currentSong: song,
+      currentIndex: songIndex,
+      queue: newQueue,
       currentTime: 0,
       nowPlaying: true
     });
@@ -197,7 +196,7 @@ export const usePlayer = create<playerState>((set, get) => ({
     console.warn("Audio: playing", song.id);
   },
 
-  playNext: (session, toScrobble) => {
+  playNext: (session) => {
     const { currentIndex, queue } = get();
     if (currentIndex >= queue.length - 1) return;
 
@@ -205,10 +204,10 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     Player.stop();
 
-    get().play(queue[index], session, toScrobble, index);
+    get().play(queue[index], session, index);
   },
 
-  playPrev: (session, toScrobble) => {
+  playPrev: (session) => {
     const { currentIndex, queue } = get();
     if (currentIndex <= 0) return;
 
@@ -216,7 +215,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     Player.stop();
 
-    get().play(queue[index], session, toScrobble, index);
+    get().play(queue[index], session, index);
   },
 
   addToQueue: (songs, at) => {
