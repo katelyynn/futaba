@@ -85,7 +85,7 @@ export function SakuraSong({
       if (!inQueue) clearQueue();
     }
 
-    play(song, session!, toScrobble);
+    play(song, session!);
   }
 
   async function loveSong() {
