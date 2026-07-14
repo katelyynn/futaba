@@ -5,30 +5,14 @@ import type { song } from "@/types/song.ts";
 export class Engine {
   readonly transport: Transport;
 
-  queue: song[];
-
-  index: number;
-
-  current: { song: song, buffer: AudioBuffer } | null;
-  next: { song: song, buffer: AudioBuffer } | null;
   preloading: boolean;
-
-  shuffle: boolean;
-
-  loop: true | "once" | false;
 
   private listeners: Map<string, Set<EventCallback>>;
 
   constructor() {
     this.transport = new Transport();
-    this.queue = [];
-    this.index = -1;
-    this.shuffle = false;
-    this.loop = false;
     this.listeners = new Map();
 
-    this.current = null;
-    this.next = null;
     this.preloading = false;
 
     this.listen();
@@ -40,12 +24,17 @@ export class Engine {
 
     try {
       const buffer = await this.transport.decode(song);
-      this.transport.schedule(song, buffer);
+
+      if (this.preloading) {
+        this.transport.schedule(song, buffer);
+      } else {
+        console.error("Audio: cancelled preload in the end");
+      }
     } catch (e) {
       console.error("Audio: issue prevented preload", e);
     } finally {
       this.preloading = false;
-      console.warn("Audio: preloaded", this.next?.song.id);
+      console.warn("Audio: preloaded");
     }
   }
 
@@ -112,11 +101,6 @@ export class Engine {
     this.preloading = false;
     const buffer = await this.transport.decode(song);
 
-    this.current = {
-      song,
-      buffer
-    }
-
     this.transport.play(buffer);
   }
 
@@ -134,8 +118,6 @@ export class Engine {
 
   stop() {
     this.transport.stop();
-
-    this.current = null;
-    this.next = null;
+    this.preloading = false;
   }
 }

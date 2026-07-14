@@ -163,7 +163,7 @@ export class Transport {
 
     const currentSource = this.queue[0]?.source;
     if (currentSource) {
-      let time = this.time();
+      const time = this.time();
       //if (time > this.queue[0].buffer.duration) time = 0;
 
       const remaining = this.queue[0].buffer.duration - time;
