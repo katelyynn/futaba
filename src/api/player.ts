@@ -23,7 +23,7 @@ interface playerState {
   play: (song: song, session: session, index?: number) => void,
   playNext: (session: session) => void,
   playPrev: (session: session) => void,
-  addToQueue: (songs: song[], at?: number) => void,
+  addToQueue: (songs: song[], at?: number | null, preload?: boolean) => void,
   removeFromQueue: (index: number) => void,
   reorderQueue: (from: number, to: number) => void,
   clearQueue: () => void,
@@ -225,7 +225,7 @@ export const usePlayer = create<playerState>((set, get) => ({
     get().play(queue[index], session, index);
   },
 
-  addToQueue: (songs, at) => {
+  addToQueue: (songs, at, preload = true) => {
     set(state => {
       const { currentIndex } = get();
       const newQueue = [...state.queue];
@@ -236,7 +236,9 @@ export const usePlayer = create<playerState>((set, get) => ({
         newQueue.push(...songs);
       }
 
-      //preloadNext(newQueue[currentIndex + 1]);
+      if (preload) {
+        preloadNext(newQueue[currentIndex + 1]);
+      }
 
       return { queue: newQueue };
     })
@@ -255,7 +257,7 @@ export const usePlayer = create<playerState>((set, get) => ({
         newIndex = -1;
       }
 
-      //preloadNext(newQueue[newIndex + 1]);
+      preloadNext(newQueue[newIndex + 1]);
 
       return {
         queue: newQueue,
@@ -280,7 +282,7 @@ export const usePlayer = create<playerState>((set, get) => ({
         newIndex++;
       }
 
-      //preloadNext(newQueue[newIndex + 1]);
+      preloadNext(newQueue[newIndex + 1]);
 
       return {
         queue: newQueue,
