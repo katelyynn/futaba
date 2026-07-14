@@ -133,6 +133,9 @@ function setupEvents() {
       nowPlaying: true
     });
 
+    scrobbled = false;
+    trackStartTime = Date.now();
+
     preloadNext();
   });
 };
