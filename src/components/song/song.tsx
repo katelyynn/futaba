@@ -79,7 +79,7 @@ export function SakuraSong({
   function playSong() {
     if (songsList) {
       clearQueue();
-      addToQueue(songsList);
+      addToQueue(songsList, null, false);
     } else {
       const inQueue = queue.findIndex(s => s.id == song.id) > -1;
       if (!inQueue) clearQueue();

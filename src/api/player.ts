@@ -52,10 +52,13 @@ function preloadNext(next?: song) {
 
     if (loop == "once") {
       index = currentIndex;
+      note(`Preloading ${index} as loop is 'once'`, 'audio', [ queue ]);
     } else if (index >= queue.length) {
       if (loop == true) {
         index = 0;
+        note(`Preloading ${index} as loop is true`, 'audio', [ queue ]);
       } else {
+        note(`Cancelling preload as loop is off`, 'audio', [ queue ]);
         return;
       }
     }
@@ -227,6 +230,7 @@ export const usePlayer = create<playerState>((set, get) => ({
   addToQueue: (songs, at, preload = true) => {
     set(state => {
       const { currentIndex } = get();
+      const next = state.queue[currentIndex + 1]?.id;
       const newQueue = [...state.queue];
 
       if (at != null) {
@@ -235,7 +239,8 @@ export const usePlayer = create<playerState>((set, get) => ({
         newQueue.push(...songs);
       }
 
-      if (preload) {
+      if (newQueue[currentIndex + 1]?.id != next && preload) {
+        note(`Sending preload as queue has updated (${newQueue[currentIndex + 1]?.id} -> ${next})`, 'audio');
         preloadNext(newQueue[currentIndex + 1]);
       }
 

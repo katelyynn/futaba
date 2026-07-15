@@ -1,6 +1,7 @@
 import { Transport } from "@/api/playback/transport.ts";
 import type { EventCallback, TransportEventMap } from "@/api/playback/transport.ts";
 import type { song } from "@/types/song.ts";
+import { note } from "@/api/log.ts";
 
 export class Engine {
   readonly transport: Transport;
@@ -22,6 +23,7 @@ export class Engine {
 
   async preload(song: song) {
     if (!song || this.preloading) return;
+    note(`Preloading ${song?.id}...`, 'engine');
     this.preloading = true;
     this.candidate = song.id;
 
@@ -32,7 +34,7 @@ export class Engine {
       if (song.id == this.candidate) {
         this.transport.schedule(song, buffer);
       } else {
-        console.error("Audio: cancelled preload in the end", song.id, this.candidate, this.preloading);
+        note(`Cancelled preload of ${song?.id} as no longer matches candidate`, 'engine');
       }
     } catch (e) {
       console.error("Audio: issue prevented preload", e);
