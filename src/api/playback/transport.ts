@@ -194,14 +194,12 @@ export class Transport {
       this.virtual = 0;
       this.paused = 0;
 
-      if (this.queue.length > 0) {
-        if (this.queue[1]) {
-          this.queue.splice(0, 1);
+      if (this.queue.length > 1) {
+        this.queue.splice(0, 1);
 
-          note(`Advancing to ${this.queue[0].song?.id} for next song`, 'engine');
-          this.emit("next", this.queue[0].song);
-          this.emit("duration", this.queue[0].buffer?.duration);
-        }
+        note(`Advancing to ${this.queue[0].song?.id} for next song`, 'engine');
+        this.emit("next", this.queue[0].song);
+        this.emit("duration", this.queue[0].buffer?.duration);
       } else {
         note(`Ended queue, nothing to go next`, 'engine');
         this.playing = false;
