@@ -37,10 +37,11 @@ export class Engine {
         note(`Cancelled preload of ${song?.id} as no longer matches candidate`, 'engine');
       }
     } catch (e) {
-      console.error("Audio: issue prevented preload", e);
+      note(`Error preloading ${song?.id}`, 'engine');
+      console.error(e);
     } finally {
       this.preloading = false;
-      console.warn("Audio: preloaded");
+      note(`Preloaded ${song?.id}`, 'engine');
     }
   }
 

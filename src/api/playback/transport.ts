@@ -124,7 +124,7 @@ export class Transport {
 
   setVolume(volume: number) {
     this.gain.gain.value = volume;
-    console.log("Audio: set volume to", volume);
+    note(`Volume is now ${volume}`, 'engine');
   }
 
   get duration() {
@@ -306,7 +306,7 @@ export class Transport {
     // to have this check kick in.
     // im trying to stop seeking to the end of a song overwriting going next
     if (current && id && current != id) {
-      console.error("Audio: denied seek as id mismatch", current, id);
+      note(`Denied seek due to id mismatch`, 'engine', [ { current, id } ]);
       return;
     }
 

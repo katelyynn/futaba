@@ -3,10 +3,13 @@ export function note(text: string, system: string, data?: object[]) {
 
   switch (system) {
     case 'engine':
-      colour = `#838F67`;
+      colour = `#31748f`;
       break;
     case 'audio':
-      colour = `#94A866`;
+      colour = `#9ccfd8`;
+      break;
+    case 'request':
+      colour = `#eb6f92`;
       break;
   }
 
