@@ -324,10 +324,11 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   seek: (time) => {
-    const { currentSong } = get();
+    const { currentSong, currentTime } = get();
 
-    Player.seek(time, currentSong?.id);
-    //set({ currentTime: time });
+    if (time != currentTime) {
+      Player.seek(time, currentSong?.id);
+    }
   },
 
   setToScrobble: (value) => {
