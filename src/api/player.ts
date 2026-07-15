@@ -4,6 +4,7 @@ import { createAuth } from './client.ts';
 import type { session } from './client.ts';
 import { sendNowPlaying, scrobble } from './scrobble.ts';
 import { Player } from "@/api/playback/index.ts";
+import { note } from "@/api/log.ts";
 
 export const DEFAULT_VOLUME = 0.3;
 export const MAX_VOLUME = 0.6;
@@ -45,7 +46,6 @@ let trackStartTime = 0;
 let currentSession: session | null = null;
 
 function preloadNext(next?: song) {
-  console.warn("Audio: preload request sent with song?:", next?.id || 'no song');
   if (!next) {
     const { queue, currentIndex, loop } = usePlayer.getState();
     let index = currentIndex + 1;
@@ -61,11 +61,10 @@ function preloadNext(next?: song) {
     }
 
     next = queue[index];
-    console.warn("Audio: sending request to preload with index", index);
   }
 
   if (next) {
-    console.warn("Audio: sending request to preload", next?.id);
+    note(`Preloading ${next?.id} as next song`, 'audio');
     Player.preload(next);
   }
 }

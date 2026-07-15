@@ -1,4 +1,5 @@
 import type { song } from "@/types/song.ts";
+import { note } from "@/api/log.ts";
 
 export type TransportEventMap = {
   play: [],
@@ -133,7 +134,7 @@ export class Transport {
   }
 
   async decode(song: song): Promise<AudioBuffer> {
-    console.log("Audio: decoding", song.id);
+    note(`Decoding ${song.id}...`, 'engine');
     const res = await fetch(song.url.href);
     if (!res.ok) {
       throw new Error(`failed to fetch song: ${res.status}`);
@@ -141,7 +142,7 @@ export class Transport {
 
     const bytes = await res.arrayBuffer();
 
-    console.log("Audio: finished decoding", song.id);
+    note(`Decoded ${song.id}`, 'engine');
     return await this.ctx.decodeAudioData(bytes);
   }
 
@@ -152,8 +153,6 @@ export class Transport {
     }
 
     this.scrap();
-
-    console.warn("Audio: (schedule) before queue is now", this.queue.length, this.queue);
 
     const source = this.ctx.createBufferSource();
     source.buffer = buffer;
@@ -169,21 +168,19 @@ export class Transport {
       const remaining = this.queue[0].buffer.duration - time;
       const start = this.ctx.currentTime + remaining;
 
-      console.warn("Audio: attempting scheduling, duration is", this.queue[0].buffer.duration, "time is", time, "start is", start, "current time is", this.ctx.currentTime);
-
       source.start(start, 0);
       item.start = start;
-      console.warn("Audio: scheduled", song?.id, "at", start, "as there is", remaining, "remaining");
+      note(`Scheduled ${song?.id} at ${start}, there are ${remaining} seconds remaining`, 'engine');
     } else {
       const start = this.ctx.currentTime;
 
       source.start(start, this.paused);
       item.start = start;
-      console.warn("Audio: scheduled to play now");
+      note(`Scheduled ${song?.id} to play now`, 'engine');
     }
 
     this.queue.push(item);
-    console.warn("Audio: (schedule) queue is now", this.queue.length, this.queue);
+    note(`Updated queue from schedule`, 'engine', [ this.queue ]);
 
     this.logic(item);
   }
@@ -191,6 +188,7 @@ export class Transport {
   private logic(item: QueuedBuffer) {
     item.source!.onended = () => {
       if (this.userStopped) return;
+      note(`Song ended, viewing situation`, 'engine');
 
       this.anchor = this.ctx.currentTime;
       this.virtual = 0;
@@ -202,10 +200,12 @@ export class Transport {
 
       if (this.queue.length > 0) {
         if (this.queue[0].song) {
+          note(`Advancing to ${this.queue[0].song?.id} for next song`, 'engine');
           this.emit("next", this.queue[0].song);
           this.emit("duration", this.queue[0].buffer?.duration);
         }
       } else {
+        note(`Ended queue, nothing to go next`, 'engine');
         this.playing = false;
         this.paused = 0;
         this.stopTimer();
@@ -225,7 +225,7 @@ export class Transport {
       }
     });
 
-    console.warn("Audio: scrapped, queue is now", this.queue.length, this.queue);
+    note(`Cleaned queue`, 'engine', [ this.queue ]);
   }
 
   play(buffer: AudioBuffer, song: song, offset = 0) {
@@ -243,7 +243,6 @@ export class Transport {
 
     const item: QueuedBuffer = { song, buffer, source };
     this.queue.push(item);
-    console.warn("Audio: (play) queue is now", this.queue.length, this.queue);
 
     source.start(0, offset);
 
@@ -253,6 +252,7 @@ export class Transport {
     this.emit("duration", this.duration);
     this.emit("play");
     this.emit("time", offset);
+    note(`Playing ${song?.id}`, 'engine');
   }
 
   pause() {
@@ -267,7 +267,7 @@ export class Transport {
 
     this.emit("pause");
     this.emit("time", this.paused);
-    console.warn("Audio: paused");
+    note(`Paused`, 'engine');
   }
 
   resume() {
@@ -288,7 +288,7 @@ export class Transport {
 
     this.startTimer();
     this.emit("play");
-    console.warn("Audio: resumed");
+    note(`Resumed`, 'engine');
   }
 
   time() {
@@ -301,7 +301,7 @@ export class Transport {
 
   seek(time: number, id?: string) {
     const current = this.queue[0]?.song?.id;
-    console.warn("Audio: seeking to", time, "with queue length", this.queue.length, current, id);
+    note(`Seeking to ${time}`, 'engine', [ this.queue ]);
     if (this.queue.length == 0 || !this.playing) return;
 
     // TODO: this current value is wrong, its not being updated fast enough
