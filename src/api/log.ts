@@ -9,6 +9,9 @@ export function note(text: string, system: string, data?: object[]) {
       colour = `#9ccfd8`;
       break;
     case 'request':
+      colour = `#f6c177`;
+      break;
+    case 'scrobble':
       colour = `#eb6f92`;
       break;
   }

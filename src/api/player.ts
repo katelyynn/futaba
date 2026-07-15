@@ -95,6 +95,7 @@ function setupEvents() {
   });
 
   Player.on("duration", (duration: number) => {
+    note(`Saved new duration as ${duration}`, 'audio');
     usePlayer.setState({ duration });
   });
 
