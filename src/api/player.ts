@@ -46,6 +46,7 @@ let trackStartTime = 0;
 let currentSession: session | null = null;
 
 function preloadNext(next?: song) {
+  note(`Received preload request, reviewing situation`, 'audio');
   if (!next) {
     const { queue, currentIndex, loop } = usePlayer.getState();
     let index = currentIndex + 1;
@@ -203,9 +204,7 @@ export const usePlayer = create<playerState>((set, get) => ({
       nowPlaying: true
     });
 
-    console.warn("Audio: playing", song.id);
-
-    console.warn("Audio: sent request to preload next song due to playback");
+    note(`Requesting playback for ${song.id}`, 'audio');
     preloadNext();
   },
 
