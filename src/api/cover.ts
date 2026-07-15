@@ -12,7 +12,7 @@ export function getCoverArt(session: session, id: string) {
     id
   });
 
-  console.log('cover', url.toString());
+  //console.log('cover', url.toString());
 
   return url.toString();
 }

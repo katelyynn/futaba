@@ -13,8 +13,6 @@ export async function getArtistsV2(session: session, start = 0, end = 20, order 
     _sort: sort
   });
 
-  console.info('artistv2', res);
-
   const artists: ArtistListV2[] = [];
   /* @ts-expect-error guhh */
   res.data.forEach(artist => {
@@ -75,10 +73,7 @@ export async function getArtistAlbumsV2(session: session, id: string, start = 0,
 }
 
 export async function getArtists(session: session): Promise<artist[]> {
-  console.log('getArtists');
   const res = await request(session, "getArtists");
-
-  console.info('res', res);
 
   /* @ts-expect-error guhh */
   return res.artists.index.flatMap(group =>
@@ -96,7 +91,6 @@ export async function getArtist(session: session, id: string): Promise<artistFul
   const res = await request(session, "getArtist", { id });
 
   const artist = res.artist;
-  console.info('artist req', artist);
 
   const albums: Record<string, album[]> = {};
 

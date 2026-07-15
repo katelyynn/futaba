@@ -1,4 +1,5 @@
 import md5 from "md5";
+import { note } from "@/api/log.ts";
 
 export interface session {
   server: string,
@@ -83,7 +84,7 @@ export async function authenticateV2(session: session): Promise<authenticateV2> 
 
 export async function requestV2(session: session, endpoint: string, params = {}) {
   if (!session.jwt) {
-    console.error('missing jwt, authenticate first');
+    note(`Missing 'jwt', authenticate first`, 'request');
     throw new Error('missing jwt, authenticate first');
   }
 
@@ -103,18 +104,18 @@ export async function requestV2(session: session, endpoint: string, params = {})
 
   if (!res.ok) {
     if (res.status == 401) {
-      console.error('session expired');
+      note(`Session expired`, 'request');
       throw new Error('session expired');
     }
 
-    console.error('unexpected apiV2 error');
+    note(`Unexpected error`, 'request');
     throw new Error('unexpected apiV2 error');
   }
 
   const newToken: string | null = res.headers.get('x-nd-authorization');
 
   const data = await res.json();
-  console.info('REQUEST TO', endpoint, 'returned:', data);
+  note(`${endpoint}`, 'request', [ data ]);
 
   return {
     data,
@@ -139,11 +140,9 @@ export async function request(session: session, endpoint: string, params = {}) {
     throw new Error('unexpected api error');
   }
 
-  console.log('res', res);
   const json = await res.json();
-  console.log('json', json);
   const data = json["subsonic-response"];
-  console.log('data', data);
+  note(`${endpoint} (v1)`, 'request', [ data ]);
 
   if (data.status == "failed") {
     throw new Error(data.error?.message || "unexpected api error (2)");

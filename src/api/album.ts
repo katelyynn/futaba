@@ -132,7 +132,6 @@ export async function getAlbum(session: session, id: string): Promise<album_full
   const res = await request(session, "getAlbum", { id });
 
   const album = res.album;
-  console.info('album req', album);
 
   const art = getCoverArt(session, album.coverArt);
   const album_artist = album.artists[0];

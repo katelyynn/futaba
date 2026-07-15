@@ -78,13 +78,13 @@ function setupEvents() {
 
     if (!currentSession) return;
 
-    const { currentSong, nowPlaying } = usePlayer.getState();
+    const { currentSong, nowPlaying, duration } = usePlayer.getState();
 
     if (currentSong) {
       //localStorage.setItem("player", JSON.stringify({ song: currentSong, time, queue, currentIndex }));
 
       if (nowPlaying && toScrobble && !scrobbled) {
-        const validScrobble = time > 240 || (currentSong.duration && time > currentSong.duration * 0.5);
+        const validScrobble = time > 240 || (duration && time > duration * 0.5);
 
         if (validScrobble) {
           scrobbled = true;
