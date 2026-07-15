@@ -210,7 +210,7 @@ export class Transport {
     }
   }
 
-  private scrap() {
+  scrap() {
     const future = this.queue.splice(1);
 
     future.forEach(item => {

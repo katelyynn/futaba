@@ -129,4 +129,8 @@ export class Engine {
     this.transport.stop();
     this.preloading = false;
   }
+
+  scrap() {
+    this.transport.scrap();
+  }
 }

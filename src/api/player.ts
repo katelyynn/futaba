@@ -268,9 +268,13 @@ export const usePlayer = create<playerState>((set, get) => ({
         newIndex = -1;
       }
 
-      if (newQueue[newIndex + 1]?.id != next && nowPlaying) {
-        note(`Sending preload as queue has updated (${next} -> ${newQueue[newIndex + 1]?.id})`, 'audio');
-        preloadNext(newQueue[newIndex + 1]);
+      if (nowPlaying && newQueue[newIndex + 1]?.id != next) {
+        if (newQueue[newIndex + 1]?.id) {
+          note(`Sending preload as queue has updated (${next} -> ${newQueue[newIndex + 1]?.id})`, 'audio');
+          preloadNext(newQueue[newIndex + 1]);
+        } else {
+          Player.scrap();
+        }
       }
 
       return {
