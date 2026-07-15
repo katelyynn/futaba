@@ -121,18 +121,21 @@ function setupEvents() {
     const { currentIndex, queue, loop } = usePlayer.getState();
 
     let index = currentIndex + 1;
-    if (index >= queue.length) {
-      if (loop == true) {
-        index = 0;
-      } else {
-        // the engine schedules the same song again even if loop is off
-        // this is a safety measure for now to ensure no weirdness
-        console.error("Audio: cancelled playback as queue is over", currentIndex, index, queue.length);
-        Player.stop();
-        return;
-      }
+
+    if (loop == "once") {
+      index = currentIndex;
+      note(`Changed index to ${index}`, 'audio');
+    } else if (loop == true && index >= queue.length) {
+      index = 0;
+      note(`Changed index to ${index}`, 'audio');
+    } else if (index >= queue.length) {
+      note(`Returning as queue is finished`, 'audio');
+      return;
     }
-    if (loop == "once") index = currentIndex;
+
+    note(`Continuing, queue is not finished`, 'audio');
+
+    // loop full is enabled, but album is still going
 
     if (toScrobble) sendNowPlaying(currentSession, song.id);
 
