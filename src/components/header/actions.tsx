@@ -32,8 +32,8 @@ export function SakuraActions({
           <>
             <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
               clearQueue();
-              addToQueue(songs);
-              play(songs[0], session!, toScrobble);
+              addToQueue(songs, null, false);
+              play(songs[0], session!);
             }}>
               <IconPlayerPlayFilled size={16} />
               Play
@@ -49,8 +49,8 @@ export function SakuraActions({
           <>
             <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
               clearQueue();
-              addToQueue(songs);
-              play(songs[0], session!, toScrobble);
+              addToQueue(songs, null, false);
+              play(songs[0], session!);
             }}>
               <IconPlayerPlayFilled size={16} />
               Play
