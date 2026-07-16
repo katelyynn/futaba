@@ -57,6 +57,21 @@
   padding: 4px !important;
   border-radius: calc(var(--button-radius) + 4px) !important;
   box-shadow: var(--menu-shadow);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+
+  animation: menu var(--trans) var(--trans-function);
+}
+
+@keyframes menu {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .item {

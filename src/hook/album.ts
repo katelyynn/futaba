@@ -9,12 +9,12 @@ export function useAlbumsV2(session: session | null, start = 0, end = 20, order 
   });
 }
 
-export function useAlbums(session: session | null, size?: number, nowPlayingId?: string) {
+export function useAlbums(session: session | null, size?: number, type?: string, nowPlayingId?: string) {
   console.log('useALBUMS', session);
 
   return useQuery({
-    queryKey: ["albums", session, size, nowPlayingId],
-    queryFn: () => getAlbums(session!, size),
+    queryKey: ["albums", session, size, type, nowPlayingId],
+    queryFn: () => getAlbums(session!, size, type),
     staleTime: 10000
   });
 }

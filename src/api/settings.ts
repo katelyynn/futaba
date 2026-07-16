@@ -16,6 +16,7 @@ interface settingsState {
   hue: number,
   sat: number,
   lit: number,
+  browseSort: string,
 
   setVolume: (volume: number) => void,
   setTheme: (theme: "light" | "dark" | "darker" | "oled") => void,
@@ -29,7 +30,8 @@ interface settingsState {
   setColourFromNowPlaying: (colourFromNowPlaying: boolean) => void,
   setHue: (hue: number) => void,
   setSat: (sat: number) => void,
-  setLit: (lit: number) => void
+  setLit: (lit: number) => void,
+  setBrowseSort: (sort: string) => void
 }
 
 export const useSettings = create<settingsState>()(persist(
@@ -47,6 +49,7 @@ export const useSettings = create<settingsState>()(persist(
     hue: 38,
     sat: 1.87,
     lit: 0.9,
+    browseSort: "recent",
 
     setVolume: (volume: number) => set({ volume }),
     setTheme: (theme: "light" | "dark" | "darker" | "oled") => set({ theme }),
@@ -60,7 +63,8 @@ export const useSettings = create<settingsState>()(persist(
     setColourFromNowPlaying: (colourFromNowPlaying: boolean) => set({ colourFromNowPlaying }),
     setHue: (hue: number) => set({ hue }),
     setSat: (sat: number) => set({ sat }),
-    setLit: (lit: number) => set({ lit })
+    setLit: (lit: number) => set({ lit }),
+    setBrowseSort: (browseSort: string) => set({ browseSort })
   }),
   {
     name: "settings"

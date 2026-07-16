@@ -18,7 +18,7 @@ export function SakuraSelect({
       <Select.Trigger className={styles.button}>
         <Select.Value className={styles.value} />
         <Select.Icon className={styles.icon}>
-          <IconChevronDown size={14} />
+          <IconChevronDown size={12} />
         </Select.Icon>
       </Select.Trigger>
       <Select.Portal>
@@ -26,10 +26,10 @@ export function SakuraSelect({
           <Select.Viewport>
             {Object.entries(values).map(([val, label]) => (
               <Select.Item key={val} value={val} className={styles.item}>
-                <Select.ItemText className={styles.itemValue}>{label}</Select.ItemText>
                 <Select.ItemIndicator className={styles.itemIcon}>
                   <IconCheck size={14} />
                 </Select.ItemIndicator>
+                <Select.ItemText className={styles.itemValue}>{label}</Select.ItemText>
               </Select.Item>
             ))}
           </Select.Viewport>

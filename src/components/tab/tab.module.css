@@ -1,11 +1,29 @@
 .nav {
   display: flex;
-  justify-content: center;
-  margin-bottom: calc(2 * var(--pad));
+  margin-bottom: var(--pad);
+
+  &.center {
+    justify-content: center;
+  }
 }
 
 .list {
   display: flex;
   justify-content: center;
   gap: 6px;
+}
+
+.top {
+  display: flex;
+  margin-bottom: var(--pad);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.label {
+  font-size: 13px;
+  color: oklch(var(--c3));
 }

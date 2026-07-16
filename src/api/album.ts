@@ -44,8 +44,8 @@ export async function getAlbumsV2(session: session, start = 0, end = 20, order =
   return albums;
 }
 
-export async function getAlbums(session: session, size = 100): Promise<album[]> {
-  const res = await request(session, "getAlbumList", { type: "recent", size });
+export async function getAlbums(session: session, size = 100, type = "recent"): Promise<album[]> {
+  const res = await request(session, "getAlbumList", { type, size });
 
   const albums: album[] = [];
   /* @ts-expect-error guhh */

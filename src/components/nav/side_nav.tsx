@@ -47,7 +47,7 @@ export function SideAlbumList({
 }: { session: session }) {
   const currentSong = usePlayer(s => s.currentSong);
 
-  const { data, isLoading, error } = useAlbums(session, 10, currentSong?.id || '');
+  const { data, isLoading, error } = useAlbums(session, 10, "recent", currentSong?.id || '');
 
   if (isLoading) return <div>loading</div>;
   if (error || !data) return <ErrorHandler error={error || 'unknown'} />;
