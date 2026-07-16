@@ -13,6 +13,7 @@ interface playerState {
   queue: song[],
   currentIndex: number,
   currentSong: song | null,
+  lastSong: song | null,
   nowPlaying: boolean,
   currentTime: number,
   duration: number,
@@ -73,26 +74,35 @@ function preloadNext(next?: song) {
   }
 }
 
+function scrobbleSong(song: song, time: number) {
+  // TODO: right now this fires if you go to another song in any way
+  // no matter how long you actually listened to the song
+  //
+  // i would like to track a 'time listened' number that accounts for pauses
+  // and the trackStartTime and would accurately record how long you had listened
+  // from there, just check if it was over like 60 seconds or something
+  //
+  // im a bit wary to do other checks but since we arent relying on dumb timers now
+  // it should be fine? like over 60 seconds or over half of the song bla bla bla
+  if (!currentSession) {
+    note(`Backing off scrobbling as session is null`, 'audio');
+    return;
+  }
+
+  if (scrobbled) {
+    note(`Backing off scrobbling as it has already occured`, 'audio');
+    return;
+  }
+
+  scrobbled = true;
+
+  note(`Attempting scrobble for ${song.name} (${song.id})`, 'audio');
+  scrobble(currentSession, song.id, time);
+}
+
 function setupEvents() {
   Player.on("time", (time: number) => {
     usePlayer.setState({ currentTime: time });
-
-    if (!currentSession) return;
-
-    const { currentSong, nowPlaying, duration } = usePlayer.getState();
-
-    if (currentSong) {
-      //localStorage.setItem("player", JSON.stringify({ song: currentSong, time, queue, currentIndex }));
-
-      if (nowPlaying && toScrobble && !scrobbled) {
-        const validScrobble = time > 240 || (time > duration * 0.5);
-
-        if (validScrobble) {
-          scrobbled = true;
-          scrobble(currentSession, currentSong.id, trackStartTime);
-        }
-      }
-    }
   });
 
   Player.on("duration", (duration: number) => {
@@ -113,12 +123,29 @@ function setupEvents() {
   });
 
   Player.on("ended", () => {
+    note(`Received 'ended' song event`, 'audio');
+
+    const { currentSong } = usePlayer.getState();
+    if (currentSong) {
+      scrobbleSong(currentSong, trackStartTime);
+    } else {
+      note(`Could not attempt scrobble, current song is null?`, 'audio', [ { currentSong, trackStartTime } ]);
+    }
+
     usePlayer.setState({ nowPlaying: false });
   });
 
   Player.on("next", (song: song) => {
     if (!currentSession) return;
-    console.warn("Audio: fired 'next' event");
+
+    const { currentSong: previous } = usePlayer.getState();
+    if (previous) {
+      scrobbleSong(previous, trackStartTime);
+    } else {
+      note(`Could not attempt scrobble, previous song is null?`, 'audio', [ { previous, trackStartTime, next: song } ]);
+    }
+
+    note(`Received 'next' song event`, 'audio');
 
     const { currentIndex, queue, loop } = usePlayer.getState();
 
@@ -143,6 +170,7 @@ function setupEvents() {
 
     usePlayer.setState({
       currentSong: song,
+      lastSong: song,
       currentIndex: index,
       nowPlaying: true
     });
@@ -160,6 +188,7 @@ export const usePlayer = create<playerState>((set, get) => ({
   queue: [],
   currentIndex: -1,
   currentSong: null,
+  lastSong: null,
   nowPlaying: false,
   currentTime: 0,
   duration: 0,
@@ -169,6 +198,15 @@ export const usePlayer = create<playerState>((set, get) => ({
   loved: {},
 
   play: (song, session, index) => {
+    note(`Instructed to play song ${song.id}`, 'audio');
+
+    const { lastSong: previous } = get();
+    if (previous) {
+      scrobbleSong(previous, trackStartTime);
+    } else {
+      note(`Could not attempt scrobble, there was nothing previous`, 'audio', [ { previous, trackStartTime, next: song } ]);
+    }
+
     currentSession = session;
 
     const { queue, volume } = get();
@@ -198,6 +236,7 @@ export const usePlayer = create<playerState>((set, get) => ({
 
     set({
       currentSong: song,
+      lastSong: song,
       currentIndex: songIndex,
       queue: newQueue,
       currentTime: 0,
@@ -309,12 +348,16 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   clearQueue: () => {
+    const { currentSong } = get();
+
+    note(`Clearing queue`, 'audio');
     Player.stop();
 
     set({
       queue: [],
       currentIndex: -1,
       currentSong: null,
+      lastSong: currentSong,
       nowPlaying: false
     });
   },
