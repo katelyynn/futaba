@@ -113,7 +113,7 @@ function LoveButton({
 }: LoveButtonProps) {
   return (
     <SakuraTooltip content={loved ? `You love this ${type}` : `Love this ${type}`}>
-      <SakuraButton elem="button" identify={styles.button} primary={loved} onClick={async () => {
+      <SakuraButton elem="button" identify={`${styles.button} ${loved ? styles.primary : ''}`} onClick={async () => {
         const currentState = loved;
         const newState = !currentState;
 

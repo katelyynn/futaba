@@ -108,5 +108,11 @@
 
     --button-height: 36px;
     margin-right: unset;
+
+    &.primary {
+      --bg-hov: oklch(var(--h4) / 20%) !important;
+      --bg-atv: oklch(var(--h4) / 40%) !important;
+      --col: oklch(var(--l3-c));
+    }
   }
 }
