@@ -22,7 +22,9 @@
       "lib": [
           "dom",
           "dom.iterable",
-          "deno.ns"
+          "deno.ns",
+          "deno.desktop",
+          "deno.unstable"
       ],
       "jsx": "react-jsx",
       "jsxImportSource": "react"
