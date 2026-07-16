@@ -203,9 +203,9 @@ export class Transport {
       } else {
         note(`Ended queue, nothing to go next`, 'engine');
         this.playing = false;
-        this.paused = 0;
         this.stopTimer();
         this.emit("ended");
+        this.userStopped = true;
       }
     }
   }

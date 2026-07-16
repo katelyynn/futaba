@@ -497,8 +497,8 @@ body,
   }
   &[data-futaba--theme="light"] {
     /* any additional highlights */
-    --b2: 0.82 calc(var(--sat) * 0.05 * var(--sat-bg, 1)) var(--hue);
-    --b3: 0.94 calc(var(--sat) * 0.05 * var(--sat-bg, 1)) var(--hue);
+    --b2: 0.82 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
+    --b3: 0.94 calc(var(--sat) * 0.04 * var(--sat-bg, 1)) var(--hue);
 
     /* card border */
     --b4: 0.91 0 0;
@@ -507,14 +507,14 @@ body,
     --b5: 1 0 0;
 
     /* root */
-    --b6: 0.97 calc(var(--sat) * 0.05 * var(--sat-bg, 1)) var(--hue);
+    --b6: 0.97 calc(var(--sat) * 0.01 * var(--sat-bg, 1)) var(--hue);
     --b8: 1 0 0;
     --b7: 0 0 0;
     --b9: 1 0 0;
 
     --separator-base: oklch(var(--b2) / 0.3);
 
-    --card-border-base: oklch(0.87 0 0) !important;
+    --card-border-base: oklch(0.9 calc(var(--sat) * 0.03 * var(--sat-bg, 1)) var(--hue)) !important;
     --card-border-base-highlight: oklch(0.89 0 0);
 
     --normal-shadow: none;
@@ -797,7 +797,7 @@ body {
       --max-tooltip-width: 100vw;
   }
 
-  --item-small-radius: 7px;
+  --item-small-radius: 5px;
   --item-med-radius: 10px;
   --item-big-radius: 12px;
 

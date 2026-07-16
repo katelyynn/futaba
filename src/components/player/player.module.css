@@ -5,7 +5,7 @@
   padding: var(--pad);
   margin: calc(-1 * var(--pad));
 
-  background: radial-gradient(circle at center, oklch(var(--f4) / 15%), transparent 60%);
+  background: radial-gradient(circle at center, oklch(var(--k4) / 15%), transparent 60%);
 }
 
 .song {
