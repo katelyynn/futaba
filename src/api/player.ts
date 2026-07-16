@@ -13,7 +13,6 @@ interface playerState {
   queue: song[],
   currentIndex: number,
   currentSong: song | null,
-  lastSong: song | null,
   nowPlaying: boolean,
   currentTime: number,
   duration: number,
@@ -21,6 +20,10 @@ interface playerState {
   loop: true | "once" | false,
   shuffle: boolean,
   loved: Record<string, boolean>,
+
+  lastSong: song | null,
+  lastTime: number,
+  lastDuration: number,
 
   play: (song: song, session: session, index?: number) => void,
   playNext: (session: session) => void,
@@ -74,7 +77,8 @@ function preloadNext(next?: song) {
   }
 }
 
-function scrobbleSong(song: song, time: number) {
+function scrobbleSong(song: song, time: number, elapsed: number, duration: number) {
+  note(`Reviewing potential scrobble for ${song.name} (${song.id}) with elapsed ${elapsed} and duration ${duration}`, 'audio');
   // TODO: right now this fires if you go to another song in any way
   // no matter how long you actually listened to the song
   //
@@ -102,12 +106,12 @@ function scrobbleSong(song: song, time: number) {
 
 function setupEvents() {
   Player.on("time", (time: number) => {
-    usePlayer.setState({ currentTime: time });
+    usePlayer.setState({ currentTime: time, lastTime: time });
   });
 
   Player.on("duration", (duration: number) => {
     note(`Saved new duration as ${duration}`, 'audio');
-    usePlayer.setState({ duration });
+    usePlayer.setState({ duration, lastDuration: duration });
   });
 
   Player.on("play", () => {
@@ -125,11 +129,11 @@ function setupEvents() {
   Player.on("ended", () => {
     note(`Received 'ended' song event`, 'audio');
 
-    const { currentSong } = usePlayer.getState();
+    const { currentSong, currentTime, duration } = usePlayer.getState();
     if (currentSong) {
-      scrobbleSong(currentSong, trackStartTime);
+      scrobbleSong(currentSong, trackStartTime, currentTime, duration);
     } else {
-      note(`Could not attempt scrobble, current song is null?`, 'audio', [ { currentSong, trackStartTime } ]);
+      note(`Could not attempt scrobble, current song is null?`, 'audio', [ { currentSong, currentTime, duration, trackStartTime } ]);
     }
 
     usePlayer.setState({ nowPlaying: false });
@@ -138,11 +142,11 @@ function setupEvents() {
   Player.on("next", (song: song) => {
     if (!currentSession) return;
 
-    const { currentSong: previous } = usePlayer.getState();
+    const { currentSong: previous, currentTime: previousTime, duration: previousDuration } = usePlayer.getState();
     if (previous) {
-      scrobbleSong(previous, trackStartTime);
+      scrobbleSong(previous, trackStartTime, previousTime, previousDuration);
     } else {
-      note(`Could not attempt scrobble, previous song is null?`, 'audio', [ { previous, trackStartTime, next: song } ]);
+      note(`Could not attempt scrobble, previous song is null?`, 'audio', [ { previous, previousTime, previousDuration, trackStartTime, next: song } ]);
     }
 
     note(`Received 'next' song event`, 'audio');
@@ -172,7 +176,9 @@ function setupEvents() {
       currentSong: song,
       lastSong: song,
       currentIndex: index,
-      nowPlaying: true
+      nowPlaying: true,
+      currentTime: 0,
+      lastTime: 0
     });
 
     scrobbled = false;
@@ -188,7 +194,6 @@ export const usePlayer = create<playerState>((set, get) => ({
   queue: [],
   currentIndex: -1,
   currentSong: null,
-  lastSong: null,
   nowPlaying: false,
   currentTime: 0,
   duration: 0,
@@ -197,14 +202,18 @@ export const usePlayer = create<playerState>((set, get) => ({
   shuffle: false,
   loved: {},
 
+  lastSong: null,
+  lastTime: 0,
+  lastDuration: 0,
+
   play: (song, session, index) => {
     note(`Instructed to play song ${song.id}`, 'audio');
 
-    const { lastSong: previous } = get();
-    if (previous) {
-      scrobbleSong(previous, trackStartTime);
+    const { lastSong, lastTime, lastDuration } = get();
+    if (lastSong) {
+      scrobbleSong(lastSong, trackStartTime, lastTime, lastDuration);
     } else {
-      note(`Could not attempt scrobble, there was nothing previous`, 'audio', [ { previous, trackStartTime, next: song } ]);
+      note(`Could not attempt scrobble, there was nothing previous`, 'audio', [ { lastSong, lastTime, lastDuration, trackStartTime, next: song } ]);
     }
 
     currentSession = session;
@@ -237,6 +246,7 @@ export const usePlayer = create<playerState>((set, get) => ({
     set({
       currentSong: song,
       lastSong: song,
+      lastTime: 0,
       currentIndex: songIndex,
       queue: newQueue,
       currentTime: 0,
@@ -348,7 +358,7 @@ export const usePlayer = create<playerState>((set, get) => ({
   },
 
   clearQueue: () => {
-    const { currentSong } = get();
+    const { currentSong, currentTime, duration } = get();
 
     note(`Clearing queue`, 'audio');
     Player.stop();
@@ -358,6 +368,8 @@ export const usePlayer = create<playerState>((set, get) => ({
       currentIndex: -1,
       currentSong: null,
       lastSong: currentSong,
+      lastTime: currentTime,
+      lastDuration: duration,
       nowPlaying: false
     });
   },
