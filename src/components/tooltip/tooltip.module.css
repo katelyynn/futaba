@@ -1,8 +1,8 @@
 .tooltip {
-  padding: 4px 8px;
+  padding: 3px 8px;
   background-color: oklch(var(--b8) / 90%);
   border-radius: var(--item-small-radius);
-  box-shadow: var(--card-shadow);
+  box-shadow: inset 0 0 0 1px var(--card-border-base), var(--avatar-shadow);
   color: oklch(var(--c2));
 
   backdrop-filter: var(--solarium);
@@ -18,6 +18,8 @@
   &[data-state="delayed-open"][data-side="top"] {
     animation-name: fromBottom;
   }
+
+  z-index: 1000000;
 }
 
 @keyframes fromTop {

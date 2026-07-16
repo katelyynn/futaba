@@ -8,6 +8,7 @@ import { copy } from '@/tools/clipboard.ts';
 import type { song } from '@/types/song.ts';
 import { setLove } from "@/api/love.ts";
 import type { session } from "@/api/client.ts";
+import { SakuraTooltip } from "@/components/tooltip/tooltip.tsx";
 
 interface SakuraActionsProps {
   id: string,
@@ -40,44 +41,54 @@ export function SakuraActions({
       <div className={styles.buttons}>
         {(type == 'album' && count > 0) ? (
           <>
-            <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
-              clearQueue();
-              addToQueue(songs, null, false);
-              play(songs[0], session!);
-            }}>
-              <IconPlayerPlayFilled size={16} />
-              Play
-            </SakuraButton>
-            <SakuraButton elem="button" identify={styles.button} onClick={() => {
-              addToQueue(songs);
-            }}>
-              <IconPlaylistAdd size={16} />
-              Queue
-            </SakuraButton>
+            <SakuraTooltip content="Play album">
+              <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
+                clearQueue();
+                addToQueue(songs, null, false);
+                play(songs[0], session!);
+              }}>
+                <IconPlayerPlayFilled size={16} />
+                Play
+              </SakuraButton>
+            </SakuraTooltip>
+            <SakuraTooltip content="Add album to queue">
+              <SakuraButton elem="button" identify={styles.button} onClick={() => {
+                addToQueue(songs);
+              }}>
+                <IconPlaylistAdd size={16} />
+                Queue
+              </SakuraButton>
+            </SakuraTooltip>
           </>
         ) : (type == 'playlist' && count > 0) ? (
           <>
-            <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
-              clearQueue();
-              addToQueue(songs, null, false);
-              play(songs[0], session!);
-            }}>
-              <IconPlayerPlayFilled size={16} />
-              Play
-            </SakuraButton>
-            <SakuraButton elem="button" identify={styles.button} onClick={() => {
-              addToQueue(songs);
-            }}>
-              <IconPlaylistAdd size={16} />
-              Queue
-            </SakuraButton>
+            <SakuraTooltip content="Play playlist">
+              <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
+                clearQueue();
+                addToQueue(songs, null, false);
+                play(songs[0], session!);
+              }}>
+                <IconPlayerPlayFilled size={16} />
+                Play
+              </SakuraButton>
+            </SakuraTooltip>
+            <SakuraTooltip content="Add playlist to queue">
+              <SakuraButton elem="button" identify={styles.button} onClick={() => {
+                addToQueue(songs);
+              }}>
+                <IconPlaylistAdd size={16} />
+                Queue
+              </SakuraButton>
+            </SakuraTooltip>
           </>
         ) : <></>}
         {(loved != null && setLoved) && <LoveButton loved={loved} setLoved={setLoved} id={id} session={session} type={type} />}
-        <SakuraButton elem="button" identify={styles.button} onClick={() => copy(globalThis.location.href)}>
-          <IconShare size={16} />
-          Share
-        </SakuraButton>
+        <SakuraTooltip content="Copy link">
+          <SakuraButton elem="button" identify={styles.button} onClick={() => copy(globalThis.location.href)}>
+            <IconShare size={16} />
+            Share
+          </SakuraButton>
+        </SakuraTooltip>
       </div>
     </>
   )
@@ -99,20 +110,22 @@ function LoveButton({
   setLoved
 }: LoveButtonProps) {
   return (
-    <SakuraButton elem="button" identify={styles.button} primary={loved} onClick={async () => {
-      const currentState = loved;
-      const newState = !currentState;
+    <SakuraTooltip content={loved ? `You love this ${type}` : `Love this ${type}`}>
+      <SakuraButton elem="button" identify={styles.button} primary={loved} onClick={async () => {
+        const currentState = loved;
+        const newState = !currentState;
 
-      try {
-        await setLove(session!, id, currentState, type);
+        try {
+          await setLove(session!, id, currentState, type);
 
-        setLoved(newState);
-      } catch {
-        setLoved(currentState);
-      }
-    }}>
-      {loved ? <IconHeartFilled size={16} /> : <IconHeart size={16} />}
-      Love
-    </SakuraButton>
+          setLoved(newState);
+        } catch {
+          setLoved(currentState);
+        }
+      }}>
+        {loved ? <IconHeartFilled size={16} /> : <IconHeart size={16} />}
+        Love
+      </SakuraButton>
+    </SakuraTooltip>
   )
 }
