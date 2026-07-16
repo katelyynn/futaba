@@ -48,6 +48,7 @@
 
 .buttons {
   display: flex;
+  align-items: center;
   gap: 6px;
   margin-bottom: 20px;
 
@@ -94,6 +95,18 @@
   aspect-ratio: 1 / 1;
   width: var(--button-height);
 
-  --button-height: 36px;
+  --button-height: 44px;
   --button-radius: 50px;
+
+  margin-right: 4px;
+
+  &:not(.buttonBig) {
+    --bg: transparent !important;
+    --bg-hov: oklch(var(--b2) / 20%) !important;
+    --bg-atv: oklch(var(--b2) / 40%) !important;
+    --shadow: none !important;
+
+    --button-height: 36px;
+    margin-right: unset;
+  }
 }

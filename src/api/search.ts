@@ -83,6 +83,7 @@ export async function search(session: session, query: string) {
         name: song.title,
         /* @ts-expect-error guhhh */
         artists: artists,
+        artistId: song.artistId,
         duration: song.duration,
         played: song.played,
         plays: song.plays,

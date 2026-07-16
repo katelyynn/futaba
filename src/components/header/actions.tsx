@@ -19,6 +19,8 @@ interface SakuraActionsProps {
   setLoved?: (loved: boolean) => void
 }
 
+const ICON_SIZE = 18;
+
 export function SakuraActions({
   id,
   songs,
@@ -42,12 +44,12 @@ export function SakuraActions({
         {(type == 'album' && count > 0) ? (
           <>
             <SakuraTooltip content="Play album">
-              <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
+              <SakuraButton elem="button" identify={`${styles.button} ${styles.buttonBig}`} primary onClick={() => {
                 clearQueue();
                 addToQueue(songs, null, false);
                 play(songs[0], session!);
               }}>
-                <IconPlayerPlayFilled size={16} />
+                <IconPlayerPlayFilled size={ICON_SIZE} />
                 Play
               </SakuraButton>
             </SakuraTooltip>
@@ -55,7 +57,7 @@ export function SakuraActions({
               <SakuraButton elem="button" identify={styles.button} onClick={() => {
                 addToQueue(songs);
               }}>
-                <IconPlaylistAdd size={16} />
+                <IconPlaylistAdd size={ICON_SIZE} />
                 Queue
               </SakuraButton>
             </SakuraTooltip>
@@ -63,12 +65,12 @@ export function SakuraActions({
         ) : (type == 'playlist' && count > 0) ? (
           <>
             <SakuraTooltip content="Play playlist">
-              <SakuraButton elem="button" identify={styles.button} primary onClick={() => {
+              <SakuraButton elem="button" identify={`${styles.button} ${styles.buttonBig}`} primary onClick={() => {
                 clearQueue();
                 addToQueue(songs, null, false);
                 play(songs[0], session!);
               }}>
-                <IconPlayerPlayFilled size={16} />
+                <IconPlayerPlayFilled size={ICON_SIZE} />
                 Play
               </SakuraButton>
             </SakuraTooltip>
@@ -76,7 +78,7 @@ export function SakuraActions({
               <SakuraButton elem="button" identify={styles.button} onClick={() => {
                 addToQueue(songs);
               }}>
-                <IconPlaylistAdd size={16} />
+                <IconPlaylistAdd size={ICON_SIZE} />
                 Queue
               </SakuraButton>
             </SakuraTooltip>
@@ -85,7 +87,7 @@ export function SakuraActions({
         {(loved != null && setLoved) && <LoveButton loved={loved} setLoved={setLoved} id={id} session={session} type={type} />}
         <SakuraTooltip content="Copy link">
           <SakuraButton elem="button" identify={styles.button} onClick={() => copy(globalThis.location.href)}>
-            <IconShare size={16} />
+            <IconShare size={ICON_SIZE} />
             Share
           </SakuraButton>
         </SakuraTooltip>
@@ -123,7 +125,7 @@ function LoveButton({
           setLoved(currentState);
         }
       }}>
-        {loved ? <IconHeartFilled size={16} /> : <IconHeart size={16} />}
+        {loved ? <IconHeartFilled size={ICON_SIZE} /> : <IconHeart size={ICON_SIZE} />}
         Love
       </SakuraButton>
     </SakuraTooltip>

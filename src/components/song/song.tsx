@@ -5,7 +5,7 @@ import React from 'react';
 import { parseDuration } from '@/tools/duration.ts';
 import { usePlayer } from '@/api/player.ts';
 import { SakuraButton } from '@/components/button/button.tsx';
-import { IconDots, IconHeart, IconHeartFilled, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlaylistAdd } from '@tabler/icons-react';
+import { IconCarambola, IconDisc, IconDots, IconHeart, IconHeartFilled, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlaylistAdd } from '@tabler/icons-react';
 import { useSession } from '@/session.tsx';
 import { useSettings } from '@/api/settings.ts';
 import { SakuraImage } from '@/components/image/image.tsx';
@@ -104,24 +104,32 @@ export function SakuraSong({
   const menu = (
     <>
       <SakuraButton primary={loved} elem="button" identifyOwn="menu" onClick={() => loveSong()}>
-        {loved ? <IconHeartFilled size={16} /> : <IconHeart size={16} />}
+        {loved ? <IconHeartFilled size={14} /> : <IconHeart size={14} />}
         {loved ? "Unlove song" : "Love song"}
       </SakuraButton>
       <SakuraButton elem="button" identifyOwn="menu" onClick={() => playSong()}>
-        <IconPlayerPlayFilled size={16} />
+        <IconPlayerPlayFilled size={14} />
         Play
       </SakuraButton>
       {!inQueue ? (
         <SakuraButton elem="button" identifyOwn="menu" onClick={() => addToQueue([song])}>
-          <IconPlaylistAdd size={16} />
+          <IconPlaylistAdd size={14} />
           Add to queue
         </SakuraButton>
       ) : (
         <SakuraButton elem="button" identifyOwn="menu" onClick={() => removeFromQueue(queueIndex!)}>
-          <IconMinus size={16} />
+          <IconMinus size={14} />
           Remove from queue
         </SakuraButton>
       )}
+      <SakuraButton elem="link" href={`/album/${song.albumId}`} identifyOwn="menu">
+        <IconDisc size={14} />
+        Go to album
+      </SakuraButton>
+      <SakuraButton elem="link" href={`/artist/${song.artistId}`} identifyOwn="menu">
+        <IconCarambola size={14} />
+        Go to artist
+      </SakuraButton>
     </>
   );
 

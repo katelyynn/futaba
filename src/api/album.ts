@@ -169,6 +169,7 @@ export async function getAlbum(session: session, id: string): Promise<album_full
       id: song.id,
       name: song.title,
       artists,
+      artistId: song.artistId,
       duration: song.duration,
       played: song.played,
       plays: song.playCount,

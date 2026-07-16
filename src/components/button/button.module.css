@@ -95,9 +95,10 @@
 
 .menu {
   --bg: transparent;
-  --bg-hov: oklch(var(--b2) / 20%);
-  --bg-atv: oklch(var(--b2) / 30%);
+  --bg-hov: var(--menu-item-hov);
+  --bg-atv: var(--menu-item-atv);
   --shadow: none !important;
+  gap: 6px;
 
   width: 100%;
   min-width: 150px;

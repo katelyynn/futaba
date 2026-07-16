@@ -3,6 +3,7 @@ export interface song {
   id: string,
   name: string,
   artists: song_artist[],
+  artistId: string,
   duration: number,
   played?: string,
   plays?: number,
