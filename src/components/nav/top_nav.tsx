@@ -1,6 +1,6 @@
 import styles from "./top_nav.module.css";
 import { SakuraButton } from '@/components/button/button.tsx';
-import { IconChevronLeft, IconChevronRight, IconFolderSearch, IconLogout, IconMinus, IconSettingsFilled, IconSquare, IconUser, IconUserQuestion, IconX } from '@tabler/icons-react';
+import { IconChevronLeft, IconChevronRight, IconFolderSearch, IconLogout, IconMinus, IconSearch, IconSettingsFilled, IconSquare, IconUser, IconUserQuestion, IconX } from '@tabler/icons-react';
 import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
 import { useSession } from '@/session.tsx';
 import { startScan } from '@/api/scan.ts';
@@ -8,11 +8,14 @@ import { SakuraInput } from '@/components/input/input.tsx';
 import { SakuraMenu } from '@/components/menu/menu.tsx';
 import { Futaba } from '@/components/logo/logo.tsx';
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 
 export function TopNav() {
   const { session } = useSession();
   const navigate = useNavigate();
   const iconSize = 16;
+
+  const search = useRef<HTMLInputElement>(null);
 
   return (
     <nav className={styles.nav}>
@@ -32,9 +35,16 @@ export function TopNav() {
         <Futaba />
       </div>
       <div className={styles.searchHolder}>
-        <SakuraInput className={styles.search} placeholder="Search" onEnter={(val: string) => {
+        <SakuraInput ref={search} className={styles.search} placeholder="Search" onEnter={(val: string) => {
           navigate(`/search?query=${encodeURIComponent(val)}`);
         }} />
+        <SakuraButton elem="button" identify={styles.searchBtn} onClick={() => {
+          if (!search.current) return;
+          navigate(`/search?query=${encodeURIComponent(search.current.value)}`);
+          search.current.focus();
+        }}>
+          <IconSearch size={14} className={styles.searchIcon} />
+        </SakuraButton>
       </div>
       <div className={`${styles.controls} ${styles.windowControls}`}>
         <AuthStatus />

@@ -45,6 +45,21 @@
   flex: 1;
 }
 
+.searchBtn {
+  --button-sides: var(--button-verts);
+  width: var(--button-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-left: calc(-1 * var(--button-height));
+
+  --bg: transparent !important;
+  --bg-hov: transparent !important;
+  --bg-atv: transparent !important;
+  --shadow: none !important;
+}
+
 .search {
   width: 400px;
 }
