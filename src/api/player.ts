@@ -98,10 +98,19 @@ function scrobbleSong(song: song, time: number, elapsed: number, duration: numbe
     return;
   }
 
+  if (!toScrobble) {
+    note(`Backing off scrobbling as toScrobble is false`, 'audio', [ { toScrobble } ]);
+    return;
+  }
+
   scrobbled = true;
 
-  note(`Attempting scrobble for ${song.name} (${song.id})`, 'audio');
-  scrobble(currentSession, song.id, time);
+  if (elapsed > 120 || elapsed > duration / 2) {
+    note(`Attempting scrobble for ${song.name} (${song.id})`, 'audio');
+    scrobble(currentSession, song.id, time);
+  } else {
+    note(`Denied attempted scrobble for ${song.name} (${song.id})`, 'audio', [ { requirements: { over_120: elapsed > 120, half_song: elapsed > duration / 2 } } ]);
+  }
 }
 
 function setupEvents() {
