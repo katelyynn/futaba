@@ -100,6 +100,7 @@ export async function search(session: session, query: string) {
         path: song.path,
         url: createStreamURL(song.id, session),
         albumId: song.albumId,
+        album: song.album,
         art: songArt
       });
     });

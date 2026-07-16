@@ -140,6 +140,13 @@ export function SakuraSong({
             <SakuraArtists artists={song.artists} />
           </div>
         </div>
+        {song.album ? (
+          <div className={styles.info2}>
+            <Link to={`/album/${song.albumId}`} className={styles.album}>
+              {song.album}
+            </Link>
+          </div>
+        ) : ''}
         {(!inQueue && song.plays) && (
           <SakuraTooltip content="Play count">
             <div className={styles.plays}>

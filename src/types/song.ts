@@ -19,6 +19,7 @@ export interface song {
   suffix: string,
   path: string,
   url: URL,
+  album?: string,
   albumId: string,
   starred?: string
 }

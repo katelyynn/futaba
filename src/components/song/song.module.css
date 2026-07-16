@@ -101,8 +101,17 @@
   }
 }
 
+.info2,
 .info {
   flex: 1;
+}
+
+.album {
+  text-decoration: none !important;
+
+  &:not(:hover) {
+    color: oklch(var(--col) / 80%);
+  }
 }
 
 .list {
