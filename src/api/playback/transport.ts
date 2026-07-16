@@ -7,6 +7,7 @@ export type TransportEventMap = {
   stop: [],
   ended: [],
   time: [time: number],
+  lastTime: [time: number],
   duration: [duration: number],
   next: [song: song]
 }
@@ -190,23 +191,25 @@ export class Transport {
       if (this.userStopped) return;
       note(`Song ended, viewing situation`, 'engine');
 
-      this.anchor = this.ctx.currentTime;
-      this.virtual = 0;
-      this.paused = 0;
-
       if (this.queue.length > 1) {
         this.queue.splice(0, 1);
 
         note(`Advancing to ${this.queue[0].song?.id} for next song`, 'engine');
         this.emit("next", this.queue[0].song);
+        this.emit("lastTime", this.time());
         this.emit("duration", this.queue[0].buffer?.duration);
       } else {
         note(`Ended queue, nothing to go next`, 'engine');
+        this.emit("lastTime", this.time());
         this.playing = false;
         this.stopTimer();
         this.emit("ended");
         this.userStopped = true;
       }
+
+      this.anchor = this.ctx.currentTime;
+      this.virtual = 0;
+      this.paused = 0;
     }
   }
 

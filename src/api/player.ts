@@ -115,7 +115,10 @@ function scrobbleSong(song: song, time: number, elapsed: number, duration: numbe
 
 function setupEvents() {
   Player.on("time", (time: number) => {
-    usePlayer.setState({ currentTime: time, lastTime: time });
+    usePlayer.setState({ currentTime: time });
+  });
+  Player.on("lastTime", (time: number) => {
+    usePlayer.setState({ lastTime: time });
   });
 
   Player.on("duration", (duration: number) => {
@@ -151,9 +154,12 @@ function setupEvents() {
   Player.on("next", (song: song) => {
     if (!currentSession) return;
 
-    const { currentSong: previous, currentTime: previousTime, duration: previousDuration } = usePlayer.getState();
+    const { currentSong: previous, lastTime: previousTime, duration: previousDuration } = usePlayer.getState();
     if (previous) {
-      scrobbleSong(previous, trackStartTime, previousTime, previousDuration);
+      // the 'next' event is only fired automatically,
+      // you cant trigger it manually with the >> button
+      // therefore, we assume time = duration
+      scrobbleSong(previous, trackStartTime, previousDuration, previousDuration);
     } else {
       note(`Could not attempt scrobble, previous song is null?`, 'audio', [ { previous, previousTime, previousDuration, trackStartTime, next: song } ]);
     }
