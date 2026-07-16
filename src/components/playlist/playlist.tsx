@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import type { playlist } from '@/types/playlist.ts';
 import React, { useEffect, useRef, useState } from 'react';
 import { DateTime } from "luxon";
-import { IconMusic, IconPencilFilled } from '@tabler/icons-react';
+import { IconMusic, IconPencil, IconPencilFilled } from '@tabler/icons-react';
 import { META_ICON_SIZE, SakuraMeta, SakuraMetaList } from '@/components/meta/meta.tsx';
 import { FastAverageColor } from 'fast-average-color';
 import { convertColour } from '@/tools/colour.ts';
@@ -113,7 +113,14 @@ export function SakuraPlaylistSide({ playlist }: { playlist: playlist }) {
       <SakuraImage url={playlist.art} type="playlist" identify={styles.art} />
       <div className={styles.info}>
         <strong className={styles.name}>{playlist.name}</strong>
-        {playlist.changed && <p className={styles.meta}>{DateTime.fromISO(playlist.changed).toRelative()}</p>}
+        <SakuraMetaList>
+          {playlist.changed && (
+            <SakuraMeta name="Last changed">
+              <IconPencil size={META_ICON_SIZE} />
+              {DateTime.fromISO(playlist.changed).toRelative({ style: "short" })}
+            </SakuraMeta>
+          )}
+        </SakuraMetaList>
       </div>
     </Link>
   )

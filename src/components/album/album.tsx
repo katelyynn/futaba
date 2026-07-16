@@ -250,8 +250,19 @@ export function SakuraAlbumSide({ album, showArtist = false }: { album: album, s
       <SakuraImage url={album.art} type="album" identify={styles.art} />
       <div className={styles.info}>
         <strong className={styles.name}>{album.name}</strong>
-        {album.type && <p className={styles.meta}>{releaseType(album.type)}</p>}
-        {album.played && <p className={styles.meta}>{DateTime.fromISO(album.played).toRelative()}</p>}
+        <SakuraMetaList>
+          {album.starred && (
+            <SakuraMeta name="Loved">
+              <IconHeartFilled className={styles.loved} size={META_ICON_SIZE} />
+            </SakuraMeta>
+          )}
+          {album.played && (
+            <SakuraMeta name="Last listened">
+              <IconHeadphonesFilled size={META_ICON_SIZE} />
+              {DateTime.fromISO(album.played).toRelative({ style: "short" })}
+            </SakuraMeta>
+          )}
+        </SakuraMetaList>
       </div>
       {(currentSong && currentSong.albumId == album.id) ? (nowPlaying) ? <IconPlayerPauseFilled size={16} className={`${styles.activeIndicator} ${styles.activeIndicatorPlaying}`} /> : <IconPlayerPlayFilled size={16} className={styles.activeIndicator} /> : <></>}
     </Link>
