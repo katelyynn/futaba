@@ -18,8 +18,11 @@ import { DateTime, Duration } from 'luxon';
 
 import styles from './Album.module.css';
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function Album() {
+  const [ loved, setLoved ] = useState(false);
+
   const { session } = useSession();
   const params = useParams();
 
@@ -27,6 +30,10 @@ export default function Album() {
 
   const { data: dataV2, isLoading: isLoadingV2, error: errorV2 } = useAlbumV2(session, id);
   const { data, isLoading, error } = useAlbum(session, id);
+
+  useEffect(() => {
+    setLoved(dataV2?.starred || false)
+  }, [ dataV2 ]);
 
   if (isLoadingV2 || isLoading) return <div>loading</div>;
   if (errorV2 || !dataV2) return <ErrorHandler error={errorV2 || 'unknown'} />;
@@ -71,7 +78,7 @@ export default function Album() {
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
           <SakuraHeader art={dataV2.art} name={dataV2.name} artists={dataV2.artists} type="album" />
-          <SakuraActions songs={data.songsList} count={data.songCount} type="album" />
+          <SakuraActions id={data.id} songs={data.songsList} count={data.songCount} type="album" loved={loved} setLoved={setLoved} />
           <SakuraMetaList space>
             <SakuraMeta name="Release date" small={false}>
               <IconCalendarWeekFilled size={META_ICON_SIZE_BIG} />
