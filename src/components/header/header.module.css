@@ -110,8 +110,9 @@
     margin-right: unset;
 
     &.primary {
+      --bg: oklch(var(--h4) / 10%) !important;
       --bg-hov: oklch(var(--h4) / 20%) !important;
-      --bg-atv: oklch(var(--h4) / 40%) !important;
+      --bg-atv: oklch(var(--h4) / 30%) !important;
       --col: oklch(var(--l3-c));
     }
   }
