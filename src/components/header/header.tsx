@@ -39,18 +39,20 @@ interface SakuraHeaderProps {
   art: string,
   name: string,
   artists?: { id: string, name: string, missing: boolean }[],
-  type: 'artist' | 'album' | 'playlist'
+  type: 'artist' | 'album' | 'playlist',
+  albumType?: string
 }
 
 export function SakuraHeader({
   art,
   name,
   artists,
-  type
+  type,
+  albumType
 }: SakuraHeaderProps) {
   let text = 'Artist';
   if (type == 'album') {
-    text = releaseType(type);
+    text = albumType ? releaseType(albumType) : "Album";
   } else if (type == 'playlist') {
     text = "Playlist";
   }

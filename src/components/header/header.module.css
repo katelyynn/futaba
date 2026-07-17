@@ -35,6 +35,7 @@
 
 .artist {
   display: flex;
+  text-decoration: none !important;
 
   & > a:not(:hover) {
     color: oklch(var(--c2));
@@ -43,7 +44,6 @@
 
 .type {
   color: oklch(var(--c3));
-  font-size: 13px;
 }
 
 .buttons {

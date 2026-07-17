@@ -77,7 +77,7 @@ export default function Album() {
         </SakuraSplit>
         <SakuraSeparator orientation="vertical" />
         <SakuraSplit side="right">
-          <SakuraHeader art={dataV2.art} name={dataV2.name} artists={dataV2.artists} type="album" />
+          <SakuraHeader art={dataV2.art} name={dataV2.name} artists={dataV2.artists} type="album" albumType={dataV2.type} />
           <SakuraActions id={data.id} songs={data.songsList} count={data.songCount} type="album" loved={loved} setLoved={setLoved} />
           <SakuraMetaList space>
             <SakuraMeta name="Release date" small={false}>
