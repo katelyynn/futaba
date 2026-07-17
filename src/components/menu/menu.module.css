@@ -5,4 +5,39 @@
   border-radius: calc(var(--item-med-radius) + 4px) !important;
   box-shadow: var(--menu-shadow);
   border: 1px solid var(--card-border-base);
+
+  animation-duration: var(--trans);
+  animation-timing-function: var(--trans-function);
+
+  animation-name: fromTop;
+}
+
+.header {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--separator-base);
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+
+@keyframes fromTop {
+  from {
+    translate: 0 -4px;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes fromBottom {
+  from {
+    translate: 0 4px;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
 }

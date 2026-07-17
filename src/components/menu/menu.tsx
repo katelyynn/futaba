@@ -3,6 +3,9 @@ import styles from "./menu.module.css";
 import { SakuraPopover } from '@/components/popover/popover.tsx';
 import { ContextMenu } from 'radix-ui';
 
+export const MENU_ICON_SIZE = 14;
+export const MENU_ICON_HEAD_SIZE = 16;
+
 interface SakuraMenuProps {
   content: React.ReactNode,
   children: React.ReactNode
@@ -39,5 +42,19 @@ export function SakuraContextMenu({
         </ContextMenu.Content>
       </ContextMenu.Portal>
     </ContextMenu.Root>
+  )
+}
+
+interface SakuraMenuHeaderProps {
+  children: React.ReactNode
+}
+
+export function SakuraMenuHeader({
+  children
+}: SakuraMenuHeaderProps) {
+  return (
+    <div className={styles.header}>
+      {children}
+    </div>
   )
 }

@@ -110,3 +110,30 @@
     --col: oklch(var(--l3-c));
   }
 }
+
+.menuHead {
+  --bg: transparent;
+  --bg-hov: var(--menu-item-hov);
+  --bg-atv: var(--menu-item-atv);
+  --shadow: none !important;
+  padding: unset !important;
+  gap: 0;
+
+  min-width: var(--button-height);
+  height: var(--button-height);
+  font-size: 0;
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  --button-height: 30px;
+
+  &.primary {
+    --bg: oklch(var(--h4) / 20%);
+    --bg-hov: oklch(var(--h4) / 30%);
+    --bg-atv: oklch(var(--h4) / 40%);
+    --col: oklch(var(--l3-c));
+  }
+}

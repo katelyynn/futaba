@@ -9,7 +9,7 @@ import { IconCarambola, IconDisc, IconDots, IconHeart, IconHeartFilled, IconMinu
 import { useSession } from '@/session.tsx';
 import { useSettings } from '@/api/settings.ts';
 import { SakuraImage } from '@/components/image/image.tsx';
-import { SakuraContextMenu, SakuraMenu } from '@/components/menu/menu.tsx';
+import { MENU_ICON_HEAD_SIZE, SakuraContextMenu, SakuraMenu, SakuraMenuHeader } from '@/components/menu/menu.tsx';
 import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
 import { setLove } from '@/api/love.ts';
 import { SakuraArtists } from "@/components/artists/artists.tsx";
@@ -103,25 +103,35 @@ export function SakuraSong({
 
   const menu = (
     <>
-      <SakuraButton primary={loved} elem="button" identifyOwn="menu" onClick={() => loveSong()}>
-        {loved ? <IconHeartFilled size={14} /> : <IconHeart size={14} />}
-        {loved ? "Unlove song" : "Love song"}
-      </SakuraButton>
-      <SakuraButton elem="button" identifyOwn="menu" onClick={() => playSong()}>
-        <IconPlayerPlayFilled size={14} />
-        Play
-      </SakuraButton>
-      {!inQueue ? (
-        <SakuraButton elem="button" identifyOwn="menu" onClick={() => addToQueue([song])}>
-          <IconPlaylistAdd size={14} />
-          Add to queue
-        </SakuraButton>
-      ) : (
-        <SakuraButton elem="button" identifyOwn="menu" onClick={() => removeFromQueue(queueIndex!)}>
-          <IconMinus size={14} />
-          Remove from queue
-        </SakuraButton>
-      )}
+      <SakuraMenuHeader>
+        <SakuraTooltip content="Play song">
+          <SakuraButton elem="button" identifyOwn="menuHead" onClick={() => playSong()}>
+            <IconPlayerPlayFilled size={MENU_ICON_HEAD_SIZE} />
+            Play song
+          </SakuraButton>
+        </SakuraTooltip>
+        {!inQueue ? (
+          <SakuraTooltip content="Add song to queue">
+            <SakuraButton elem="button" identifyOwn="menuHead" onClick={() => addToQueue([song])}>
+              <IconPlaylistAdd size={MENU_ICON_HEAD_SIZE} />
+              Add song to queue
+            </SakuraButton>
+          </SakuraTooltip>
+        ) : (
+          <SakuraTooltip content="Remove song from queue">
+            <SakuraButton elem="button" identifyOwn="menuHead" onClick={() => removeFromQueue(queueIndex!)}>
+              <IconMinus size={MENU_ICON_HEAD_SIZE} />
+              Remove song from queue
+            </SakuraButton>
+          </SakuraTooltip>
+        )}
+        <SakuraTooltip content={loved ? "You love this song" : "Love this song"}>
+          <SakuraButton primary={loved} elem="button" identifyOwn="menuHead" onClick={() => loveSong()}>
+            {loved ? <IconHeartFilled size={MENU_ICON_HEAD_SIZE} /> : <IconHeart size={MENU_ICON_HEAD_SIZE} />}
+            {loved ? "You love this song" : "Love this song"}
+          </SakuraButton>
+        </SakuraTooltip>
+      </SakuraMenuHeader>
       <SakuraButton elem="link" href={`/album/${song.albumId}`} identifyOwn="menu">
         <IconDisc size={14} />
         Go to album
