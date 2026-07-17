@@ -53,10 +53,12 @@
 }
 
 .menu {
-  background-color: oklch(var(--b8));
+  background-color: oklch(var(--b8) / 80%);
+  backdrop-filter: var(--solarium);
   padding: 4px !important;
-  border-radius: calc(var(--button-radius) + 4px) !important;
+  border-radius: calc(var(--item-med-radius) + 4px) !important;
   box-shadow: var(--menu-shadow);
+  border: 1px solid var(--card-border-base);
 
   display: flex;
   flex-direction: column;

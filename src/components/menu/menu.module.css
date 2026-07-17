@@ -1,5 +1,5 @@
 .menu {
-  background-color: oklch(var(--b8) / 90%);
+  background-color: oklch(var(--b8) / 80%);
   backdrop-filter: var(--solarium);
   padding: 4px !important;
   border-radius: calc(var(--item-med-radius) + 4px) !important;
@@ -10,13 +10,17 @@
   animation-timing-function: var(--trans-function);
 
   animation-name: fromTop;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+
+  z-index: 10000;
 }
 
 .header {
   display: flex;
   gap: 4px;
-  border-bottom: 1px solid var(--separator-base);
-  padding-bottom: 4px;
   margin-bottom: 4px;
 }
 
@@ -40,4 +44,12 @@
     translate: 0 0;
     opacity: 1;
   }
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: var(--separator-base);
+  /* 3px as theres a 1px gap */
+  margin: 3px var(--button-sides);
 }

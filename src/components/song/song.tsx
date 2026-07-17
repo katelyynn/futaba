@@ -5,11 +5,11 @@ import React from 'react';
 import { parseDuration } from '@/tools/duration.ts';
 import { usePlayer } from '@/api/player.ts';
 import { SakuraButton } from '@/components/button/button.tsx';
-import { IconCarambola, IconDisc, IconDots, IconHeart, IconHeartFilled, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlaylistAdd } from '@tabler/icons-react';
+import { IconCarambola, IconDisc, IconDots, IconHeart, IconHeartFilled, IconHourglass, IconHourglassFilled, IconMinus, IconPlayerPauseFilled, IconPlayerPlayFilled, IconPlayerStopFilled, IconPlaylistAdd, IconPlaylistX, IconZzz } from '@tabler/icons-react';
 import { useSession } from '@/session.tsx';
 import { useSettings } from '@/api/settings.ts';
 import { SakuraImage } from '@/components/image/image.tsx';
-import { MENU_ICON_HEAD_SIZE, SakuraContextMenu, SakuraMenu, SakuraMenuHeader } from '@/components/menu/menu.tsx';
+import { MENU_ICON_HEAD_SIZE, SakuraContextMenu, SakuraMenu, SakuraMenuDivider, SakuraMenuHeader } from '@/components/menu/menu.tsx';
 import { SakuraTooltip } from '@/components/tooltip/tooltip.tsx';
 import { setLove } from '@/api/love.ts';
 import { SakuraArtists } from "@/components/artists/artists.tsx";
@@ -105,7 +105,11 @@ export function SakuraSong({
     <>
       <SakuraMenuHeader>
         <SakuraTooltip content="Play song">
-          <SakuraButton elem="button" identifyOwn="menuHead" onClick={() => playSong()}>
+          <SakuraButton elem="button" identifyOwn="menuHead" onClick={() => {
+            const inQueue = queue.findIndex(s => s.id == song.id) > -1;
+            if (!inQueue) clearQueue();
+            play(song, session!);
+          }}>
             <IconPlayerPlayFilled size={MENU_ICON_HEAD_SIZE} />
             Play song
           </SakuraButton>
@@ -120,7 +124,7 @@ export function SakuraSong({
         ) : (
           <SakuraTooltip content="Remove song from queue">
             <SakuraButton elem="button" identifyOwn="menuHead" onClick={() => removeFromQueue(queueIndex!)}>
-              <IconMinus size={MENU_ICON_HEAD_SIZE} />
+              <IconPlaylistX size={MENU_ICON_HEAD_SIZE} />
               Remove song from queue
             </SakuraButton>
           </SakuraTooltip>
@@ -132,6 +136,19 @@ export function SakuraSong({
           </SakuraButton>
         </SakuraTooltip>
       </SakuraMenuHeader>
+      {inQueue ? (
+        <>
+          <SakuraButton elem="button" onClick={() => alert("not implemented")} identifyOwn="menu">
+            <IconPlayerStopFilled size={14} />
+            End queue after
+          </SakuraButton>
+          <SakuraButton elem="button" onClick={() => alert("not implemented")} identifyOwn="menu">
+            <IconZzz size={14} />
+            Sleep timer
+          </SakuraButton>
+          <SakuraMenuDivider />
+        </>
+      ) : ''}
       <SakuraButton elem="link" href={`/album/${song.albumId}`} identifyOwn="menu">
         <IconDisc size={14} />
         Go to album

@@ -53,8 +53,17 @@ export function SakuraMenuHeader({
   children
 }: SakuraMenuHeaderProps) {
   return (
-    <div className={styles.header}>
-      {children}
-    </div>
+    <>
+      <div className={styles.header}>
+        {children}
+      </div>
+      <SakuraMenuDivider />
+    </>
+  )
+}
+
+export function SakuraMenuDivider() {
+  return (
+    <hr className={styles.divider} />
   )
 }
